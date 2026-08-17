@@ -287,7 +287,7 @@ def show_yearly_volunteers():
         yearly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month", "Year"]
         yearly_df = yearly_df.sort_values(by=["Serving Week", "Service Time", "Month", "Year"])
         
-        st.success(f"Found **{len(yearly_df)}** total team assignment(s) across all years:")
+        st.success(f"Here is a report of all who have served and will serve throughout the year:")
         st.dataframe(yearly_df, use_container_width=True, hide_index=True)
 
 # Render the actual button in the sidebar layout
