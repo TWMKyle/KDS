@@ -11,6 +11,20 @@ st.title("Kids Music Team Portal")
 st.sidebar.markdown("[This week's slow song!](https://www.youtube.com/watch?v=XKR0O5OM1iw)")
 st.sidebar.markdown("[This week's fast song!](https://www.youtube.com/watch?v=66H4mLGgZ54)")
 
+IMAGE_FILE = "series.jpg"
+
+if os.path.exists(IMAGE_FILE):
+    # 2. Render the image directly inside the sidebar container
+    st.sidebar.image(
+        IMAGE_FILE,
+        caption="Series Grid",  # Optional: Adds text directly underneath the image
+        use_container_width=True,  # Automatically sizes the image to fit the sidebar width perfectly
+    )
+else:
+    # Optional fallback indicator if the image file is missing
+    st.sidebar.warning(f"Sidebar image '{IMAGE_FILE}' not found.")
+
+
 # Connect to Google Sheets via Streamlit Secrets Configuration
 conn = st.connection("gsheets", type=GSheetsConnection)
 
