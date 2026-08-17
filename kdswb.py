@@ -5,11 +5,42 @@ from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 
 
+st.html("""
+    <style>
+        /* 1. Main Background Color */
+        .stApp, [data-testid="stAppViewContainer"] {
+            background-color: #1A1C23 !important;
+        }
+        
+        /* 2. Sidebar and Input Widgets Background Color */
+        [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"], .stTextInput>div>div>input {
+            background-color: #262730 !important;
+            color: #FFFFFF !important;
+        }
+
+        /* 3. Global Text Colors */
+        h1, h2, h3, p, span, label {
+            color: #FFFFFF !important;
+        }
+        
+        /* 4. Primary Accent Elements (Buttons) */
+        [data-testid="stBaseButton-primary"], button {
+            background-color: #F39C12 !important;
+            color: #FFFFFF !important;
+            border: none !important;
+        }
+    </style>
+""")
+
+st.title("Forced Theme Example")
+st.write("If config.toml fails, this raw CSS overrides the UI natively.")
+
+
 # -----------------------------------------------------------------------------
 # 1. INITIALIZATION & LAYOUT CONFIGURATION
 # -----------------------------------------------------------------------------
-st.set_page_config(page_title="Kids Music Team", layout="centered",page_icon=":material/music_note_2:")
-st.title("Kids Music Team Portal")
+#st.set_page_config(page_title="Kids Music Team", layout="centered",page_icon=":material/music_note_2:")
+#st.title("Kids Music Team Portal")
 
 current_calendar_month = datetime.now().strftime("%B") 
 
