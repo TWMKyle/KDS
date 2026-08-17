@@ -25,7 +25,6 @@ else:
     # Optional fallback indicator if the image file is missing
     st.sidebar.warning(f"Sidebar image '{IMAGE_FILE}' not found.")
 
-
 # Connect to Google Sheets via Streamlit Secrets Configuration
 conn = st.connection("gsheets", type=GSheetsConnection)
 
@@ -166,3 +165,42 @@ if st.session_state.search_clicked:
                     st.rerun()
                 except Exception as e:
                     st.error(f"Network write error occurred: {e}")
+## Weekly list
+
+st.sidebar.write("---")
+st.sidebar.subheader("📋 Leader Tools")
+
+# 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
+@st.dialog("This Week's Volunteers")
+def show_weekly_volunteers():
+    st.write("Live snapshot of all musicians scheduled across all service times.")
+    
+    try:
+        # Fetch the absolute freshest data from Google Sheets
+        df_week = conn.read(ttl="0d")
+    except Exception:
+        st.error("Could not fetch the sheet database.")
+        return
+
+    # User control inside the modal to switch between weeks easily
+    target_week = st.selectbox("Select Week to View:", options=week_list)
+    
+    # Filter the entire sheet down to just that specific week
+    weekly_df = df_week[df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()]
+    
+    if weekly_df.empty:
+        st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
+    else:
+        # Re-arrange and rename columns so it looks neat for your leaders
+        weekly_df = weekly_df[["FNM", "SRV", "Role", "Month"]]
+        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month"]
+        
+        # Sort by service time so 10AM shows up before 12NN, etc.
+        weekly_df = weekly_df.sort_values(by="Service Time")
+
+        st.success(f"Found **{len(weekly_df)}** team members serving on {target_week}:")
+        st.dataframe(weekly_df, use_container_width=True, hide_index=True)
+
+# 2. Render the actual button in the sidebar layout
+if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
+    show_weekly_volunteers()
