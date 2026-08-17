@@ -14,19 +14,19 @@ st.html("""
         
         /* 2. Sidebar and Input Widgets Background Color */
         [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"], .stTextInput>div>div>input {
-            background-color: #31333F !important;
-            color: #FFFFFF !important;
+            background-color: #F0F2F6 !important;
+            color: #31333F !important;
         }
 
         /* 3. Global Text Colors */
         h1, h2, h3, p, span, label {
-            color: #FFFFFF !important;
+            color: #31333F !important;
         }
         
         /* 4. Primary Accent Elements (Buttons) */
         [data-testid="stBaseButton-primary"], button {
             background-color: #2ECC71 !important;
-            color: #FFFFFF !important;
+            color: #31333F !important;
             border: none !important;
         }
     </style>
