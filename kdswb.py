@@ -270,20 +270,24 @@ def show_yearly_volunteers():
     st.write(f"We thank the Lord for your hearts to serve!")
     
     try:
-        # FIX: Changed variable name to df_year to match the filtering logic below
-        df_year = conn.read(ttl="0d")
+        # Load all data directly into yearly_df
+        yearly_df = conn.read(ttl="0d")
     except Exception:
         st.error("Could not fetch the sheet database.")
         return
         
+    # FIX: Check if the entire sheet is completely empty
+    if yearly_df.empty:
+        st.info("No volunteers are registered in the database yet.")
+    else:
         # Re-arrange and display columns neatly
         yearly_df = yearly_df[["FNM", "SRV", "WK", "Role", "Month", "YR"]]
         
-        # FIX: Changed columns to match the new English labels for proper sorting
-        yearly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month", "YR"]
-        yearly_df = yearly_df.sort_values(by=["Serving Week", "Service Time", "Month", "YR"])
+        # Rename and sort columns
+        yearly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month", "Year"]
+        yearly_df = yearly_df.sort_values(by=["Serving Week", "Service Time", "Month", "Year"])
         
-        st.success(f"Found **{len(yearly_df)}** total team assignment(s) for this year:")
+        st.success(f"Found **{len(yearly_df)}** total team assignment(s) across all years:")
         st.dataframe(yearly_df, use_container_width=True, hide_index=True)
 
 # Render the actual button in the sidebar layout
