@@ -17,8 +17,8 @@ IMAGE_FILE = "series.jpg"
 if os.path.exists(IMAGE_FILE):
     # 2. Render the image directly inside the sidebar container
     st.sidebar.image(
-        caption="Series Grid",  # Optional: Adds text directly underneath the image
         IMAGE_FILE,
+        caption="Series Grid",  # Optional: Adds text directly underneath the image
         use_container_width=True,
         
     )
