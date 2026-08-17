@@ -168,12 +168,12 @@ if st.session_state.search_clicked:
 ## Weekly list
 
 st.sidebar.write("---")
-st.sidebar.subheader("📋 Leader Tools")
+st.sidebar.subheader("📋 Roster Finder")
 
 # 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
 @st.dialog("This Week's Volunteers")
 def show_weekly_volunteers():
-    st.write("Live snapshot of all musicians scheduled across all service times.")
+    st.write("We thank the Lord for your hears to serve!")
     
     try:
         # Fetch the absolute freshest data from Google Sheets
