@@ -77,6 +77,7 @@ if st.session_state.search_clicked:
         st.dataframe(display_df, use_container_width=True, hide_index=True)
 
         st.info("If you have more time available, you can fill out the this form again :) .")
+        st.info("Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
     else:
         st.warning(f"I cannot find any registered for you '**{current_name}**'. You can fill out the form below:")
 
