@@ -32,15 +32,14 @@ st.html("""
     </style>
 """)
 
-st.title("Forced Theme Example")
 st.write("If config.toml fails, this raw CSS overrides the UI natively.")
 
 
 # -----------------------------------------------------------------------------
 # 1. INITIALIZATION & LAYOUT CONFIGURATION
 # -----------------------------------------------------------------------------
-#st.set_page_config(page_title="Kids Music Team", layout="centered",page_icon=":material/music_note_2:")
-#st.title("Kids Music Team Portal")
+st.set_page_config(page_title="Kids Music Team", layout="centered",page_icon=":material/music_note_2:")
+st.title("Kids Music Team Portal")
 
 current_calendar_month = datetime.now().strftime("%B") 
 
