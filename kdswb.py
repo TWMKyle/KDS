@@ -158,7 +158,7 @@ if st.session_state.search_clicked:
                     "WK": wk_term,
                     "Role": rl_term,
                     "Month": mnt_term,
-                    "YR": 2026
+                    "YR": str(2026)
                 }])
 
                 # Append payload dataframe directly targeting target cloud worksheet node indexes
