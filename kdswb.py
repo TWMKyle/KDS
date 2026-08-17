@@ -268,34 +268,33 @@ st.sidebar.subheader("📋 Yearly Roster Finder")
 @st.dialog("This Year's Volunteers")
 def show_yearly_volunteers():
     st.write(f"We thank the Lord for your hearts to serve!")
-
+    
     try:
-        # FIX: Ensure you are reading the data into a variable named df_week 
-        # (or change df_week below to match whatever variable you use here)
+        # FIX: Changed variable name to df_year to match the filtering logic below
         df_year = conn.read(ttl="0d")
     except Exception:
         st.error("Could not fetch the sheet database.")
         return
-
-    # Now this line can safely run because df_week has been created above!
-    match_yr = df_year["YR"].fillna("").astype(str).str.strip().str.lower() == current_calendar_year.lower()
-
+        
+    # FIX: Converted current_calendar_year to string before calling .lower()
+    match_yr = df_year["YR"].fillna("").astype(str).str.strip().str.lower() == str(current_calendar_year).lower()
+    
     # Filter the data frame
     yearly_df = df_year[match_yr]
-
+    
     if yearly_df.empty:
         st.info(f"No volunteers are registered for **{current_calendar_year}** yet.")
     else:
         # Re-arrange and display columns neatly
         yearly_df = yearly_df[["FNM", "SRV", "WK", "Role", "Month", "YR"]]
+        
+        # FIX: Changed columns to match the new English labels for proper sorting
         yearly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month", "YR"]
         yearly_df = yearly_df.sort_values(by=["Serving Week", "Service Time", "Month", "YR"])
-
+        
         st.success(f"Found **{len(yearly_df)}** total team assignment(s) for this year:")
         st.dataframe(yearly_df, use_container_width=True, hide_index=True)
 
-
-# 2. Render the actual button in the sidebar layout
+# Render the actual button in the sidebar layout
 if st.sidebar.button("Check Yearly Roster 🔍", use_container_width=True):
     show_yearly_volunteers()
-
