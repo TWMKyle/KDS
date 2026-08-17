@@ -118,6 +118,10 @@ if st.session_state.search_clicked:
             elif duplicate_service:
                 st.error(
                     f"Oops, someone is already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
+                display_df = existing_entries[required_columns].copy()
+                display_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
+                st.dataframe(display_df, use_container_width=True, hide_index=True)
+                
             else:
                 # Structure dictionary row data mapping parameters
                 new_row = pd.DataFrame([{
