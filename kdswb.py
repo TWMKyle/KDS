@@ -281,7 +281,7 @@ def show_yearly_volunteers():
     match_yr = df_year["YR"].fillna("").astype(str).str.strip().str.lower() == current_calendar_year.lower()
 
     # Filter the data frame
-    yearly_df = df_yr[match_yr]
+    yearly_df = df_year[match_yr]
 
     if yearly_df.empty:
         st.info(f"No volunteers are registered for **{current_calendar_year}** yet.")
