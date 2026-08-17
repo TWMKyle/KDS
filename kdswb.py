@@ -39,6 +39,7 @@ if st.button("Name lookup", type="secondary"):
         st.session_state.search_clicked = True
         st.session_state.searched_name = search_input
 
+        st.rerun()
 # -----------------------------------------------------------------------------
 # STEP 2: ACTIVE SESSION CONTAINER (Runs once a valid search is performed)
 # -----------------------------------------------------------------------------
