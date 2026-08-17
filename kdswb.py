@@ -254,6 +254,6 @@ def show_monthly_volunteers():
         st.dataframe(weekly_df, use_container_width=True, hide_index=True)
 
 # 2. Render the actual button in the sidebar layout
-if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
-    show_weekly_volunteers()
+if st.sidebar.button2("Check Monthly Roster 🔍", use_container_width=True):
+    show_monthly_volunteers()
 
