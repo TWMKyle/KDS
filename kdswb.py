@@ -7,11 +7,11 @@ from datetime import datetime
 # -----------------------------------------------------------------------------
 # 1. INITIALIZATION & LAYOUT CONFIGURATION
 # -----------------------------------------------------------------------------
-st.set_page_config(page_title="Kids Music Team", layout="centered",page_icon=":material/music_note_2:")
+st.set_page_config(page_title="Kids Music Team", layout="centered", page_icon=":material/music_note_2:")
 st.title("Kids Music Team Portal")
 
-current_calendar_month = datetime.now().strftime("%B") 
-
+current_calendar_month = datetime.now().strftime("%B")
+current_calendar_year = datetime.now().strftime("%Y")
 
 st.sidebar.markdown("[This week's slow song! - Ruler of Nations](https://www.youtube.com/watch?v=Jfg7_1TRDDQ)")
 st.sidebar.markdown("[This week's fast song! - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
@@ -26,7 +26,7 @@ if os.path.exists(IMAGE_FILE):
     st.sidebar.image(
         IMAGE_FILE,
         use_container_width=True,
-        
+
     )
 else:
     # Optional fallback indicator if the image file is missing
@@ -102,9 +102,11 @@ if st.session_state.search_clicked:
         st.dataframe(display_df, use_container_width=True, hide_index=True)
 
         st.info("If you have more time available, you can fill out the this form again :) .")
-        st.info("Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
+        st.info(
+            "Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
     else:
-        st.warning(f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
+        st.warning(
+            f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
 
     # -----------------------------------------------------------------------------
     # STEP 3 & 4: MULTI-PURPOSE SCHEDULING FORM
@@ -136,7 +138,6 @@ if st.session_state.search_clicked:
             duplicate_collision = (m_name & m_srv & m_wk & m_role & m_mnt).any()
             matching_slots = df_latest[m_srv & m_wk & m_role & m_mnt]
             duplicate_service = (m_srv & m_wk & m_role & m_mnt).any()
-            
 
             if duplicate_collision:
                 st.error(
@@ -148,7 +149,7 @@ if st.session_state.search_clicked:
                 conflicting_row = matching_slots[required_columns].copy()
                 conflicting_row.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
                 st.dataframe(conflicting_row, use_container_width=True, hide_index=True)
-                
+
             else:
                 # Structure dictionary row data mapping parameters
                 new_row = pd.DataFrame([{
@@ -156,7 +157,8 @@ if st.session_state.search_clicked:
                     "SRV": srv_term,
                     "WK": wk_term,
                     "Role": rl_term,
-                    "Month": mnt_term
+                    "Month": mnt_term,
+                    "YR": str.(2026)
                 }])
 
                 # Append payload dataframe directly targeting target cloud worksheet node indexes
@@ -177,11 +179,12 @@ if st.session_state.search_clicked:
 st.sidebar.write("---")
 st.sidebar.subheader("📋 Weekly Roster Finder")
 
+
 # 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
 @st.dialog("This Week's Volunteers")
 def show_weekly_volunteers():
     st.write("We thank the Lord for your hearts to serve!")
-    
+
     try:
         # Fetch the absolute freshest data from Google Sheets
         df_week = conn.read(ttl="0d")
@@ -191,43 +194,43 @@ def show_weekly_volunteers():
 
     # User control inside the modal to switch between weeks easily
     target_week = st.selectbox("Select Week to View:", options=week_list)
-    
+
     # DUAL-FILTER LAYER: Must match the selected week AND the current running month
     match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
     match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
-    
+
     # Filter the layout matrix rows sequentially
     weekly_df = df_week[match_wk & match_mnt]
-    
+
     if weekly_df.empty:
         st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
     else:
         # Re-arrange and rename columns
         weekly_df = weekly_df[["FNM", "SRV", "Role", "Month"]]
         weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month"]
-        
+
         # Sort by service time so 10AM shows up before 12NN, etc.
         weekly_df = weekly_df.sort_values(by="Service Time")
 
         st.success(f"Found **{len(weekly_df)}** team members serving on {target_week}:")
         st.dataframe(weekly_df, use_container_width=True, hide_index=True)
 
+
 # 2. Render the actual button in the sidebar layout
 if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
     show_weekly_volunteers()
-
-
 
 ## Monthly list
 
 st.sidebar.write("---")
 st.sidebar.subheader("📋 Monthly Roster Finder")
 
+
 # 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
 @st.dialog("This Month's Volunteers")
 def show_monthly_volunteers():
     st.write(f"We thank the Lord for your hearts to serve!")
-    
+
     try:
         # FIX: Ensure you are reading the data into a variable named df_week 
         # (or change df_week below to match whatever variable you use here)
@@ -238,10 +241,10 @@ def show_monthly_volunteers():
 
     # Now this line can safely run because df_week has been created above!
     match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
-    
+
     # Filter the data frame
     monthly_df = df_week[match_mnt]
-    
+
     if monthly_df.empty:
         st.info(f"No volunteers are registered for **{current_calendar_month}** yet.")
     else:
@@ -249,11 +252,47 @@ def show_monthly_volunteers():
         monthly_df = monthly_df[["FNM", "SRV", "WK", "Role", "Month"]]
         monthly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month"]
         monthly_df = monthly_df.sort_values(by=["Serving Week", "Service Time", "Month"])
-        
+
         st.success(f"Found **{len(monthly_df)}** total team assignment(s) for this month:")
         st.dataframe(monthly_df, use_container_width=True, hide_index=True)
+
 
 # 2. Render the actual button in the sidebar layout
 if st.sidebar.button("Check Monthly Roster 🔍", use_container_width=True):
     show_monthly_volunteers()
+
+
+def show_yearly_volunteers():
+    st.write(f"We thank the Lord for your hearts to serve!")
+
+    try:
+        # FIX: Ensure you are reading the data into a variable named df_week 
+        # (or change df_week below to match whatever variable you use here)
+        df_year = conn.read(ttl="0d")
+    except Exception:
+        st.error("Could not fetch the sheet database.")
+        return
+
+    # Now this line can safely run because df_week has been created above!
+    match_yr = df_year["YR"].fillna("").astype(str).str.strip().str.lower() == current_calendar_year.lower()
+    match_yr = df_year["YR"].fillna("").astype(str).str.strip().str.lower() == current_calendar_year.lower()
+
+    # Filter the data frame
+    yearly_df = df_yr[match_yr]
+
+    if yearly_df.empty:
+        st.info(f"No volunteers are registered for **{current_calendar_year}** yet.")
+    else:
+        # Re-arrange and display columns neatly
+        yearly_df = yearly_df[["FNM", "SRV", "WK", "Role", "Month", "YR"]]
+        yearly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month", "YR"]
+        yearly_df = yearly_df.sort_values(by=["Serving Week", "Service Time", "Month", "YR"])
+
+        st.success(f"Found **{len(yearly_df)}** total team assignment(s) for this year:")
+        st.dataframe(yearly_df, use_container_width=True, hide_index=True)
+
+
+# 2. Render the actual button in the sidebar layout
+if st.sidebar.button("Check Monthly Roster 🔍", use_container_width=True):
+    show_yearly_volunteers()
 
