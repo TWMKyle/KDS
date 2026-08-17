@@ -4,13 +4,15 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 
-current_calendar_month = datetime.now().strftime("%B") 
 
 # -----------------------------------------------------------------------------
 # 1. INITIALIZATION & LAYOUT CONFIGURATION
 # -----------------------------------------------------------------------------
 st.set_page_config(page_title="Kids Music Team", layout="centered",page_icon=":material/music_note_2:")
 st.title("Kids Music Team Portal")
+
+current_calendar_month = datetime.now().strftime("%B") 
+
 
 st.sidebar.markdown("[This week's slow song!](https://www.youtube.com/watch?v=XKR0O5OM1iw)")
 st.sidebar.markdown("[This week's fast song!](https://www.youtube.com/watch?v=66H4mLGgZ54)")
