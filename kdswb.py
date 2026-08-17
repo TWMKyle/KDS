@@ -13,6 +13,19 @@ st.title("Kids Music Team Portal")
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
 
+IMAGE_FILE2 = "kds.jpg"
+
+if os.path.exists(IMAGE_FILE2):
+    # 2. Render the image directly inside the sidebar container
+    st.sidebar.image(
+        IMAGE_FILE2,
+        use_container_width=True,
+
+    )
+else:
+    # Optional fallback indicator if the image file is missing
+    st.sidebar.warning(f"Sidebar image '{IMAGE_FILE2}' not found.")
+
 st.sidebar.write("---")
 
 st.sidebar.subheader("This week's songs:")
