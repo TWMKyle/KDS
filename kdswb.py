@@ -109,10 +109,15 @@ if st.session_state.search_clicked:
             m_mnt = df_latest["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term.lower()
 
             duplicate_collision = (m_name & m_srv & m_wk & m_role & m_mnt).any()
+            duplicate_service = (m_srv & m_wk & m_role & m_mnt).any()
 
             if duplicate_collision:
                 st.error(
                     f"Duplicate Error: You are already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
+
+            elif duplicate_service:
+                st.error(
+                    f"Oops, someone is already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
             else:
                 # Structure dictionary row data mapping parameters
                 new_row = pd.DataFrame([{
