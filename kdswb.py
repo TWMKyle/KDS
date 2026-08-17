@@ -8,6 +8,9 @@ from streamlit_gsheets import GSheetsConnection
 st.set_page_config(page_title="Kids Music Team", layout="centered")
 st.title("Kids Music Team Portal")
 
+st.sidebar.markdown("[This week's slow song!](https://www.youtube.com/watch?v=XKR0O5OM1iw)")
+st.sidebar.markdown("[This week's fast song!](https://www.youtube.com/watch?v=66H4mLGgZ54)")
+
 # Connect to Google Sheets via Streamlit Secrets Configuration
 conn = st.connection("gsheets", type=GSheetsConnection)
 
