@@ -242,9 +242,9 @@ def show_monthly_volunteers():
         st.info(f"No volunteers are registered for **{current_calendar_month}** yet.")
     else:
         # Re-arrange and display columns neatly
-        monthly_df = monthly_df[["FNM", "SRV", "WK", "Role"]]
-        monthly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment"]
-        monthly_df = monthly_df.sort_values(by=["Serving Week", "Service Time"])
+        monthly_df = monthly_df[["FNM", "SRV", "WK", "Role", "Month"]]
+        monthly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month"]
+        monthly_df = monthly_df.sort_values(by=["Serving Week", "Service Time", "Month"])
         
         st.success(f"Found **{len(monthly_df)}** total team assignment(s) for this month:")
         st.dataframe(monthly_df, use_container_width=True, hide_index=True)
