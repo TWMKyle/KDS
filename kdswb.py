@@ -18,7 +18,7 @@ st.sidebar.markdown("[This week's fast song! - Tribes](https://www.youtube.com/w
 
 st.sidebar.write("---")
 
-st.sidebar.markdown("This month's series grid:")
+st.sidebar.subheader("This month's series grid:")
 IMAGE_FILE = "series.jpg"
 
 if os.path.exists(IMAGE_FILE):
