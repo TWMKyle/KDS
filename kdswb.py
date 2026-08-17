@@ -32,9 +32,6 @@ st.html("""
     </style>
 """)
 
-st.write("If config.toml fails, this raw CSS overrides the UI natively.")
-
-
 # -----------------------------------------------------------------------------
 # 1. INITIALIZATION & LAYOUT CONFIGURATION
 # -----------------------------------------------------------------------------
@@ -45,7 +42,7 @@ current_calendar_month = datetime.now().strftime("%B")
 
 
 st.sidebar.markdown("[This week's slow song! - Ruler of Nations](https://www.youtube.com/watch?v=Jfg7_1TRDDQ)")
-st.sidebar.markdown("[This week's fast song!- Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
+st.sidebar.markdown("[This week's fast song! - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
 
 st.sidebar.write("---")
 
