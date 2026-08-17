@@ -79,7 +79,7 @@ if st.session_state.search_clicked:
         st.info("If you have more time available, you can fill out the this form again :) .")
         st.info("Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
     else:
-        st.warning(f"I cannot find any registered services for you, '**{current_name}**'. You can fill out the form below:")
+        st.warning(f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
 
     # -----------------------------------------------------------------------------
     # STEP 3 & 4: MULTI-PURPOSE SCHEDULING FORM
