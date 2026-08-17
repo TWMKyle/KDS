@@ -276,15 +276,6 @@ def show_yearly_volunteers():
         st.error("Could not fetch the sheet database.")
         return
         
-    # FIX: Converted current_calendar_year to string before calling .lower()
-    match_yr = df_year["YR"].fillna("").astype(str).str.strip().str.lower() == str(current_calendar_year).lower()
-    
-    # Filter the data frame
-    yearly_df = df_year[match_yr]
-    
-    if yearly_df.empty:
-        st.info(f"No volunteers are registered for **{current_calendar_year}** yet.")
-    else:
         # Re-arrange and display columns neatly
         yearly_df = yearly_df[["FNM", "SRV", "WK", "Role", "Month", "YR"]]
         
