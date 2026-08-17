@@ -109,7 +109,9 @@ if st.session_state.search_clicked:
             m_mnt = df_latest["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term.lower()
 
             duplicate_collision = (m_name & m_srv & m_wk & m_role & m_mnt).any()
+            matching_slots = df_latest[m_srv & m_wk & m_role & m_mnt]
             duplicate_service = (m_srv & m_wk & m_role & m_mnt).any()
+            
 
             if duplicate_collision:
                 st.error(
@@ -118,9 +120,9 @@ if st.session_state.search_clicked:
             elif duplicate_service:
                 st.error(
                     f"Oops, someone is already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
-                display_df = existing_entries[required_columns].copy()
-                display_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
-                st.dataframe(display_df, use_container_width=True, hide_index=True)
+                conflicting_row = matching_slots[required_columns].copy()
+                conflicting_row.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
+                st.dataframe(conflicting_row, use_container_width=True, hide_index=True)
                 
             else:
                 # Structure dictionary row data mapping parameters
