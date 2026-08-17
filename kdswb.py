@@ -14,8 +14,8 @@ st.title("Kids Music Team Portal")
 current_calendar_month = datetime.now().strftime("%B") 
 
 
-st.sidebar.markdown("[This week's slow song!](https://www.youtube.com/watch?v=Jfg7_1TRDDQ)")
-st.sidebar.markdown("[This week's fast song!](https://www.youtube.com/watch?v=66H4mLGgZ54)")
+st.sidebar.markdown("[This week's slow song! - Ruler of Nations](https://www.youtube.com/watch?v=Jfg7_1TRDDQ)")
+st.sidebar.markdown("[This week's fast song!- Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
 
 st.sidebar.write("---")
 
