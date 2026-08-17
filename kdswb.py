@@ -11,14 +11,13 @@ st.title("Kids Music Team Portal")
 
 st.sidebar.markdown("[This week's slow song!](https://www.youtube.com/watch?v=XKR0O5OM1iw)")
 st.sidebar.markdown("[This week's fast song!](https://www.youtube.com/watch?v=66H4mLGgZ54)")
-
+st.sidebar.markdown("[This month's series grid:]")
 IMAGE_FILE = "series.jpg"
 
 if os.path.exists(IMAGE_FILE):
     # 2. Render the image directly inside the sidebar container
     st.sidebar.image(
         IMAGE_FILE,
-        caption="Series Grid",  # Optional: Adds text directly underneath the image
         use_container_width=True,
         
     )
