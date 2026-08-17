@@ -2,6 +2,9 @@ import os
 import pandas as pd
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
+from datetime import datetime
+
+current_calendar_month = datetime.now().strftime("%B") 
 
 # -----------------------------------------------------------------------------
 # 1. INITIALIZATION & LAYOUT CONFIGURATION
@@ -185,8 +188,12 @@ def show_weekly_volunteers():
     # User control inside the modal to switch between weeks easily
     target_week = st.selectbox("Select Week to View:", options=week_list)
     
-    # Filter the entire sheet down to just that specific week
-    weekly_df = df_week[df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()]
+    # DUAL-FILTER LAYER: Must match the selected week AND the current running month
+    match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
+    match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
+    
+    # Filter the layout matrix rows sequentially
+    weekly_df = df_week[match_wk & match_mnt]
     
     if weekly_df.empty:
         st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
