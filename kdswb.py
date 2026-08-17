@@ -173,7 +173,7 @@ st.sidebar.subheader("📋 Roster Finder")
 # 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
 @st.dialog("This Week's Volunteers")
 def show_weekly_volunteers():
-    st.write("We thank the Lord for your hears to serve!")
+    st.write("We thank the Lord for your hearts to serve!")
     
     try:
         # Fetch the absolute freshest data from Google Sheets
@@ -191,7 +191,7 @@ def show_weekly_volunteers():
     if weekly_df.empty:
         st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
     else:
-        # Re-arrange and rename columns so it looks neat for your leaders
+        # Re-arrange and rename columns
         weekly_df = weekly_df[["FNM", "SRV", "Role", "Month"]]
         weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month"]
         
