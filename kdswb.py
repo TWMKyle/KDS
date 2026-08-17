@@ -9,12 +9,12 @@ st.html("""
     <style>
         /* 1. Main Background Color */
         .stApp, [data-testid="stAppViewContainer"] {
-            background-color: #1A1C23 !important;
+            background-color: #FAFAFA !important;
         }
         
         /* 2. Sidebar and Input Widgets Background Color */
         [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"], .stTextInput>div>div>input {
-            background-color: #262730 !important;
+            background-color: #31333F !important;
             color: #FFFFFF !important;
         }
 
@@ -25,7 +25,7 @@ st.html("""
         
         /* 4. Primary Accent Elements (Buttons) */
         [data-testid="stBaseButton-primary"], button {
-            background-color: #F39C12 !important;
+            background-color: #2ECC71 !important;
             color: #FFFFFF !important;
             border: none !important;
         }
