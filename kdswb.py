@@ -29,9 +29,9 @@ if "searched_name" not in st.session_state:
 # -----------------------------------------------------------------------------
 # STEP 1: USER IDENTITY LOOKUP SEARCH BAR
 # -----------------------------------------------------------------------------
-search_input = st.text_input("Enter your name to access your profile:", value=st.session_state.searched_name).strip()
+search_input = st.text_input("Welcome to Kids Church! Search your name!", value=st.session_state.searched_name).strip()
 
-if st.button("Search Database", type="secondary"):
+if st.button("Name lookup", type="secondary"):
     if not search_input:
         st.warning("Please enter a name to search.")
         st.session_state.search_clicked = False
@@ -89,8 +89,8 @@ if st.session_state.search_clicked:
         # User input fields
         srv_term = st.selectbox("Select Service Time:", options=service_list)
         wk_term = st.selectbox("Select Serving Week:", options=week_list)
-        rl_term = st.selectbox("Select Performance Role:", options=role_list)
-        mnt_term = st.selectbox("Select Deployment Month:", options=month_list)
+        rl_term = st.selectbox("Select Role:", options=role_list)
+        mnt_term = st.selectbox("Select Month:", options=month_list)
 
         # Context-aware submit button text assignment
         button_label = "Register for Kids Music" if has_profile else "Create New Entry"
