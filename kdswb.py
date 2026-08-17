@@ -171,7 +171,7 @@ if st.session_state.search_clicked:
 ## Weekly list
 
 st.sidebar.write("---")
-st.sidebar.subheader("📋 Roster Finder")
+st.sidebar.subheader("📋 Weekly Roster Finder")
 
 # 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
 @st.dialog("This Week's Volunteers")
@@ -211,3 +211,49 @@ def show_weekly_volunteers():
 # 2. Render the actual button in the sidebar layout
 if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
     show_weekly_volunteers()
+
+
+
+## Monthly list
+
+st.sidebar.write("---")
+st.sidebar.subheader("📋 Monthly Roster Finder")
+
+# 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
+@st.dialog("This Month's Volunteers")
+def show_monthly_volunteers():
+    st.write("We thank the Lord for your hearts to serve!")
+    
+    try:
+        # Fetch the absolute freshest data from Google Sheets
+        df_month = conn.read(ttl="0d")
+    except Exception:
+        st.error("Could not fetch the sheet database.")
+        return
+
+    # User control inside the modal to switch between weeks easily
+    target_month = st.selectbox("Select Week to View:", options=month_list)
+    
+    # DUAL-FILTER LAYER: Must match the selected week AND the current running month
+    match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
+    
+    # Filter the layout matrix rows sequentially
+    monthly_df = match_mnt
+    
+    if monthly_df.empty:
+        st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
+    else:
+        # Re-arrange and rename columns
+        weekly_df = weekly_df[["FNM", "SRV", "Role", "Month"]]
+        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month"]
+        
+        # Sort by service time so 10AM shows up before 12NN, etc.
+        weekly_df = weekly_df.sort_values(by="Service Time")
+
+        st.success(f"Found **{len(weekly_df)}** team members serving on {target_week}:")
+        st.dataframe(weekly_df, use_container_width=True, hide_index=True)
+
+# 2. Render the actual button in the sidebar layout
+if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
+    show_weekly_volunteers()
+
