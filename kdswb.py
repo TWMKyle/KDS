@@ -69,22 +69,22 @@ if st.session_state.search_clicked:
     has_profile = not existing_entries.empty
 
     if has_profile:
-        st.success(f"Welcome back, **{current_name}**! Here are your active roster schedules:")
+        st.success(f"Welcome back, **{current_name}**! Here are your active serving schedules:")
 
         # Format display grid view metrics for the end-user
         display_df = existing_entries[required_columns].copy()
         display_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
         st.dataframe(display_df, use_container_width=True, hide_index=True)
 
-        st.info("Want to add a shift? Fill out the dynamic schedule details below.")
+        st.info("If you have more time available, you can fill out the this form again :) .")
     else:
-        st.warning(f"No existing records found for '**{current_name}**'. Create a brand-new roster account below:")
+        st.warning(f"I cannot find any registered for you '**{current_name}**'. You can fill out the form below:")
 
     # -----------------------------------------------------------------------------
     # STEP 3 & 4: MULTI-PURPOSE SCHEDULING FORM
     # -----------------------------------------------------------------------------
     with st.form("registration_form", clear_on_submit=True):
-        st.subheader("Scheduling Options Menu")
+        st.subheader("Serving Schedules")
 
         # User input fields
         srv_term = st.selectbox("Select Service Time:", options=service_list)
@@ -93,7 +93,7 @@ if st.session_state.search_clicked:
         mnt_term = st.selectbox("Select Deployment Month:", options=month_list)
 
         # Context-aware submit button text assignment
-        button_label = "Register Shift Entry" if has_profile else "Create New Roster Profile"
+        button_label = "Register for Kids Music" if has_profile else "Create New Entry"
         submit_shift = st.form_submit_button(button_label, type="primary")
 
         if submit_shift:
@@ -111,7 +111,7 @@ if st.session_state.search_clicked:
 
             if duplicate_collision:
                 st.error(
-                    f"Duplicate Error: You are already logged for the {srv_term} shift on {wk_term} as {rl_term} during {mnt_term}!")
+                    f"Duplicate Error: You are already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
             else:
                 # Structure dictionary row data mapping parameters
                 new_row = pd.DataFrame([{
@@ -127,7 +127,7 @@ if st.session_state.search_clicked:
 
                 try:
                     conn.update(data=df_updated)
-                    st.toast("Roster record successfully committed to Cloud Sheets!", icon="🚀")
+                    st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
                     st.success(
                         f"Success! Registered {current_name} for {wk_term} ({srv_term}) as {rl_term} for {mnt_term}.")
 
