@@ -9,8 +9,7 @@ current_calendar_month = datetime.now().strftime("%B")
 # -----------------------------------------------------------------------------
 # 1. INITIALIZATION & LAYOUT CONFIGURATION
 # -----------------------------------------------------------------------------
-st.set_page_config(page_title="Kids Music Team", layout="centered", page_icon="<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M127-167q-47-47-47-113t47-113q47-47 113-47 23 0 42.5 5.5T320-418v-342l480-80v480q0 66-47 113t-113 47q-66 0-113-47t-47-113q0-66 47-113t113-47q23 0 42.5 5.5T720-498v-165l-320 63v320q0 66-47 113t-113 47q-66 0-113-47Z"/></svg>")
-
+st.set_page_config(page_title="Kids Music Team", layout="centered",page_icon=":material/music_note_2:")
 st.title("Kids Music Team Portal")
 
 st.sidebar.markdown("[This week's slow song!](https://www.youtube.com/watch?v=XKR0O5OM1iw)")
