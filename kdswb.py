@@ -293,6 +293,6 @@ def show_yearly_volunteers():
 
 
 # 2. Render the actual button in the sidebar layout
-if st.sidebar.button("Check Monthly Roster 🔍", use_container_width=True):
+if st.sidebar.button("Check Yearly Roster 🔍", use_container_width=True):
     show_yearly_volunteers()
 
