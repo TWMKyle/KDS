@@ -238,20 +238,18 @@ def show_monthly_volunteers():
     match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
     
     # Filter the layout matrix rows sequentially
-    monthly_df = match_mnt
+    monthly_df = df_week[match_mnt]
     
     if monthly_df.empty:
         st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
     else:
-        # Re-arrange and rename columns
-        weekly_df = weekly_df[["FNM", "SRV", "Role", "Month"]]
-        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month"]
+        # Re-arrange and display columns neatly
+        monthly_df = monthly_df[["FNM", "SRV", "WK", "Role"]]
+        monthly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment"]
+        monthly_df = monthly_df.sort_values(by=["Serving Week", "Service Time"])
         
-        # Sort by service time so 10AM shows up before 12NN, etc.
-        weekly_df = weekly_df.sort_values(by="Service Time")
-
-        st.success(f"Found **{len(weekly_df)}** team members serving on {target_week}:")
-        st.dataframe(weekly_df, use_container_width=True, hide_index=True)
+        st.success(f"Found **{len(monthly_df)}** total team assignment(s) for this month:")
+        st.dataframe(monthly_df, use_container_width=True, hide_index=True)
 
 # 2. Render the actual button in the sidebar layout
 if st.sidebar.button("Check Monthly Roster 🔍", use_container_width=True):
