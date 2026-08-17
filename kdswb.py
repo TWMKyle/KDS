@@ -261,7 +261,7 @@ def show_monthly_volunteers():
 if st.sidebar.button("Check Monthly Roster 🔍", use_container_width=True):
     show_monthly_volunteers()
 
-
+@st.dialog("This Year's Volunteers")
 def show_yearly_volunteers():
     st.write(f"We thank the Lord for your hearts to serve!")
 
