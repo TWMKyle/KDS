@@ -222,7 +222,7 @@ st.sidebar.subheader("📋 Monthly Roster Finder")
 # 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
 @st.dialog("This Month's Volunteers")
 def show_monthly_volunteers():
-    st.write(f"Live snapshot of all musicians scheduled for **{current_calendar_month}**.")
+    st.write(f"We thank the Lord for your hearts to serve!")
     
     try:
         # FIX: Ensure you are reading the data into a variable named df_week 
