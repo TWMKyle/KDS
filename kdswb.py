@@ -222,26 +222,24 @@ st.sidebar.subheader("📋 Monthly Roster Finder")
 # 1. Define the pop-up function using st.dialog (Streamlit's modern modal window)
 @st.dialog("This Month's Volunteers")
 def show_monthly_volunteers():
-    st.write("We thank the Lord for your hearts to serve!")
+    st.write(f"Live snapshot of all musicians scheduled for **{current_calendar_month}**.")
     
     try:
-        # Fetch the absolute freshest data from Google Sheets
-        df_month = conn.read(ttl="0d")
+        # FIX: Ensure you are reading the data into a variable named df_week 
+        # (or change df_week below to match whatever variable you use here)
+        df_week = conn.read(ttl="0d")
     except Exception:
         st.error("Could not fetch the sheet database.")
         return
 
-    # User control inside the modal to switch between weeks easily
-    target_month = st.selectbox("Select Week to View:", options=month_list)
-    
-    # DUAL-FILTER LAYER: Must match the selected week AND the current running month
+    # Now this line can safely run because df_week has been created above!
     match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
     
-    # Filter the layout matrix rows sequentially
+    # Filter the data frame
     monthly_df = df_week[match_mnt]
     
     if monthly_df.empty:
-        st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
+        st.info(f"No volunteers are registered for **{current_calendar_month}** yet.")
     else:
         # Re-arrange and display columns neatly
         monthly_df = monthly_df[["FNM", "SRV", "WK", "Role"]]
