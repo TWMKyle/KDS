@@ -286,7 +286,11 @@ def run_kds_teacher():
                 matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
                 duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
             
-
+                if "registration_success" in st.session_state:
+                    st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
+                    st.success(st.session_state.registration_success)
+                    del st.session_state.registration_success
+                
                 if duplicate_collision2:
                     st.error(
                         f"Duplicate Error: You are already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2}!")
@@ -313,9 +317,7 @@ def run_kds_teacher():
 
                     try:
                         conn.update(data=df_updated2)
-                        st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
-                        st.success(
-                            f"Success! Registered {current_name2} for {wk_term2} ({srv_term2}) as {rl_term2} in {mnt_term2} for {age_term2}.")
+                        st.session_state.registration_success = (f"Success! Registered {current_name2} for {wk_term2} ({srv_term2}) as {rl_term2} in {mnt_term2} for {age_term2}.")
 
                         st.rerun()
                     except Exception as e:
