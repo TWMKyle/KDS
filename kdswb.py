@@ -280,6 +280,7 @@ def run_kds_teacher():
                 duplicate_collision2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
                 matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
                 duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
+                max_volunteers = (
 
                 if duplicate_collision2:
                     st.error(
@@ -423,7 +424,7 @@ if st.sidebar.button("Check Yearly Roster 🔍", use_container_width=True):
 
 ## TABS
 
-tab1, tab2 = st.tabs(["🎵 Kids Music Team", "🔥 Kids Teachers Team"])
+tab1, tab2 = st.tabs(["🎵 Kids Music Team", "📖 Kids Teachers Team"])
 
 with tab1:
     run_kds_music()
