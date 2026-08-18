@@ -13,7 +13,7 @@ st.html("""
         
         /* 2. Sidebar and Input Widgets Background Color */
         [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"], .stTextInput>div>div>input {
-            background-color: #ADD8E6 !important;
+            background-color: #FFB6C1 !important;
             color: #31333F !important;
         }
 
@@ -24,7 +24,7 @@ st.html("""
         
         /* 4. Primary Accent Elements (Buttons) */
         [data-testid="stBaseButton-primary"], button {
-            background-color: #2ECC71 !important;
+            background-color: #FFDB58 !important;
             color: #FFDB58 !important;
             border: none !important;
         }
