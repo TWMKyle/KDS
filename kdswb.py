@@ -12,16 +12,23 @@ st.html("""
         }
 
 /* 2. Sidebar and Input Widgets Background Color */
-        [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"], .stTextInput>div>div>input {
-            background-color: #ADD8E6 !important;
-            color: #000000 !important;
-        }
+[data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {
+    background-color: #ADD8E6 !important;
+    color: #000000 !important;
+}
 
         /* 4. Primary Accent Elements (Buttons) */
         [data-testid="stBaseButton-primary"], button {
             background-color: #FFDB58 !important;
             color: #31333F !important;
             border: none !important;
+        }
+
+        .stAppHeader {
+            background-color: #808000 !important; /* Changes header background */
+        }
+        .stAppHeader span, .stAppHeader svg {
+            color: white !important; /* Changes header text/icon colors */
         }
 
     </style>
