@@ -29,6 +29,30 @@ st.html("""
             border: none !important;
         }
 
+
+/* 1. Changes header background */
+        .stAppHeader {
+            background-color: #00FF7F !important; 
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            padding-left: 20px !important;
+        }
+
+        /* 2. Injects your custom text into the header */
+        .stAppHeader::after {
+            content: "#WhateverItTakes"; /* PUT YOUR HEADER TEXT HERE */
+            color: white !important;
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            margin-right: auto; /* Pushes menu icons to the far right */
+        }
+
+        /* 3. Changes default header text/icon colors */
+        .stAppHeader span, .stAppHeader svg {
+            color: white !important; 
+        }
     
     </style>
 """)
