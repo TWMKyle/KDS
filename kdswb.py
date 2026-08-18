@@ -28,6 +28,17 @@ st.html("""
             color: #FFDB58 !important;
             border: none !important;
         }
+
+        .stAppHeader {
+            background-color: #00FF7F !important; /* Changes header background */
+        }
+        .stAppHeader span, .stAppHeader svg {
+            color: white !important; /* Changes header text/icon colors */
+        }
+
+
+
+        
     </style>
 """)
 
