@@ -451,7 +451,7 @@ with tab3:
     st.write("If you have any questions or concerns, you can reach out to the following coordinators: ")
 
     image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
-    image_kyle = "da5a33cc06f4106bbf20e0c68d28eea6.jpg"
+    image_kyle = "iron.jpeg"
 
     try:
         # 2. Read the local file and convert it into a string
