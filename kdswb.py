@@ -209,7 +209,7 @@ def run_kds_teacher():
             st.error("Failed to connect to Google Sheets. Verify your link configurations.")
             st.stop()
 
-        required_columns2 = ["FNM", "SRV", "WK", "Role", "Month", "AgeGroup"]
+        required_columns2 = ["FNM", "SRV", "WK", "Role", "Month", "Agegroup"]
 
         if not all(col in df.columns for col in required_columns2):
             st.error("Google Sheet headers are missing structural column fields (FNM, SRV, WK, Role, Month, Agegroup).")
