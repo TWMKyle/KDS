@@ -521,7 +521,7 @@ with tab3:
             <img src="{img_src2}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 25px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
                 Kyle 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -543,7 +543,7 @@ with tab3:
             <img src="{img_src3}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 25px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
                 Fitz 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
