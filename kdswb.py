@@ -14,7 +14,7 @@ st.html("""
 /* 2. Sidebar and Input Widgets Background Color */
         [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"], .stTextInput>div>div>input {
             background-color: #ADD8E6 !important;
-            color: #00FF7F !important;
+            color: #000000 !important;
         }
 
     </style>
