@@ -438,8 +438,21 @@ with tab3:
 
     st.write("These are your coordinators!")
 
+    image_filename = "428153935_7645976362101063_1868470333701431125_n.jpg"
+
+    try:
+        # 2. Read the local file and convert it into a string
+        with open(image_filename, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
+        img_src = f"data:image/jpeg;base64,{encoded_string}"
+    except FileNotFoundError:
+        # If the file path is wrong, it shows a placeholder so your app doesn't crash
+        img_src = "https://unsplash.com"
+        st.error(f"Could not find the image file: {image_filename}")
+
+    # 3. Inject the data string directly into the HTML source
     st.html(
-        """
+        f"""
         <div style="
             border: 2px solid #4A90E2;
             border-radius: 10px;
@@ -447,13 +460,17 @@ with tab3:
             width: 180px;
             text-align: center;
             background-color: #f9f9f9;
+            font-family: sans-serif;
         ">
-            <img src="428153935_7645976362101063_1868470333701431125_n.jpg?raw=true" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px;">
-            <h3 style="margin: 0; color: #333; font-family: sans-serif; font-size: 18px;">
+            <img src="{img_src}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+            
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
                 John Venn
-                12 Noon - Worship Service Leader
             </h3>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                12 Noon - Worship Service Leader
+            </p>
         </div>
         """
     )
