@@ -325,7 +325,7 @@ def show_weekly_volunteers():
         st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
     else:
         weekly_df = weekly_df[["FNM", "SRV", "Role", "Month", "Agegroup"]]
-        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month, "Agegroup"]
+        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
 
         weekly_df = weekly_df.sort_values(by="Service Time")
 
