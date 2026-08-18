@@ -349,16 +349,16 @@ def run_kds_teacher():
 
         required_columns2 = ["FNM", "SRV", "WK", "Role", "Month"]
 
-        if not all(col in df.columns for col in required_columns):
+        if not all(col in df.columns for col in required_columns2):
             st.error("Google Sheet headers are missing structural column fields (FNM, SRV, WK, Role, Month).")
             st.stop()
 
         match_indices2 = df["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name2.lower()
         existing_entries2 = df[match_indices2]
 
-        has_profile = not existing_entries2.empty
+        has_profile2 = not existing_entries2.empty
 
-        if has_profile:
+        if has_profile2:
             st.success(f"Welcome back, **{current_name2}**! Here are your active serving schedules:")
 
             display_df2 = existing_entries2[required_columns2].copy()
