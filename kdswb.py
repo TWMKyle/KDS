@@ -451,7 +451,7 @@ with tab3:
     st.write("If you have any questions or concerns, you can reach out to the following coordinators: ")
 
     image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
-    image_kyle = "iron.jpeg"
+    image_kyle = "images-2.jpeg"
     image_fitz = "marvels-spider-man-remastered_az82.jpg"
 
     try:
