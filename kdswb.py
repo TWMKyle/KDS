@@ -154,6 +154,7 @@ def run_kds_music():
                         "Role": rl_term,
                         "Month": mnt_term,
                         "YR": str(2026)
+                        "Agegroup": "Primary"
                     }])
                     df_updated = pd.concat([df_latest, new_row], ignore_index=True)
 
@@ -176,6 +177,7 @@ def run_kds_teacher():
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ]
+    age_list2 = ["Preschool1", "Preschool2", "Primary", "Preteens"]
 
     if "search_clicked2" not in st.session_state:
         st.session_state.search_clicked2 = False
@@ -207,10 +209,10 @@ def run_kds_teacher():
             st.error("Failed to connect to Google Sheets. Verify your link configurations.")
             st.stop()
 
-        required_columns2 = ["FNM", "SRV", "WK", "Role", "Month"]
+        required_columns2 = ["FNM", "SRV", "WK", "Role", "Month", "AgeGroup"]
 
         if not all(col in df.columns for col in required_columns2):
-            st.error("Google Sheet headers are missing structural column fields (FNM, SRV, WK, Role, Month).")
+            st.error("Google Sheet headers are missing structural column fields (FNM, SRV, WK, Role, Month, Agegroup).")
             st.stop()
 
         match_indices2 = df["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name2.lower()
@@ -222,7 +224,7 @@ def run_kds_teacher():
             st.success(f"Welcome back, **{current_name2}**! Here are your active serving schedules:")
 
             display_df2 = existing_entries2[required_columns2].copy()
-            display_df2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
+            display_df2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled", "Age Group"]
             st.dataframe(display_df2, use_container_width=True, hide_index=True)
 
             st.info("If you have more time available, you can fill out the this form again :) .")
@@ -239,6 +241,7 @@ def run_kds_teacher():
             wk_term2 = st.selectbox("Select Serving Week:", options=week_list2)
             rl_term2 = st.selectbox("Select Role:", options=role_list2)
             mnt_term2 = st.selectbox("Select Month:", options=month_list2)
+            age_term2 = st.selecttbox("Select Age Group:", options=age_list2)
 
             button_label2 = "Register as a Kids Teacher" if has_profile2 else "Create New Entry"
             submit_shift2 = st.form_submit_button(button_label2, type="primary")
@@ -251,8 +254,10 @@ def run_kds_teacher():
                 m_wk2 = df_latest2["WK"].fillna("").astype(str).str.strip().str.lower() == wk_term2.lower()
                 m_role2 = df_latest2["Role"].fillna("").astype(str).str.strip().str.lower() == rl_term2.lower()
                 m_mnt2 = df_latest2["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term2.lower()
+                m_age2 = df_latest2["Agegroup"].fillna("").astype(str).str.strip().str.lower() == age_term2.lower()
 
-                duplicate_collision2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
+
+                duplicate_collision2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
                 matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
                 duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
 
@@ -262,10 +267,10 @@ def run_kds_teacher():
 
                 elif duplicate_service2:
                     st.error(
-                        f"Oops, someone is already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2}!")
+                        f"Oops, someone is already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2} for {age_term2}!")
                     conflicting_row2 = matching_slots2[required_columns2].copy()
                     conflicting_row2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment",
-                                               "Month Scheduled"]
+                                               "Month Scheduled", "Agegroup"]
                     st.dataframe(conflicting_row2, use_container_width=True, hide_index=True)
 
                 else:
@@ -275,7 +280,8 @@ def run_kds_teacher():
                         "WK": wk_term2,
                         "Role": rl_term2,
                         "Month": mnt_term2,
-                        "YR": str(2026)
+                        "YR": str(2026),
+                        "Agegroup": age_term2
                     }])
                     df_updated2 = pd.concat([df_latest2, new_row], ignore_index=True)
 
@@ -283,7 +289,7 @@ def run_kds_teacher():
                         conn.update(data=df_updated2)
                         st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
                         st.success(
-                            f"Success! Registered {current_name2} for {wk_term2} ({srv_term2}) as {rl_term2} for {mnt_term2}.")
+                            f"Success! Registered {current_name2} for {wk_term2} ({srv_term2}) as {rl_term2} in {mnt_term2} for {age_term2}.")
 
                         st.rerun()
                     except Exception as e:
@@ -318,8 +324,8 @@ def show_weekly_volunteers():
     if weekly_df.empty:
         st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
     else:
-        weekly_df = weekly_df[["FNM", "SRV", "Role", "Month"]]
-        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month"]
+        weekly_df = weekly_df[["FNM", "SRV", "Role", "Month", "Agegroup"]]
+        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month, "Agegroup"]
 
         weekly_df = weekly_df.sort_values(by="Service Time")
 
@@ -355,9 +361,9 @@ def show_monthly_volunteers():
     if monthly_df.empty:
         st.info(f"No volunteers are registered for **{current_calendar_month}** yet.")
     else:
-        monthly_df = monthly_df[["FNM", "SRV", "WK", "Role", "Month"]]
-        monthly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month"]
-        monthly_df = monthly_df.sort_values(by=["Serving Week", "Service Time", "Month"])
+        monthly_df = monthly_df[["FNM", "SRV", "WK", "Role", "Month", "Agegroup"]]
+        monthly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month", "Agegroup"]
+        monthly_df = monthly_df.sort_values(by=["Serving Week", "Service Time", "Month", "Agegroup"])
 
         st.success(f"Found **{len(monthly_df)}** total team member(s) serving this month:")
         st.dataframe(monthly_df, use_container_width=True, hide_index=True)
