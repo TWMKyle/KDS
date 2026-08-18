@@ -286,6 +286,16 @@ def run_kds_teacher():
                 matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
                 duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
 
+                vol_exp2 = "Volunteer"
+                exempt_rl2 = (rl_term2 == vol_exp2)
+
+                if exempt_rl2:
+                    duplicate_service2 = False
+                    matching_slots2 = df_latest2.none() # empty container placeholder
+                else:
+                    matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
+                    duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
+                
                 if duplicate_collision2:
                     st.error(
                         f"Duplicate Error: You are already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2}!")
