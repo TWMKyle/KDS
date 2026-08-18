@@ -291,7 +291,7 @@ def run_kds_teacher():
 
                 if exempt_rl2:
                     duplicate_service2 = False
-                    matching_slots2 = df_latest2.none() # empty container placeholder
+                    matching_slots2 = df_latest2.iloc[0:0]
                 else:
                     matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
                     duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
