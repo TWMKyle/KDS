@@ -4,43 +4,7 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 
-st.html("""
-    <style>
-        /* 1. Main Background Color */
-        .stApp, [data-testid="stAppViewContainer"] {
-            background-color: #FFB6C1 !important;
-        }
 
-        /* 2. Sidebar and Input Widgets Background Color */
-        [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"], .stTextInput>div>div>input {
-            background-color: #ADD8E6 !important;
-            color: #00FF7F !important;
-        }
-
-        /* 3. Global Text Colors */
-        h1, h2, h3, p, span, label {
-            color: #31333F !important;
-        }
-
-        /* 4. Primary Accent Elements (Buttons) */
-        [data-testid="stBaseButton-primary"], button {
-            background-color: #FFDB58 !important;
-#            color: #31333F !important;
-            border: none !important;
-        }
-
-        .stAppHeader {
-            background-color: #00FF7F !important; /* Changes header background */
-        }
-        .stAppHeader span, .stAppHeader svg {
-            color: white !important; /* Changes header text/icon colors */
-        }
-
-
-
-
-    </style>
-""")
 
 st.set_page_config(page_title="Kids Church", layout="centered", page_icon=":material/music_note_2:")
 st.title("Kids Church Registration Portal")
@@ -372,7 +336,7 @@ def run_kds_teacher():
             st.warning(
                 f"I cannot find any registered services for you, **{current_name2}**. You can fill out the form below:")
 
-        with st.form("registration_form", clear_on_submit=True):
+        with st.form("registration_form2", clear_on_submit=True):
             st.subheader("Serving Schedules")
 
             srv_term2 = st.selectbox("Select Service Time:", options=service_list2)
