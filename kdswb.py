@@ -438,7 +438,7 @@ with tab2:
 
 with tab3:
 
-    st.write("These are your coordinators!")
+    st.write("If you have any questions or concerns, you can reach out to the following coordinators: ")
 
     image_filename = "428153935_7645976362101063_1868470333701431125_n.jpg"
 
