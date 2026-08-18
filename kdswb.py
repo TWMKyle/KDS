@@ -484,7 +484,7 @@ with tab3:
             background-color: #f9f9f9;
             font-family: sans-serif;
         ">
-            <img src="{img_src}" 
+            <img src=1"{img_src1}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
             <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
@@ -506,7 +506,7 @@ with tab3:
             background-color: #f9f9f9;
             font-family: sans-serif;
         ">
-            <img src="{img_src}" 
+            <img src2="{img_src2}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
             <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
