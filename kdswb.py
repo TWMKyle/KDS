@@ -475,6 +475,9 @@ with tab3:
     # 3. Inject the data string directly into the HTML source
     st.html(
         f"""
+
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        
         <div style="
             border: 2px solid #4A90E2;
             border-radius: 10px;
@@ -484,7 +487,7 @@ with tab3:
             background-color: #f9f9f9;
             font-family: sans-serif;
         ">
-            <img src=1"{img_src1}" 
+            <img src="{img_src1}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
             <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
@@ -506,7 +509,7 @@ with tab3:
             background-color: #f9f9f9;
             font-family: sans-serif;
         ">
-            <img src2="{img_src2}" 
+            <img src="{img_src2}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
             <h3 style="margin: 0 0 25px 0; color: #333; font-size: 18px; font-weight: bold;">
