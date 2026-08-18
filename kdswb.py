@@ -437,4 +437,23 @@ with tab2:
 with tab3:
 
     st.write("These are your coordinators!")
+
+st.html(
+    """
+    <div style="
+        border: 2px solid #4A90E2;
+        border-radius: 10px;
+        padding: 15px;
+        width: 180px;
+        text-align: center;
+        background-color: #f9f9f9;
+    ">
+        <img src="https://unsplash.com" 
+             style="width: 100%; border-radius: 5%; margin-bottom: 10px;">
+        <h3 style="margin: 0; color: #333; font-family: sans-serif; font-size: 18px;">
+            Jane Doe
+        </h3>
+    </div>
+    """
+)
     
