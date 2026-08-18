@@ -1,4 +1,3 @@
-
 import base64
 import os
 import pandas as pd
@@ -30,11 +29,9 @@ st.html("""
         }
 
 
-    
+
     </style>
 """)
-
-
 
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
@@ -75,7 +72,6 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 
 
 def run_kds_music():
-
     service_list = ["10AM", "12NN", "2PM", "4PM", "6PM"]
     week_list = ["Week1", "Week2", "Week3", "Week4", "Week5"]
     role_list = ["AG", "WL"]
@@ -89,8 +85,9 @@ def run_kds_music():
     if "searched_name" not in st.session_state:
         st.session_state.searched_name = ""
 
-    search_input = st.text_input("Would you like to serve as a worship leader or play the guitar? Please search your name:",
-                                 value=st.session_state.searched_name).strip()
+    search_input = st.text_input(
+        "Would you like to serve as a worship leader or play the guitar? Please search your name:",
+        value=st.session_state.searched_name).strip()
 
     if st.button("Music lookup", type="secondary", key="music_lookup_button"):
         if not search_input:
@@ -132,7 +129,8 @@ def run_kds_music():
             st.dataframe(display_df, use_container_width=True, hide_index=True)
 
             st.info("If you have more time available, you can fill out the this form again :) .")
-            st.info("Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
+            st.info(
+                "Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
         else:
             st.warning(
                 f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
@@ -169,7 +167,8 @@ def run_kds_music():
                     st.error(
                         f"Oops, someone is already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
                     conflicting_row = matching_slots[required_columns].copy()
-                    conflicting_row.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
+                    conflicting_row.columns = ["Name", "Service Time", "Serving Week", "Role Assignment",
+                                               "Month Scheduled"]
                     st.dataframe(conflicting_row, use_container_width=True, hide_index=True)
 
                 else:
@@ -194,8 +193,8 @@ def run_kds_music():
                     except Exception as e:
                         st.error(f"Network write error occurred: {e}")
 
-def run_kds_teacher():
 
+def run_kds_teacher():
     service_list2 = ["10AM", "12NN", "2PM", "4PM", "6PM"]
     week_list2 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
     role_list2 = ["Volunteer", "Preacher"]
@@ -250,11 +249,13 @@ def run_kds_teacher():
             st.success(f"Welcome back, **{current_name2}**! Here are your active serving schedules:")
 
             display_df2 = existing_entries2[required_columns2].copy()
-            display_df2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled", "Age Group"]
+            display_df2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled",
+                                   "Age Group"]
             st.dataframe(display_df2, use_container_width=True, hide_index=True)
 
             st.info("If you have more time available, you can fill out the this form again :) .")
-            st.info("Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
+            st.info(
+                "Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
         else:
             st.warning(
                 f"I cannot find any registered services for you, **{current_name2}**. You can fill out the form below:")
@@ -281,17 +282,10 @@ def run_kds_teacher():
                 m_mnt2 = df_latest2["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term2.lower()
                 m_age2 = df_latest2["Agegroup"].fillna("").astype(str).str.strip().str.lower() == age_term2.lower()
 
-
                 duplicate_collision2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
                 matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
                 duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
-    
-            if "registration_success" in st.session_state:
-                st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
-                st.success(st.session_state.registration_success)
-                del st.session_state.registration_success
-            
-                
+
                 if duplicate_collision2:
                     st.error(
                         f"Duplicate Error: You are already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2}!")
@@ -301,7 +295,7 @@ def run_kds_teacher():
                         f"Oops, someone is already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2} for {age_term2}!")
                     conflicting_row2 = matching_slots2[required_columns2].copy()
                     conflicting_row2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment",
-                                               "Month Scheduled", "Agegroup"]
+                                                "Month Scheduled", "Agegroup"]
                     st.dataframe(conflicting_row2, use_container_width=True, hide_index=True)
 
                 else:
@@ -318,7 +312,9 @@ def run_kds_teacher():
 
                     try:
                         conn.update(data=df_updated2)
-                        st.session_state.registration_success = (f"Success! Registered {current_name2} for {wk_term2} ({srv_term2}) as {rl_term2} in {mnt_term2} for {age_term2}.")
+                        st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
+                        st.success(
+                            f"Success! Registered {current_name2} for {wk_term2} ({srv_term2}) as {rl_term2} in {mnt_term2} for {age_term2}.")
 
                         st.rerun()
                     except Exception as e:
@@ -337,7 +333,7 @@ def show_weekly_volunteers():
     st.write("We thank the Lord for your hearts to serve!")
 
     week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-    
+
     try:
         df_week = conn.read(ttl="0d")
     except Exception:
@@ -441,7 +437,6 @@ with tab2:
     run_kds_teacher()
 
 with tab3:
-
     st.write("If you have any questions or concerns, you can reach out to the following coordinators: ")
 
     image_filename = "428153935_7645976362101063_1868470333701431125_n.jpg"
@@ -470,7 +465,7 @@ with tab3:
         ">
             <img src="{img_src}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
-            
+
             <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
                 John Venn
             </h3>
@@ -480,4 +475,4 @@ with tab3:
         </div>
         """
     )
-    
+
