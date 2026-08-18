@@ -450,17 +450,27 @@ with tab2:
 with tab3:
     st.write("If you have any questions or concerns, you can reach out to the following coordinators: ")
 
-    image_filename = "428153935_7645976362101063_1868470333701431125_n.jpg"
+    image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
+    image_kyle = "da5a33cc06f4106bbf20e0c68d28eea6.jpg"
 
     try:
         # 2. Read the local file and convert it into a string
-        with open(image_filename, "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
-        img_src = f"data:image/jpeg;base64,{encoded_string}"
-    except FileNotFoundError:
-        # If the file path is wrong, it shows a placeholder so your app doesn't crash
-        img_src = "https://unsplash.com"
-        st.error(f"Could not find the image file: {image_filename}")
+    
+        with open(image_jv, "rb") as file1:
+        encoded1 = base64.b64encode(file1.read()).decode("utf-8")
+        img_src1 = f"data:image/jpeg;base64,{encoded1}"
+    
+        # 3. Encode the second image (Kyle)
+        with open(image_kyle, "rb") as file2:
+        encoded2 = base64.b64encode(file2.read()).decode("utf-8")
+        img_src2 = f"data:image/jpeg;base64,{encoded2}"
+
+    
+    except FileNotFoundError as e:
+    # Fallbacks to stop the app from crashing if a file is missing
+        img_src1 = "https://unsplash.com"
+        img_src2 = "https://unsplash.com"
+        st.error(f"Missing local file: {e.filename}")
 
     # 3. Inject the data string directly into the HTML source
     st.html(
