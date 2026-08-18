@@ -25,7 +25,7 @@ st.html("""
         /* 4. Primary Accent Elements (Buttons) */
         [data-testid="stBaseButton-primary"], button {
             background-color: #FFDB58 !important;
-            color: #FFDB58 !important;
+            color: #31333F !important;
             border: none !important;
         }
 
