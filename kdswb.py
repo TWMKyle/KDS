@@ -38,7 +38,7 @@ st.html("""
 /* 2. Injects your custom text and centers it perfectly */
 .stAppHeader::after {
     content: "#WhateverItTakes"; /* PUT YOUR HEADER TEXT HERE */
-    color: white !important;
+    color: black !important;
     font-family: sans-serif;
     font-weight: bold;
     font-size: 29px; /* Slightly larger for a clean header look */
