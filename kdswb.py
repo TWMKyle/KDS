@@ -4,6 +4,9 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 
+st.set_page_config(page_title="Kids Church", layout="centered")
+st.title("Kids Church Registration Portal")
+
 st.html("""
     <style>
         /* 1. Main Background Color */
@@ -28,8 +31,7 @@ st.html("""
     </style>
 """)
 
-st.set_page_config(page_title="Kids Church", layout="centered")
-st.title("Kids Church Registration Portal")
+
 
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
