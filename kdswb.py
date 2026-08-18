@@ -30,31 +30,6 @@ st.html("""
         }
 
 
-    .stAppHeader {
-    background-color: #FFFFFF !important; 
-    position: relative !important; /* Required for absolute centering */
-}
-
-/* 2. Injects your custom text and centers it perfectly */
-.stAppHeader::after {
-    content: "#WhateverItTakes"; /* PUT YOUR HEADER TEXT HERE */
-    color: black !important;
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 29px; /* Slightly larger for a clean header look */
-    
-    /* Perfect absolute centering formulas */
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    pointer-events: none; /* Prevents the text from blocking clicks on buttons underneath */
-}
-
-/* 3. Changes default header text/icon colors */
-.stAppHeader span, .stAppHeader svg {
-    color: white !important; 
-}
     
     </style>
 """)
