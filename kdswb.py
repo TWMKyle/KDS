@@ -285,11 +285,12 @@ def run_kds_teacher():
                 duplicate_collision2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
                 matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
                 duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
+    
+            if "registration_success" in st.session_state:
+                st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
+                st.success(st.session_state.registration_success)
+                del st.session_state.registration_success
             
-                if "registration_success" in st.session_state:
-                    st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
-                    st.success(st.session_state.registration_success)
-                    del st.session_state.registration_success
                 
                 if duplicate_collision2:
                     st.error(
