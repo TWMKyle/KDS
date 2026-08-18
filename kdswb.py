@@ -96,7 +96,7 @@ if "search_clicked" not in st.session_state:
 if "searched_name" not in st.session_state:
     st.session_state.searched_name = ""
     
-search_input = st.text_input("Welcome to Kids Church! Search your name!", value=st.session_state.searched_name).strip()
+search_input = st.text_input("Welcome to Kids Church! Please search your name:", value=st.session_state.searched_name).strip()
 
 if st.button("Name lookup", type="secondary"):
     if not search_input:
@@ -228,7 +228,7 @@ def show_weekly_volunteers():
 
         weekly_df = weekly_df.sort_values(by="Service Time")
 
-        st.success(f"Found **{len(weekly_df)}** team members serving on {target_week}:")
+        st.success(f"Found **{len(weekly_df)}** team member(s) serving in {target_week}:")
         st.dataframe(weekly_df, use_container_width=True, hide_index=True)
 
 if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
@@ -262,7 +262,7 @@ def show_monthly_volunteers():
         monthly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month"]
         monthly_df = monthly_df.sort_values(by=["Serving Week", "Service Time", "Month"])
 
-        st.success(f"Found **{len(monthly_df)}** total team assignment(s) for this month:")
+        st.success(f"Found **{len(monthly_df)}** total team member(s) serving this month:")
         st.dataframe(monthly_df, use_container_width=True, hide_index=True)
 
 
