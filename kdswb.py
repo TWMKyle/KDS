@@ -241,7 +241,7 @@ def run_kds_teacher():
             wk_term2 = st.selectbox("Select Serving Week:", options=week_list2)
             rl_term2 = st.selectbox("Select Role:", options=role_list2)
             mnt_term2 = st.selectbox("Select Month:", options=month_list2)
-            age_term2 = st.selecttbox("Select Age Group:", options=age_list2)
+            age_term2 = st.selectbox("Select Age Group:", options=age_list2)
 
             button_label2 = "Register as a Kids Teacher" if has_profile2 else "Create New Entry"
             submit_shift2 = st.form_submit_button(button_label2, type="primary")
