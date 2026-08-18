@@ -283,7 +283,8 @@ def run_kds_teacher():
                 m_age2 = df_latest2["Agegroup"].fillna("").astype(str).str.strip().str.lower() == age_term2.lower()
 
                 duplicate_collision2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
-                matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
+                duplicate_preacher2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
+                matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_mnt2]
                 duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
 
                 if duplicate_collision2:
