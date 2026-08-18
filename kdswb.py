@@ -8,12 +8,12 @@ st.html("""
     <style>
         /* 1. Main Background Color */
         .stApp, [data-testid="stAppViewContainer"] {
-            background-color: #FFB6C1 !important;
+            background-color: #ADD8E6 !important;
         }
 
 /* 2. Sidebar and Input Widgets Background Color */
 [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {
-    background-color: #ADD8E6 !important;
+    background-color: #FFB6C1 !important;
     color: #000000 !important;
 }
 
