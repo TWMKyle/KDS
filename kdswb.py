@@ -74,7 +74,7 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 def run_kds_music():
     service_list = ["10AM", "12NN", "2PM", "4PM", "6PM"]
     week_list = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-    role_list = ["AG", "WL", "MusicBackup"]
+    role_list = ["AG", "WL", "Backup Singer"]
     month_list = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -197,7 +197,7 @@ def run_kds_music():
 def run_kds_teacher():
     service_list2 = ["10AM", "12NN", "2PM", "4PM", "6PM"]
     week_list2 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-    role_list2 = ["Volunteer", "Preacher", "TeacherBackup"]
+    role_list2 = ["Volunteer", "Preacher", "Backup Teacher"]
     month_list2 = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
