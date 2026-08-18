@@ -4,7 +4,16 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 
+st.html("""
+    <style>
+        /* 1. Main Background Color */
+        .stApp, [data-testid="stAppViewContainer"] {
+            background-color: #FFB6C1 !important;
+        }
 
+
+    </style>
+""")
 
 st.set_page_config(page_title="Kids Church", layout="centered", page_icon=":material/music_note_2:")
 st.title("Kids Church Registration Portal")
