@@ -31,7 +31,7 @@ st.html("""
 
 
     .stAppHeader {
-    background-color: #00FF7F !important; 
+    background-color: #FFFFFF !important; 
     position: relative !important; /* Required for absolute centering */
 }
 
@@ -41,7 +41,7 @@ st.html("""
     color: white !important;
     font-family: sans-serif;
     font-weight: bold;
-    font-size: 18px; /* Slightly larger for a clean header look */
+    font-size: 29px; /* Slightly larger for a clean header look */
     
     /* Perfect absolute centering formulas */
     position: absolute !important;
