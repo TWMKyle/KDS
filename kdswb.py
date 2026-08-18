@@ -24,13 +24,7 @@ st.html("""
             border: none !important;
         }
 
-        .stAppHeader {
-            background-color: #808000 !important; /* Changes header background */
-        }
-        .stAppHeader span, .stAppHeader svg {
-            color: white !important; /* Changes header text/icon colors */
-        }
-
+    
     </style>
 """)
 
