@@ -183,7 +183,7 @@ def show_weekly_volunteers():
     except Exception:
         st.error("Could not fetch the sheet database.")
         return
-    target_week = st.selectbox("Select Week to View:", options=week_list)
+    target_week = st.selectbox("Select Week to View:", options=[week_list, week_list2])
 
     match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
     match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
