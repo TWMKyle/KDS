@@ -4,6 +4,33 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 
+st.html("""
+    <style>
+        /* 1. Main Background Color */
+        .stApp, [data-testid="stAppViewContainer"] {
+            background-color: #FF66CC !important;
+        }
+        
+        /* 2. Sidebar and Input Widgets Background Color */
+        [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"], .stTextInput>div>div>input {
+            background-color: #ADD8E6 !important;
+            color: #31333F !important;
+        }
+
+        /* 3. Global Text Colors */
+        h1, h2, h3, p, span, label {
+            color: #31333F !important;
+        }
+        
+        /* 4. Primary Accent Elements (Buttons) */
+        [data-testid="stBaseButton-primary"], button {
+            background-color: #2ECC71 !important;
+            color: #FFDB58 !important;
+            border: none !important;
+        }
+    </style>
+""")
+
 
 st.set_page_config(page_title="Kids Music Team", layout="centered", page_icon=":material/music_note_2:")
 st.title("Kids Music Team Portal")
