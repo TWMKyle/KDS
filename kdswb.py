@@ -153,7 +153,7 @@ def run_kds_music():
                         "WK": wk_term,
                         "Role": rl_term,
                         "Month": mnt_term,
-                        "YR": str(2026)
+                        "YR": str(2026),
                         "Agegroup": "Primary"
                     }])
                     df_updated = pd.concat([df_latest, new_row], ignore_index=True)
