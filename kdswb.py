@@ -448,7 +448,7 @@ with tab3:
             text-align: center;
             background-color: #f9f9f9;
         ">
-            <img src="https://github.com/TWMKyle/KDS/blob/main/428153935_7645976362101063_1868470333701431125_n.jpg" 
+            <img src="428153935_7645976362101063_1868470333701431125_n.jpg" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px;">
             <h3 style="margin: 0; color: #333; font-family: sans-serif; font-size: 18px;">
                 John Venn
