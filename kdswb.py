@@ -28,7 +28,7 @@ st.html("""
     </style>
 """)
 
-st.set_page_config(page_title="Kids Church", layout="centered", page_icon=":material/music_note_2:")
+st.set_page_config(page_title="Kids Church", layout="centered")
 st.title("Kids Church Registration Portal")
 
 current_calendar_month = datetime.now().strftime("%B")
