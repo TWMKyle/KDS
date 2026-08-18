@@ -301,12 +301,14 @@ st.sidebar.subheader("📋 Weekly Roster Finder")
 def show_weekly_volunteers():
     st.write("We thank the Lord for your hearts to serve!")
 
+    week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+    
     try:
         df_week = conn.read(ttl="0d")
     except Exception:
         st.error("Could not fetch the sheet database.")
         return
-    target_week = st.selectbox("Select Week to View:", options=week_list, key="dialog_view_week_select")
+    target_week = st.selectbox("Select Week to View:", options=week_list3, key="dialog_view_week_select")
 
     match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
     match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
