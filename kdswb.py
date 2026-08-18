@@ -62,7 +62,7 @@ def run_kds_music():
     if "searched_name" not in st.session_state:
         st.session_state.searched_name = ""
 
-    search_input = st.text_input("Welcome to Kids Church! Please search your name:",
+    search_input = st.text_input("Would you like to serve as a worship leader or play the guitar? Please search your name:",
                                  value=st.session_state.searched_name).strip()
 
     if st.button("Music lookup", type="secondary", key="music_lookup_button"):
@@ -182,7 +182,7 @@ def run_kds_teacher():
     if "searched_name2" not in st.session_state:
         st.session_state.searched_name2 = ""
 
-    search_input2 = st.text_input("Welcome to Kids Church! Please search your name:",
+    search_input2 = st.text_input("Would you like to volunteer or teach kids? Please search your name:",
                                   value=st.session_state.searched_name2,
                                   key="kds_teacher_search_input")
 
