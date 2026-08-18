@@ -280,7 +280,7 @@ def run_kds_teacher():
                 duplicate_collision2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
                 matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
                 duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
-                max_volunteers = (
+            
 
                 if duplicate_collision2:
                     st.error(
