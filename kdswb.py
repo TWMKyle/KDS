@@ -426,7 +426,7 @@ if st.sidebar.button("Check Yearly Roster 🔍", use_container_width=True):
 
 ## TABS
 
-tab1, tab2 = st.tabs(["🎵 Kids Music Team", "📖 Kids Teachers Team", "👤 Kids Coodinators"])
+tab1, tab2, tab3 = st.tabs(["🎵 Kids Music Team", "📖 Kids Teachers Team", "👤 Kids Coodinators"])
 
 with tab1:
     run_kds_music()
