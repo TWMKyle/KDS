@@ -453,8 +453,8 @@ with tab3:
     image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
     image_kyle = "images-2.jpeg"
     image_fitz = "marvels-spider-man-remastered_az82.jpg"
-    image_pat = "test.jpg"
-    image_hydee = "test.jpg"
+    image_pat = "images-3.jpeg"
+    image_hydee = "723137472_27496272786651457_8882887501516959174_n.jpg"
 
     try:
         # 2. Read the local file and convert it into a string
@@ -479,9 +479,9 @@ with tab3:
             img_src4 = f"data:image/jpeg;base64,{encoded4}"
 
         # 5. Encode the third image (Hydee)
-        #with open(image_hydee, "rb") as file5:
-        #    encoded5 = base64.b64encode(file5.read()).decode("utf-8")
-        #    img_src5 = f"data:image/jpeg;base64,{encoded5}"
+        with open(image_hydee, "rb") as file5:
+            encoded5 = base64.b64encode(file5.read()).decode("utf-8")
+            img_src5 = f"data:image/jpeg;base64,{encoded5}"
 
         
 
@@ -582,6 +582,30 @@ with tab3:
 
             <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
                 Pat 
+            </h3>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Week 2 & 4
+                 4 PM - Worship Service Coordinator
+            </p>
+        </div>
+        """
+
+        
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src5}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+                Hydee 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Week 2 & 4
