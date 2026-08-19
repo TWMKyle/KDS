@@ -584,7 +584,7 @@ with tab3:
                 Pat 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Week 2 & 4
+                 Week 2 & 4:
                  4 PM - Worship Service Coordinator
             </p>
         </div>
@@ -608,7 +608,7 @@ with tab3:
                 Hydee 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Week 2 & 4
+                 Week 2 & 4:
                  4 PM - Worship Service Coordinator
             </p>
         </div>
