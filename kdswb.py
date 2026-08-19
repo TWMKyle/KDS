@@ -545,7 +545,8 @@ with tab3:
                 Jinky 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Staff | 6PM - Worship Service Leader | Worship Service Team Leader
+                 Staff | Worship Service Leader | Worship Service Team Leader
+                 6PM | Week 2 | Week 4
             </p>
         </div>
         """
@@ -570,7 +571,8 @@ with tab3:
                 John Venn
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                12NN - Worship Service Leader
+                Worship Service Leader
+                12NN
             </p>
         </div>
         """
@@ -592,7 +594,8 @@ with tab3:
                 Chris
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                2PM - Worship Service Leader
+                Worship Service Leader
+                2PM
             </p>
         </div>
         """
@@ -616,7 +619,8 @@ with tab3:
                 Fitz 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 4PM - Worship Service Leader
+                 Worship Service Leader
+                 4PM
             </p>
         </div>
         """
@@ -639,8 +643,8 @@ with tab3:
                 Pat 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Week 2:
-                 4PM - Worship Service Team Leader
+                 Worship Service Team Leader
+                 4PM | Week 4
             </p>
         </div>
         """
@@ -663,8 +667,8 @@ with tab3:
                 Hydee 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Week 4:
-                 4 PM - Worship Service Team Leader
+                 Worship Service Team Leader
+                 4PM | Week 2
             </p>
         </div>
         """
@@ -685,8 +689,8 @@ with tab3:
                 Talaine 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Week 1 & 3:
-                 6 PM - Worship Service Team Leader
+                 Worship Service Team Leader
+                 6PM | Week 1 | Week 3
             </p>
         </div>
         """
