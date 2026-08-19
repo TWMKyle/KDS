@@ -703,7 +703,7 @@ with tab3:
                 Kyle 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Music Worship Coordinator
+                 Music Worship Coordinator | Web Support
             </p>
         </div>
         """
