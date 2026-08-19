@@ -510,6 +510,29 @@ with tab3:
 
     # 3. Inject the data string directly into the HTML source
     st.html(
+
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src6}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+                Jinky 
+            </h3>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Staff | 6PM - Worship Service Leader | Worship Service Coordinator
+            </p>
+        </div>
+        """
+        
         f"""
 
         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
@@ -629,27 +652,7 @@ with tab3:
         </div>
         """
 
-         f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src6}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
-
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
-                Jinky 
-            </h3>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Staff | Worship Service Coordinator
-            </p>
-        </div>
-        """
+         
 
           f"""
         <div style="
