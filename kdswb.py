@@ -458,6 +458,7 @@ with tab3:
     image_jinky = "images-4.jpeg"
     image_chris = "images-6.jpeg"
     image_syd = "images-3.jpeg"
+    image_talaine = "658858024_10243496849142518_9061089755130801581_n.jpg"
 
     try:
         # 2. Read the local file and convert it into a string
@@ -500,6 +501,10 @@ with tab3:
             encoded8 = base64.b64encode(file8.read()).decode("utf-8")
             img_src8 = f"data:image/jpeg;base64,{encoded8}"
 
+        with open(image_talaine, "rb") as file9:
+            encoded9 = base64.b64encode(file9.read()).decode("utf-8")
+            img_src9 = f"data:image/jpeg;base64,{encoded9}"
+
 
     
     except FileNotFoundError as e:
@@ -512,6 +517,7 @@ with tab3:
         img_src6 = "https://unsplash.com"
         img_src7 = "https://unsplash.com"
         img_src8 = "https://unsplash.com"
+        img_src9 = "https://unsplash.com"
         st.error(f"Missing local file: {e.filename}")
 
     # 3. Inject the data string directly into the HTML source
@@ -539,7 +545,7 @@ with tab3:
                 Jinky 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Staff | 6PM - Worship Service Leader | Worship Service Coordinator
+                 Staff | 6PM - Worship Service Leader | Worship Service Team Leader
             </p>
         </div>
         """
@@ -633,8 +639,8 @@ with tab3:
                 Pat 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Week 2 & 4:
-                 4PM - Worship Service Coordinator
+                 Week 2:
+                 4PM - Worship Service Team Leader
             </p>
         </div>
         """
@@ -657,8 +663,30 @@ with tab3:
                 Hydee 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Week 2 & 4:
-                 4 PM - Worship Service Coordinator
+                 Week 4:
+                 4 PM - Worship Service Team Leader
+            </p>
+        </div>
+        """
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src9}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+                Talaine 
+            </h3>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Week 1 & 3:
+                 6 PM - Worship Service Team Leader
             </p>
         </div>
         """
@@ -680,7 +708,7 @@ with tab3:
                 Sydney 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Music Worship Coordinator
+                 Music Worship Team Leader
             </p>
         </div>
         """
@@ -703,7 +731,7 @@ with tab3:
                 Kyle 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Music Worship Coordinator | Web Support
+                 Music Worship Team Leader | Web Support
             </p>
         </div>
         """
