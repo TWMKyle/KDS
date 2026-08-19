@@ -453,7 +453,7 @@ with tab3:
     image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
     image_kyle = "images-2.jpeg"
     image_fitz = "marvels-spider-man-remastered_az82.jpg"
-    image_pat = "images-3.jpeg"
+    image_pat = "images-5.jpeg"
     image_hydee = "723137472_27496272786651457_8882887501516959174_n.jpg"
     image_jinky = "images-4.jpeg"
 
