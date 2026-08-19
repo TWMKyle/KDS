@@ -456,6 +456,7 @@ with tab3:
     image_pat = "images-5.jpeg"
     image_hydee = "723137472_27496272786651457_8882887501516959174_n.jpg"
     image_jinky = "images-4.jpeg"
+    image_chris = "images-6.jpeg"
 
     try:
         # 2. Read the local file and convert it into a string
@@ -489,7 +490,11 @@ with tab3:
             encoded6 = base64.b64encode(file6.read()).decode("utf-8")
             img_src6 = f"data:image/jpeg;base64,{encoded6}"
 
-        
+        # 7. Encode the third image (Chris)
+        with open(image_chris, "rb") as file7:
+            encoded7 = base64.b64encode(file7.read()).decode("utf-8")
+            img_src7 = f"data:image/jpeg;base64,{encoded7}"
+
 
     
     except FileNotFoundError as e:
@@ -500,6 +505,7 @@ with tab3:
         img_src4 = "https://unsplash.com"
         img_src5 = "https://unsplash.com"
         img_src6 = "https://unsplash.com"
+        img_src7 = "https://unsplash.com"
         st.error(f"Missing local file: {e.filename}")
 
     # 3. Inject the data string directly into the HTML source
@@ -529,7 +535,6 @@ with tab3:
         </div>
         """
 
-        f"""
         <div style="
             border: 2px solid #4A90E2;
             border-radius: 10px;
@@ -539,17 +544,19 @@ with tab3:
             background-color: #f9f9f9;
             font-family: sans-serif;
         ">
-            <img src="{img_src2}" 
+            <img src="{img_src7}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
             <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
-                Kyle 
+                Chris
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Music Worship Coordinator
+                2PM - Worship Service Leader
             </p>
         </div>
         """
+
+      
 
          f"""
         <div style="
@@ -639,6 +646,28 @@ with tab3:
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Staff | Worship Service Coordinator
+            </p>
+        </div>
+        """
+
+          f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src2}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+                Kyle 
+            </h3>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Music Worship Coordinator
             </p>
         </div>
         """
