@@ -511,6 +511,8 @@ with tab3:
     # 3. Inject the data string directly into the HTML source
     st.html(
 
+         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    
         f"""
         <div style="
             border: 2px solid #4A90E2;
@@ -535,7 +537,7 @@ with tab3:
         
         f"""
 
-        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+       
         
         <div style="
             border: 2px solid #4A90E2;
