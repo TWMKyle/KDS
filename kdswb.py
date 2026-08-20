@@ -350,15 +350,28 @@ def show_weekly_volunteers():
     except Exception:
         st.error("Could not fetch the sheet database.")
         return
-    target_week = st.selectbox("Select Week to View:", options=week_list3, key="dialog_view_week_select")
+        
+    target_week = st.selectbox("Select Week to View for Music:", options=week_list3, key="dialog_view_week_select")
+    target_week_t = st.selectbox("Select to View for Teachers:", options=week_list3, key="dialog_view_week_select_t")
 
     match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
     match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
 
     weekly_df = df_week[match_wk & match_mnt]
+    weekly_df_t = df_week[match_wk & match_mnt]
 
     if weekly_df.empty:
         st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
+
+    elif target_week_t:
+        weekly_df_t = weekly_df_t[["FNM", "SRV", "Role", "Month", "Agegroup"]]
+        weekly_df_t.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
+
+        weekly_df_t = weekly_df_t.sort_values(by="Service Time")
+
+        st.success(f"Found **{len(weekly_df_t)}** team member(s) serving in {target_week}:")
+        st.dataframe(weekly_df_t, use_container_width=True, hide_index=True)
+        
     else:
         weekly_df = weekly_df[["FNM", "SRV", "Role", "Month", "Agegroup"]]
         weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
