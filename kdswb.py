@@ -341,104 +341,37 @@ st.sidebar.subheader("📋 Weekly Roster Finder")
 
 @st.dialog("This Week's Volunteers")
 def show_weekly_volunteers():
-    
+
+    st.write("We thank the Lord for your hearts to serve!")
+
+    week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+
     try:
         df_week = conn.read(ttl="0d")
     except Exception:
         st.error("Could not fetch the sheet database.")
-    return
+        return
+    target_week = st.selectbox("Select Week to View:", options=week_list3, key="dialog_view_week_select")
 
-        
+    match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
+    match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
 
-        week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+    weekly_df = df_week[match_wk & match_mnt]
 
-# --- 1. THE TWO SELECT BOXES ---
-        target_week = st.selectbox("Select Week to View for Music:", options=week_list3, key="dialog_view_week_select")
-        target_week_t = st.selectbox("Select to View for Teachers:", options=week_list3, key="dialog_view_week_select_t")
+    if weekly_df.empty:
+        st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
+    else:
+        weekly_df = weekly_df[["FNM", "SRV", "Role", "Month", "Agegroup"]]
+        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
 
-# Shared month filter logic
-        match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
+        weekly_df = weekly_df.sort_values(by="Service Time")
 
-# --- 2. MUSIC TEAM PROCESSING ---
-        match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
-        weekly_df = df_week[match_wk & match_mnt]
+        st.success(f"Found **{len(weekly_df)}** team member(s) serving in {target_week}:")
+        st.dataframe(weekly_df, use_container_width=True, hide_index=True)
 
-# --- 3. TEACHERS TEAM PROCESSING ---
-        match_wk_t = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week_t.lower()
-        weekly_df_t = df_week[match_wk_t & match_mnt]
 
-# --- 4. RENDER INDEPENDENT VIEWS USING TABS ---
-            tab_music, tab_teachers = st.tabs(["🎵 Music Team Schedule", "👩‍🏫 Teachers Schedule"])
-
-                with tab_music:
-                    st.subheader(f"Schedule for {target_week}")
-                if weekly_df.empty:
-                    st.info(f"No Music volunteers are registered to serve on **{target_week}** yet.")
-                else:
-                # Filter and rename columns
-                    weekly_df = weekly_df[["FNM", "SRV", "Role", "Month", "Agegroup"]]
-                    weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
-                    weekly_df = weekly_df.sort_values(by="Service Time")
-        
-                    st.success(f"Found **{len(weekly_df)}** Music team member(s) serving in {target_week}:")
-                    st.dataframe(weekly_df, use_container_width=True, hide_index=True)
-
-                with tab_teachers:
-                        st.subheader(f"Schedule for {target_week_t}")
-                    if weekly_df_t.empty:
-                        st.info(f"No Teachers are registered to serve on **{target_week_t}** yet.")
-                    else:
-            # Filter and rename columns
-                        weekly_df_t = weekly_df_t[["FNM", "SRV", "Role", "Month", "Agegroup"]]
-                        weekly_df_t.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
-                        weekly_df_t = weekly_df_t.sort_values(by="Service Time")
-            
-                        st.success(f"Found **{len(weekly_df_t)}** Teacher team member(s) serving in {target_week_t}:")
-                         st.dataframe(weekly_df_t, use_container_width=True, hide_index=True)
-
-    
-   # st.write("We thank the Lord for your hearts to serve!")
-
-   # week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-
-    #try:
-     #   df_week = conn.read(ttl="0d")
-    #except Exception:
-     #   st.error("Could not fetch the sheet database.")
-      #  return
-        
-    #target_week = st.selectbox("Select Week to View for Music:", options=week_list3, key="dialog_view_week_select")
-    #target_week_t = st.selectbox("Select to View for Teachers:", options=week_list3, key="dialog_view_week_select_t")
-
-    #match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
-    #match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
-
-    #weekly_df = df_week[match_wk & match_mnt]
-    #weekly_df_t = df_week[match_wk & match_mnt]
-
-    #if weekly_df.empty:
-    #    st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
-
-    #elif target_week_t:
-    #    weekly_df_t = weekly_df_t[["FNM", "SRV", "Role", "Month", "Agegroup"]]
-    #    weekly_df_t.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
-
-    #    weekly_df_t = weekly_df_t.sort_values(by="Service Time")
-
-    #    st.success(f"Found **{len(weekly_df_t)}** team member(s) serving in {target_week}:")
-    #    st.dataframe(weekly_df_t, use_container_width=True, hide_index=True)
-
-        
-        
-    #else:
-    #    weekly_df = weekly_df[["FNM", "SRV", "Role", "Month", "Agegroup"]]
-    #    weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
-
-     #   weekly_df = weekly_df.sort_values(by="Service Time")
-
-      #  st.success(f"Found **{len(weekly_df)}** team member(s) serving in {target_week}:")
-      #  st.dataframe(weekly_df, use_container_width=True, hide_index=True)
-
+if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
+    show_weekly_volunteers()
 
         
 if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
