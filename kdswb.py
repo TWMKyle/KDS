@@ -348,24 +348,24 @@ def show_weekly_volunteers():
         st.error("Could not fetch the sheet database.")
     return
 
-             st.write("We thank the Lord for your hearts to serve!")
+        st.write("We thank the Lord for your hearts to serve!")
 
-               week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+        week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
 
 # --- 1. THE TWO SELECT BOXES ---
-            target_week = st.selectbox("Select Week to View for Music:", options=week_list3, key="dialog_view_week_select")
-            target_week_t = st.selectbox("Select to View for Teachers:", options=week_list3, key="dialog_view_week_select_t")
+        target_week = st.selectbox("Select Week to View for Music:", options=week_list3, key="dialog_view_week_select")
+        target_week_t = st.selectbox("Select to View for Teachers:", options=week_list3, key="dialog_view_week_select_t")
 
 # Shared month filter logic
-            match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
+        match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
 
 # --- 2. MUSIC TEAM PROCESSING ---
-            match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
-            weekly_df = df_week[match_wk & match_mnt]
+        match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
+        weekly_df = df_week[match_wk & match_mnt]
 
 # --- 3. TEACHERS TEAM PROCESSING ---
-            match_wk_t = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week_t.lower()
-            weekly_df_t = df_week[match_wk_t & match_mnt]
+        match_wk_t = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week_t.lower()
+        weekly_df_t = df_week[match_wk_t & match_mnt]
 
 # --- 4. RENDER INDEPENDENT VIEWS USING TABS ---
             tab_music, tab_teachers = st.tabs(["🎵 Music Team Schedule", "👩‍🏫 Teachers Schedule"])
