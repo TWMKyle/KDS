@@ -342,16 +342,17 @@ st.sidebar.subheader("📋 Weekly Roster Finder")
 @st.dialog("This Week's Volunteers")
 def show_weekly_volunteers():
 
-       st.write("We thank the Lord for your hearts to serve!")
-
-       week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-
+      
         try:
            df_week = conn.read(ttl="0d")
         except Exception:
             st.error("Could not fetch the sheet database.")
             return
-    
+
+             st.write("We thank the Lord for your hearts to serve!")
+
+               week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+
 # --- 1. THE TWO SELECT BOXES ---
             target_week = st.selectbox("Select Week to View for Music:", options=week_list3, key="dialog_view_week_select")
             target_week_t = st.selectbox("Select to View for Teachers:", options=week_list3, key="dialog_view_week_select_t")
