@@ -346,11 +346,11 @@ def show_weekly_volunteers():
 
        week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
 
-    try:
-       df_week = conn.read(ttl="0d")
-    except Exception:
-        st.error("Could not fetch the sheet database.")
-        return
+        try:
+           df_week = conn.read(ttl="0d")
+        except Exception:
+            st.error("Could not fetch the sheet database.")
+            return
     
 # --- 1. THE TWO SELECT BOXES ---
     target_week = st.selectbox("Select Week to View for Music:", options=week_list3, key="dialog_view_week_select")
