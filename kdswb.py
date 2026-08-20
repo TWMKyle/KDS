@@ -348,7 +348,7 @@ def show_weekly_volunteers():
         st.error("Could not fetch the sheet database.")
     return
 
-        st.write("We thank the Lord for your hearts to serve!")
+        
 
         week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
 
