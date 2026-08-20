@@ -341,13 +341,12 @@ st.sidebar.subheader("📋 Weekly Roster Finder")
 
 @st.dialog("This Week's Volunteers")
 def show_weekly_volunteers():
-
-      
-        try:
-           df_week = conn.read(ttl="0d")
-        except Exception:
-            st.error("Could not fetch the sheet database.")
-            return
+    
+    try:
+        df_week = conn.read(ttl="0d")
+    except Exception:
+        st.error("Could not fetch the sheet database.")
+    return
 
              st.write("We thank the Lord for your hearts to serve!")
 
