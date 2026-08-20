@@ -373,9 +373,6 @@ def show_weekly_volunteers():
 if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
     show_weekly_volunteers()
 
-        
-if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
-    show_weekly_volunteers()
 
 ## Monthly list
 
