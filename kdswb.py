@@ -371,6 +371,8 @@ def show_weekly_volunteers():
 
         st.success(f"Found **{len(weekly_df_t)}** team member(s) serving in {target_week}:")
         st.dataframe(weekly_df_t, use_container_width=True, hide_index=True)
+
+        st.rerun()
         
     else:
         weekly_df = weekly_df[["FNM", "SRV", "Role", "Month", "Agegroup"]]
@@ -381,7 +383,7 @@ def show_weekly_volunteers():
         st.success(f"Found **{len(weekly_df)}** team member(s) serving in {target_week}:")
         st.dataframe(weekly_df, use_container_width=True, hide_index=True)
 
-
+        st.rerun()
 if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
     show_weekly_volunteers()
 
