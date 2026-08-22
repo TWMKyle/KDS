@@ -401,7 +401,7 @@ def teacherteamweek_lookup():
     weekly_dft = df_weekt[match_wkt & match_mntt]
 
     valid_role2 = weekly_dft["Role"].isin(week_role2)
-    weekly_dft = weekly_dfm[valid_role2]
+    weekly_dft = weekly_dft[valid_role2]
     
     if weekly_dft.empty:
         st.info(f"No volunteers are registered to serve on **{target_weekt}** yet.")
