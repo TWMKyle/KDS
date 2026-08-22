@@ -192,8 +192,8 @@ def run_kds_music():
                         st.rerun()
                     except Exception as e:
                         st.error(f"Network write error occurred: {e}")
-    if st.button("Current Week Music Team", type="secondary", key="current_music_lookup_button"):
-        musicteamweek_lookup()
+        if st.button("Current Week Music Team", type="secondary", key="current_music_lookup_button"):
+            musicteamweek_lookup()
 
 def musicteamweek_lookup():
 
