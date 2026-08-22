@@ -522,7 +522,7 @@ if st.sidebar.button("Musicians and Teachers -  Yearly Roster 🔍", use_contain
 
 ## TABS
 
-tab1, tab2, tab3 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators"])
+tab1, tab2, tab3 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators", "📋 Announcement(s)"])
 
 with tab1:
     run_kds_music()
@@ -543,7 +543,7 @@ with tab2:
         teacherteamweek_lookup()
 
 with tab3:
-    st.write("If you have any questions or concerns, you can reach out to the following coordinators: ")
+    st.subheader("If you have any questions or concerns, you can reach out to the following coordinators: ")
 
     image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
     image_kyle = "images-2.jpeg"
