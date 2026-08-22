@@ -213,7 +213,7 @@ def musicteamweek_lookup():
 
     weekly_dfm = df_weekm[match_wkm & match_mntm]
 
-    valid_role = weekly_dfm["Role Assignment"].isin(week_role)
+    valid_role = weekly_dfm["Role"].isin(week_role)
     weekly_dfm = weekly_dfm[valid_role]
     
     if weekly_dfm.empty:
