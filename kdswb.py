@@ -201,8 +201,7 @@ def musicteamweek_lookup():
 
     if "week_select" not in st.session_state:
         st.session_state.show_select = False
-            
-    st.subheader("Here's the list of people serving with you through Weeks 1-5")
+        
     
     week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
     week_role = ["AG", "WL", "Backup Singer"]
@@ -379,7 +378,6 @@ def teacherteamweek_lookup():
     if "week_select" not in st.session_state:
         st.session_state.show_select = False
             
-    st.subheader("Here's the list of people serving with you through Weeks 1-5")
     
     week_list_t = ["Week1", "Week2", "Week3", "Week4", "Week5"]
     week_role2 = ["Preacher", "Volunteer", "Backup Teacher"]
