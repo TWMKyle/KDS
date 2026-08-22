@@ -192,11 +192,13 @@ def run_kds_music():
                         st.rerun()
                     except Exception as e:
                         st.error(f"Network write error occurred: {e}")
-        if st.button("Current Week Music Team", type="secondary", key="current_music_lookup_button"):
-            musicteamweek_lookup()
+    if st.button("Current Week Music Team", type="secondary", key="current_music_lookup_button"):
+        musicteamweek_lookup()
 
 def musicteamweek_lookup():
 
+    st.write("Here's the list of people serving this Months through Weeks 1-5")
+    
     week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
     week_role = ["AG", "WL", "Backup Singer"]
 
@@ -205,6 +207,7 @@ def musicteamweek_lookup():
     except Exception:
         st.error("Could not fetch the sheet database.")
         return
+    
     target_weekm = st.selectbox("Select Week to View:", options=week_list_m, key="dialog_view_music_week_select")
 
     match_wkm = df_weekm["WK"].fillna("").astype(str).str.strip().str.lower() == target_weekm.lower()
