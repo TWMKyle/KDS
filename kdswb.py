@@ -531,7 +531,7 @@ tab1, tab2, tab3 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids 
 with tab1:
     run_kds_music()
     
-    if st.button("See who's sering with you!"):
+    if st.button("See who's singing and playing!"):
         st.session_state.show_music_lookup = True
 
     if st.session_state.show_music_lookup:
@@ -540,7 +540,7 @@ with tab1:
 with tab2:
     run_kds_teacher()
 
-    if st.button("See who's sering with you!"):
+    if st.button("See who's preaching and teaching!"):
         st.session_state.show_teacher_lookup = True
 
     if st.session_state.show_teacher_lookup:
