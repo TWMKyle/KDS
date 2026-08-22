@@ -133,7 +133,7 @@ def run_kds_music():
             display_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
             st.dataframe(display_df, use_container_width=True, hide_index=True)
 
-            st.info("If you have more time available, you can fill out the this form again but note that If you wish to change the schedule you have, please create a new entry and reach out to the admin.")
+            st.info("If you have more time available, you can fill out the this form again but note that If you wish to change the schedule(s) you have, please create a new entry and reach out to the admin.")
         
         else:
             st.warning(
@@ -296,9 +296,8 @@ def run_kds_teacher():
                                    "Age Group"]
             st.dataframe(display_df2, use_container_width=True, hide_index=True)
 
-            st.info("If you have more time available, you can fill out the this form again :) .")
-            st.info(
-                "Note: If you wish to change the schedule you have, please create a new entry and reach out to the admin :)")
+            st.info("If you have more time available, you can fill out the this form again but note that If you wish to change the schedule(s) you have, please create a new entry and reach out to the admin.")
+        
         else:
             st.warning(
                 f"I cannot find any registered services for you, **{current_name2}**. You can fill out the form below:")
