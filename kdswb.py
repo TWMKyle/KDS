@@ -522,7 +522,7 @@ if st.sidebar.button("Musicians and Teachers -  Yearly Roster 🔍", use_contain
 
 ## TABS
 
-tab1, tab2, tab3 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators", "📋 Announcement(s)"])
+tab1, tab2, tab3, tab4 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators", "📋 Announcement(s)"])
 
 with tab1:
     run_kds_music()
