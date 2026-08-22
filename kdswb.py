@@ -73,6 +73,9 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 if "show_music_lookup" not in st.session_state:
     st.session_state.show_music_lookup = False
 
+if "show_teacher_lookup" not in st.session_state:
+    st.session_state.show_teacher_lookup = False
+
 def run_kds_music():
     service_list = ["10AM", "12NN", "2PM", "4PM", "6PM"]
     week_list = ["Week1", "Week2", "Week3", "Week4", "Week5"]
@@ -373,6 +376,47 @@ def run_kds_teacher():
                         st.error(f"Network write error occurred: {e}")
 
 
+def teacherteamweek_lookup():
+
+    if "week_select" not in st.session_state:
+        st.session_state.show_select = False
+            
+    st.write("Here's the list of people serving this Months through Weeks 1-5")
+    
+    week_list_t = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+    week_role2 = ["Preacher", "Volunteer", "Backup Teacher"]
+
+    try:
+        df_weekt = conn.read(ttl="0d")
+    except Exception:
+        st.error("Could not fetch the sheet database.")
+        return
+    
+    target_weekt = st.selectbox("Select Week to View:", options=week_list_t, key="dialog_view_teacher_week_select")
+
+    match_wkt = df_weekt["WK"].fillna("").astype(str).str.strip().str.lower() == target_weekt.lower()
+    match_mntt = df_weekt["Month"].fillna("").astype(
+        str).str.strip().str.lower() == current_calendar_month.lower()
+
+    weekly_dft = df_weekt[match_wkt & match_mntt]
+
+    valid_role2 = weekly_dft["Role"].isin(week_role2)
+    weekly_dft = weekly_dfm[valid_role2]
+    
+    if weekly_dft.empty:
+        st.info(f"No volunteers are registered to serve on **{target_weekt}** yet.")
+
+    else:
+        weekly_dft = weekly_dft[["FNM", "SRV", "Role", "Month", "Agegroup"]]
+        weekly_dft.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
+
+        weekly_dft = weekly_dft.sort_values(by="Service Time")
+
+        st.success(f"Found **{len(weekly_dft)}** team member(s) serving in {target_weekt}:")
+        st.dataframe(weekly_dft, use_container_width=True, hide_index=True)
+
+
+
 ## Sidebar
 ## Weekly list
 
@@ -411,7 +455,7 @@ def show_weekly_volunteers():
         st.dataframe(weekly_df, use_container_width=True, hide_index=True)
 
 
-if st.sidebar.button("Check Weekly Roster 🔍", use_container_width=True):
+if st.sidebar.button("Musicians and Teachers -  Weekly Roster 🔍", use_container_width=True):
     show_weekly_volunteers()
 
 
@@ -448,7 +492,7 @@ def show_monthly_volunteers():
         st.dataframe(monthly_df, use_container_width=True, hide_index=True)
 
 
-if st.sidebar.button("Check Monthly Roster 🔍", use_container_width=True):
+if st.sidebar.button("Musicians and Teachers -  Monthly Roster 🔍", use_container_width=True):
     show_monthly_volunteers()
 
 st.sidebar.write("---")
@@ -477,7 +521,7 @@ def show_yearly_volunteers():
         st.dataframe(yearly_df, use_container_width=True, hide_index=True)
 
 
-if st.sidebar.button("Check Yearly Roster 🔍", use_container_width=True):
+if st.sidebar.button("Musicians and Teachers -  Yearly Roster 🔍", use_container_width=True):
     show_yearly_volunteers()
 
 ## TABS
@@ -487,7 +531,7 @@ tab1, tab2, tab3 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids 
 with tab1:
     run_kds_music()
     
-    if st.button("Look Up Music Team"):
+    if st.button("See who's sering with you!"):
         st.session_state.show_music_lookup = True
 
     if st.session_state.show_music_lookup:
@@ -495,6 +539,12 @@ with tab1:
 
 with tab2:
     run_kds_teacher()
+
+    if st.button("See who's sering with you!"):
+        st.session_state.show_teacher_lookup = True
+
+    if st.session_state.show_teacher_lookup:
+        teacherteamweek_lookup()
 
 with tab3:
     st.write("If you have any questions or concerns, you can reach out to the following coordinators: ")
