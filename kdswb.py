@@ -70,6 +70,8 @@ else:
 
 conn = st.connection("gsheets", type=GSheetsConnection)
 
+if "show_music_lookup" not in st.session_state:
+    st.session_state.show_music_lookup = False
 
 def run_kds_music():
     service_list = ["10AM", "12NN", "2PM", "4PM", "6PM"]
@@ -192,11 +194,12 @@ def run_kds_music():
                         st.rerun()
                     except Exception as e:
                         st.error(f"Network write error occurred: {e}")
-    if st.button("Current Week Music Team", type="secondary", key="current_music_lookup_button"):
-        musicteamweek_lookup()
 
 def musicteamweek_lookup():
 
+    if "week_select" not in st.session_state:
+        st.session_state.show_select = False
+            
     st.write("Here's the list of people serving this Months through Weeks 1-5")
     
     week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
@@ -483,6 +486,12 @@ tab1, tab2, tab3 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids 
 
 with tab1:
     run_kds_music()
+    
+     if st.button("Look Up Music Team"):
+        st.session_state.show_music_lookup = True
+
+     if st.session_state.show_music_lookup:
+        musicteamweek_lookup()
 
 with tab2:
     run_kds_teacher()
