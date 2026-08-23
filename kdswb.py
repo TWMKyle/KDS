@@ -48,8 +48,9 @@ else:
     st.sidebar.warning(f"Sidebar image '{IMAGE_FILE2}' not found.")
 
 
-st.sidebar.subheader("**This week's songs:**")
+
 st.sidebar.write("---")
+st.sidebar.subheader("**This week's songs:**")
 st.sidebar.markdown("[     Slow song - Highest](https://www.youtube.com/watch?v=5wxVg2pymsc)")
 st.sidebar.markdown("[     Fast song - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
 st.sidebar.write("---")
