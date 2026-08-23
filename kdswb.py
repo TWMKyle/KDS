@@ -48,7 +48,7 @@ else:
     st.sidebar.warning(f"Sidebar image '{IMAGE_FILE2}' not found.")
 
 
-sidebar_box = st.sidebar.container(border=True)
+    sidebar_box = st.sidebar.container(border=True)
     
     sidebar_box.write("---")
 
