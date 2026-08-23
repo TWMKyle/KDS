@@ -845,7 +845,7 @@ with tab4:
     Week4 = st.checkbox("Week 4")
     Week5 = st.checkbox("Week 5")
 
-    srvwk = [Week1, Week2, Week3, Week4, Week5]
+    srvwk = st.checkbox.[Week1, Week2, Week3, Week4, Week5]
     
     if srvwk:
         st.write("Welcome to Kids Church!, you are serving [srvwk]")
