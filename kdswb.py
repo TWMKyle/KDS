@@ -842,6 +842,6 @@ with tab4:
     agree = st.checkbox("I agree")
 
     if agree:
-        st.write("Welcome to Kids Church!"
+        st.write("Welcome to Kids Church!")
 
 
