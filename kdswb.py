@@ -8,7 +8,7 @@ from datetime import datetime
 st.set_page_config(page_title="Kids Church", layout="centered")
 st.title("Kids Church Registration Portal")
 
-img_src1 = "https://rawgithubusercontent.com/TWMKyle/KDS/blob/main/kids-scribble-doodle-isolated-white_6997-3390.jpg.avif"
+img_src1 = "https://rawgithubcontent.com/TWMKyle/KDS/blob/main/360_F_785703636_rd7q7qqRbtrJAnUrslc5yqbNlq2eDX4y.jpg"
 
 
 # 2. Inject styling to target the ENTIRE Streamlit app frame
