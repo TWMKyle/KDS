@@ -840,26 +840,26 @@ with tab4:
     st.subheader("🚧 This tab 🏗️ is under 🔨 construction 🛠️")
 
     # 1. Display individual checkboxes and store their True/False status
-week1 = st.checkbox("Week 1")
-week2 = st.checkbox("Week 2")
-week3 = st.checkbox("Week 3")
-week4 = st.checkbox("Week 4")
-week5 = st.checkbox("Week 5")
+    week1 = st.checkbox("Week 1")
+    week2 = st.checkbox("Week 2")
+    week3 = st.checkbox("Week 3")
+    week4 = st.checkbox("Week 4")
+    week5 = st.checkbox("Week 5")
 
-# 2. Map the boolean variables to their text labels
-weeks_dict = {
-    "Week 1": week1,
-    "Week 2": week2,
-    "Week 3": week3,
-    "Week 4": week4,
-    "Week 5": week5
-}
+    # 2. Map the boolean variables to their text labels
+    weeks_dict = {
+        "Week 1": week1,
+        "Week 2": week2,
+        "Week 3": week3,
+        "Week 4": week4,
+        "Week 5": week5
+        }
 
-# 3. Create a list containing ONLY the text names of checked weeks
-srvwk = [name for name, checked in weeks_dict.items() if checked]
+    # 3. Create a list containing ONLY the text names of checked weeks
+    srvwk = [name for name, checked in weeks_dict.items() if checked]
 
-# 4. If the list is not empty (at least one week is checked), show the message
-if srvwk:
-    # Join the selected weeks with commas (e.g., "Week 1, Week 3")
-    weeks_string = ", ".join(srvwk)
-    st.write(f"Welcome to Kids Church!, you are serving: **{weeks_string}**")
+    # 4. If the list is not empty (at least one week is checked), show the message
+    if srvwk:
+        # Join the selected weeks with commas (e.g., "Week 1, Week 3")
+        weeks_string = ", ".join(srvwk)
+        st.write(f"Welcome to Kids Church!, you are serving: **{weeks_string}**")
