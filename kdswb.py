@@ -49,9 +49,8 @@ else:
 
 
 sidebar_box = st.sidebar.container(border=True)
-    
-sidebar_box.write("---")
 sidebar_box.subheader("This week's songs:")
+sidebar_box.write("---")
 sidebar_box.markdown("[Slow song - Highest](https://www.youtube.com/watch?v=5wxVg2pymsc)")
 sidebar_box.markdown("[Fast song - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
 sidebar_box.write("---")
