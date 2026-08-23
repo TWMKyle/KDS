@@ -8,31 +8,25 @@ from datetime import datetime
 st.set_page_config(page_title="Kids Church", layout="centered")
 st.title("Kids Church Registration Portal")
 
-st.html("""
+img_src1 = "https://rawgithubusercontent.com/TWMKyle/KDS/blob/main/kids-scribble-doodle-isolated-white_6997-3390.jpg.avif"
+
+
+# 2. Inject styling to target the ENTIRE Streamlit app frame
+st.markdown(
+    f"""
     <style>
-        /* 1. Main Background Color */
-        .stApp, [data-testid="stAppViewContainer"] {
-            background-color: #A9D9E8 !important;
-        }
-
-/* 2. Sidebar and Input Widgets Background Color */
-[data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {
-    background-color: #FDE3E6 !important;
-    color: #000000 !important;
-}
-
-        /* 4. Primary Accent Elements (Buttons) */
-        [data-testid="stBaseButton-primary"], button {
-            background-color: #FFDB58 !important;
-            color: #31333F !important;
-            border: none !important;
-        }
-
-
-
+    /* This selector targets the entire background canvas of Streamlit */
+    [data-testid="stAppViewContainer"] {{
+        background-image: url('{img_src1}') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }}
     </style>
-""")
-
+    """,
+    unsafe_allow_html=True
+)
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
 
