@@ -839,9 +839,15 @@ with tab3:
 with tab4:
     st.subheader("🚧 This tab 🏗️ is under 🔨 construction 🛠️")
 
-    agree = st.checkbox("I agree")
+    Week1 = st.checkbox("Week 1")
+    Week2 = st.checkbox("Week 2")
+    Week3 = st.checkbox("Week 3")
+    Week4 = st.checkbox("Week 4")
+    Week5 = st.checkbox("Week 5")
 
-    if agree:
-        st.write("Welcome to Kids Church!")
+    srvwk = [Week1, Week2, Week3, Week4, Week5]
+    
+    if srvwk:
+        st.write("Welcome to Kids Church!, you are serving {srvwk}")
 
 
