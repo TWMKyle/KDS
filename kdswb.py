@@ -862,4 +862,4 @@ srvwk = [name for name, checked in weeks_dict.items() if checked]
 if srvwk:
     # Join the selected weeks with commas (e.g., "Week 1, Week 3")
     weeks_string = ", ".join(srvwk)
-    st.write(f"Welcome to Kids Church!, you are serving: **{weeks_string}**)
+    st.write(f"Welcome to Kids Church!, you are serving: **{weeks_string}**")
