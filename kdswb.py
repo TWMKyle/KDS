@@ -5,11 +5,13 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 
+import ssl
+import gspread
+from PIL import Image
+
 
 
 img_src1 = "https://raw.githubusercontent.com/TWMKyle/KDS/main/360_F_785703636_rd7q7qqRbtrJAnUrslc5yqbNlq2eDX4y.jpg"
-
-
 
 # 2. Inject styling to target the ENTIRE Streamlit app frame
 st.markdown(
