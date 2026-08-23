@@ -7,7 +7,8 @@ from datetime import datetime
 
 
 
-img_src1 = "https://rawgithubcontent.com/TWMKyle/KDS/blob/main/360_F_785703636_rd7q7qqRbtrJAnUrslc5yqbNlq2eDX4y.jpg"
+img_src1 = "https://raw.githubusercontent.com/TWMKyle/KDS/main/360_F_785703636_rd7q7qqRbtrJAnUrslc5yqbNlq2eDX4y.jpg"
+
 
 
 # 2. Inject styling to target the ENTIRE Streamlit app frame
