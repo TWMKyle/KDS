@@ -28,11 +28,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# 3. Create the foreground profile element sitting ON TOP of the full-page image
-st.markdown(
-    '<div class="wedding-card"><h3>Kyle</h3><p>Music Leader</p></div>',
-    unsafe_allow_html=True
-)
+
 
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
