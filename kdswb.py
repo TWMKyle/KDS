@@ -51,7 +51,7 @@ st.sidebar.write("---")
 
 st.sidebar.subheader("This week's songs:")
 
-st.sidebar.markdown("[Slow song - Ruler of Nations](https://www.youtube.com/watch?v=Jfg7_1TRDDQ)")
+st.sidebar.markdown("[Slow song - Highest](https://www.youtube.com/watch?v=5wxVg2pymsc)")
 st.sidebar.markdown("[Fast song - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
 
 st.sidebar.write("---")
