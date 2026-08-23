@@ -5,8 +5,7 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 from datetime import datetime
 
-st.set_page_config(page_title="Kids Church", layout="centered")
-st.title("Kids Church Registration Portal")
+
 
 img_src1 = "https://rawgithubcontent.com/TWMKyle/KDS/blob/main/360_F_785703636_rd7q7qqRbtrJAnUrslc5yqbNlq2eDX4y.jpg"
 
@@ -29,6 +28,9 @@ st.markdown(
 )
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
+
+st.set_page_config(page_title="Kids Church", layout="centered")
+st.title("Kids Church Registration Portal")
 
 IMAGE_FILE2 = "kds.png"
 
