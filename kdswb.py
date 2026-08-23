@@ -48,11 +48,11 @@ else:
     st.sidebar.warning(f"Sidebar image '{IMAGE_FILE2}' not found.")
 
 
-st.subheader("**This week's songs:**")
-st.write("---")
-st.markdown("[     Slow song - Highest](https://www.youtube.com/watch?v=5wxVg2pymsc)")
-st.markdown("[     Fast song - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
-st.write("---")
+st.sidebar.subheader("**This week's songs:**")
+st.sidebar.write("---")
+st.sidebar.markdown("[     Slow song - Highest](https://www.youtube.com/watch?v=5wxVg2pymsc)")
+st.sidebar.markdown("[     Fast song - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
+st.sidebar.write("---")
 
 st.sidebar.subheader("This month's series grid:")
 IMAGE_FILE = "series.jpg"
