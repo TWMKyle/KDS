@@ -47,15 +47,17 @@ if os.path.exists(IMAGE_FILE2):
 else:
     st.sidebar.warning(f"Sidebar image '{IMAGE_FILE2}' not found.")
 
-with st.sidebar.container(border=True):
-    st.sidebar.write("---")
 
-    st.sidebar.subheader("This week's songs:")
+sidebar_box = st.sidebar.container(border=True)
+    
+    sidebar_box.write("---")
 
-    st.sidebar.markdown("[Slow song - Highest](https://www.youtube.com/watch?v=5wxVg2pymsc)")
-    st.sidebar.markdown("[Fast song - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
+    sidebar_box.subheader("This week's songs:")
 
-    st.sidebar.write("---")
+    sidebar_box.markdown("[Slow song - Highest](https://www.youtube.com/watch?v=5wxVg2pymsc)")
+    sidebar_box.markdown("[Fast song - Tribes](https://www.youtube.com/watch?v=66H4mLGgZ54)")
+
+    ssidebar_box.write("---")
 
 st.sidebar.subheader("This month's series grid:")
 IMAGE_FILE = "series.jpg"
