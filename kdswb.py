@@ -848,6 +848,6 @@ with tab4:
     srvwk = [Week1, Week2, Week3, Week4, Week5]
     
     if srvwk:
-        st.write("Welcome to Kids Church!, you are serving {srvwk}")
+        st.write("Welcome to Kids Church!, you are serving [srvwk]")
 
 
