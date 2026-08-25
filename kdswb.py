@@ -48,11 +48,24 @@ st.markdown(
         color: #000000 !important; /* This overrides Rule A specifically for the sidebar */
     }}
 
+     /* 1. Target the Tab Header texts */
     [data-testid="stTabs"] [role="tablist"] p,
     .stTabs [role="tab"] p,
-    [data-testid="stTabs"] button[role="tab"] p {{
+    [data-testid="stTabs"] button[role="tab"] p {
         color: #FFFFFF !important; 
-    }}
+    }
+
+    /* 2. Target the Tab Content (everything inside the active tab panel) */
+    [data-baseweb="tab-panel"] {
+        color: #FFFFFF !important;
+    }
+    
+    /* Optional: If standard markdown texts (like st.write) inside the tab remain black */
+    [data-baseweb="tab-panel"] p, 
+    [data-baseweb="tab-panel"] label, 
+    [data-baseweb="tab-panel"] span {
+        color: #FFFFFF !important;
+    }
 
     [data-testid="stViewerBadge"],
     div[class*="viewerBadge"],
