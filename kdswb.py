@@ -80,9 +80,9 @@ st.markdown(
         -webkit-text-fill-color: #FFFFFF !important;
     }}
 
-    .stwrite label {{
+    .stwrite label p {{
         color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
+        
     }}
 
     /* FOOTERS & BADGES */
