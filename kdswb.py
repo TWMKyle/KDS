@@ -63,7 +63,7 @@ st.markdown(
     [data-baseweb="tab-panel"] p, 
     [data-baseweb="tab-panel"] label, 
     [data-baseweb="tab-panel"] span {{
-        color: #000000 !important;
+        color: #FFFFFF !important;
     }}
 
     [data-testid="stViewerBadge"],
