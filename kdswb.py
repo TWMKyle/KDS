@@ -70,14 +70,14 @@ st.markdown(
     /* Target the Title Header explicitly */
     [data-testid="stAppViewBlockContainer"] h1 {
         color: #FFFFFF !important;
-    }
+    }}
     
     /* Target all sub-headers and body paragraphs just in case */
     [data-testid="stAppViewBlockContainer"] p,
     [data-testid="stAppViewBlockContainer"] h2,
     [data-testid="stAppViewBlockContainer"] h3 {
         color: #FFFFFF !important;
-    }
+    }}
     
     </style>
     """,
