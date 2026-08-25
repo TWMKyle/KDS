@@ -15,22 +15,7 @@ img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
 st.markdown(
     f"""
     <style>
-    /* HIDE TOP STREAMLIT DEPLOY TOOLBAR ("Manage app", "Fork", GitHub Icon, Menu) */
-    header, 
-    [data-testid="stHeader"], 
-    [data-testid="stHeaderToolbar"],
-    .stHeader,
-    iframe + div div[role="navigation"] {{
-        display: none !important;
-        visibility: hidden !important;
-        height: 0px !important;
-    }}
     
-    /* Remove the red/colored top decoration line */
-    [data-testid="stDecoration"] {{
-        display: none !important;
-        visibility: hidden !important;
-    }}
 
     /* GLOBAL APP CONTAINER BACKGROUND */
     [data-testid="stAppViewContainer"] {{
