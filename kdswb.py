@@ -79,10 +79,20 @@ st.markdown(
         -webkit-text-fill-color: #000000 !important;
     }}
 
-    [data-testid="stNotification"] p,
-    [data-testid="stNotification"] div,
-    [data-testid="stNotification"] span {{
-        color: #FFFFFF !important; /* Change this hex code to your preferred font color */
+    div[data-testid="stNotification"],
+    div[data-testid="stNotification"] p,
+    div[data-testid="stNotification"] span,
+    div[data-testid="stNotification"] div,
+    .stAlert,
+    .stAlert p,
+    .stAlert div {{
+        color: #000000 !important; /* Change this hex code to your preferred text color */
+    }}
+    
+    /* Optional: Force the alert icons to match the text color */
+    div[data-testid="stNotification"] svg {{
+        fill: #000000 !important;
+        color: #000000 !important;
     }}
 
     /* FOOTERS & BADGES */
