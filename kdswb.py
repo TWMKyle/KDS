@@ -12,7 +12,6 @@ from PIL import Image
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
 
 
-# 2. Inject styling to target the ENTIRE Streamlit app frame
 st.markdown(
     f"""
     <style>
@@ -26,18 +25,17 @@ st.markdown(
     }}
 
     /* 2. Sidebar and Input Widgets Background Color */
-        [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {
+    [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {{
         background-color: #FDE3E6 !important;
-            color: #000000 !important;
-        }}
+        color: #000000 !important;
+    }}
 
-        /* 4. Primary Accent Elements (Buttons) */
-        [data-testid="stBaseButton-primary"], button {
-            background-color: #FFDB58 !important;
-            color: #31333F !important;
-            border: none !important;
-        }}
-
+    /* 4. Primary Accent Elements (Buttons) */
+    [data-testid="stBaseButton-primary"], button {{
+        background-color: #FFDB58 !important;
+        color: #31333F !important;
+        border: none !important;
+    }}
     </style>
     """,
     unsafe_allow_html=True
