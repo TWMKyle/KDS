@@ -70,12 +70,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.logo(
-    "https://githubusercontent.com",
-    icon_image="https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg" # Optional tiny icon for collapsed mobile view
-)
-
-
 
 
 current_calendar_month = datetime.now().strftime("%B")
