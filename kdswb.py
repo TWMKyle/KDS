@@ -23,7 +23,7 @@ st.markdown(
     <style>
     /* 1. Entire canvas layout background */
     [data-testid="stAppViewContainer"] {
-        background-image: url('https://githubusercontent.com') !important;
+        background-image: url('{img_srcy}') !important;
         background-size: cover !important;
         background-position: center !important;
         background-repeat: no-repeat !important;
