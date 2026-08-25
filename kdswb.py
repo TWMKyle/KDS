@@ -11,7 +11,6 @@ from PIL import Image
 
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
 
-
 st.markdown(
     f"""
     <style>
@@ -30,15 +29,6 @@ st.markdown(
         color: #000000 !important;
     }}
 
-    /* 4. Text and Subheaders inside Sidebar to be readable black */
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {{
-        color: #000000 !important; /* FIXED: Overrides main page rules to force sidebar headers black */
-    }}
-
     /* 4. Primary Accent Elements & All Main Page Buttons (FORCED TO BLACK FONT) */
     [data-testid="stBaseButton-primary"], 
     [data-testid="stBaseButton-secondary"],
@@ -50,12 +40,22 @@ st.markdown(
         border: none !important;
     }}
 
-    /* FIXED TITLE & TAB SELECTORS FOR NATIVE STREAMLIT OVERRIDES */
-    [data-testid="stAppViewBlockContainer"] h1, 
-    [data-testid="stAppViewBlockContainer"] h2, 
-    [data-testid="stAppViewBlockContainer"] h3,
-    div[data-testid="stHeadingWithTitle"] h1 {{
-        color: #FFFFFF !important; /* Restores white headers ONLY on the main page content block */
+    /* ==================================================== */
+    /* FIXED TYPOGRAPHY RULES: GLOBAL WHITE vs SIDEBAR BLACK */
+    /* ==================================================== */
+
+    /* Rule A: Force ALL titles and headers on the site to be White first */
+    h1, h2, h3, .stApp h1, .stApp h2, .stApp h3 {{
+        color: #FFFFFF !important;
+    }}
+
+    /* Rule B: Force ALL text and subheaders inside the Sidebar back to Black */
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3 {{
+        color: #000000 !important; /* This overrides Rule A specifically for the sidebar */
     }}
 
     /* Target ONLY the horizontal Tab header labels, leaving buttons alone */
