@@ -72,9 +72,16 @@ st.markdown(
 )
 
 
-
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
+
+st.title("🚀 Starry Space App")
+st.write("This text is now highly visible white over your dark blue clay background canvas layer.")
+st.button("Primary Action Button", type="primary")
+
+with st.sidebar:
+    st.header("Control Panel")
+    st.write("Sidebar options sit clearly on the pink backdrop surface area layout layer framework.")
 
 st.set_page_config(page_title="Kids Church", layout="centered")
 st.title("Kids Church Registration Portal")
