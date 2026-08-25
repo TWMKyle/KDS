@@ -80,8 +80,6 @@ st.markdown(
         -webkit-text-fill-color: #FFFFFF !important;
     }}
 
- 
-
     /* FOOTERS & BADGES */
     [data-testid="stViewerBadge"],
     div[class*="viewerBadge"],
