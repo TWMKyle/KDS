@@ -66,6 +66,19 @@ st.markdown(
         background-color: #FDE3E6 !important;
         color: #000000 !important;
     }}
+
+    /* Target the Title Header explicitly */
+    [data-testid="stAppViewBlockContainer"] h1 {
+        color: #FFFFFF !important;
+    }
+    
+    /* Target all sub-headers and body paragraphs just in case */
+    [data-testid="stAppViewBlockContainer"] p,
+    [data-testid="stAppViewBlockContainer"] h2,
+    [data-testid="stAppViewBlockContainer"] h3 {
+        color: #FFFFFF !important;
+    }
+    
     </style>
     """,
     unsafe_allow_html=True
@@ -75,13 +88,6 @@ st.markdown(
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
 
-st.title("🚀 Starry Space App")
-st.write("This text is now highly visible white over your dark blue clay background canvas layer.")
-st.button("Primary Action Button", type="primary")
-
-with st.sidebar:
-    st.header("Control Panel")
-    st.write("Sidebar options sit clearly on the pink backdrop surface area layout layer framework.")
 
 st.set_page_config(page_title="Kids Church", layout="centered")
 st.title("Kids Church Registration Portal")
