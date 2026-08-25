@@ -12,10 +12,6 @@ from PIL import Image
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
 img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
 
-
-current_calendar_month = datetime.now().strftime("%B")
-current_calendar_year = datetime.now().strftime("%Y")
-
 st.markdown(
     f"""
     <style>
@@ -119,7 +115,8 @@ if os.path.exists(IMAGE_FILE2):
 else:
     st.sidebar.warning(f"Sidebar image '{IMAGE_FILE2}' not found.")
 
-
+current_calendar_month = datetime.now().strftime("%B")
+current_calendar_year = datetime.now().strftime("%Y")
 
 st.sidebar.write("---")
 st.sidebar.subheader("**This week's songs:**")
