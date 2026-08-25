@@ -86,7 +86,7 @@ st.markdown(
     .stAlert,
     .stAlert p,
     .stAlert div {{
-        color: #000000 !important; /* Change this hex code to your preferred text color */
+        color: #FFFFFF !important; /* Change this hex code to your preferred text color */
     }}
     
     /* Optional: Force the alert icons to match the text color */
