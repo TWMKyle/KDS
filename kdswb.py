@@ -48,23 +48,23 @@ st.markdown(
         color: #000000 !important; /* This overrides Rule A specifically for the sidebar */
     }}
 
-     /* 1. Target the Tab Header texts */
+     /* 1. Target the Tab Header texts - Fixed Braces */
     [data-testid="stTabs"] [role="tablist"] p,
     .stTabs [role="tab"] p,
-    [data-testid="stTabs"] button[role="tab"] p {
+    [data-testid="stTabs"] button[role="tab"] p {{
         color: #FFFFFF !important; 
-    }
+    }}
 
-    /* 2. Target the Tab Content */
-    [data-baseweb="tab-panel"] {
+    /* 2. Target the Tab Content - Fixed Braces */
+    [data-baseweb="tab-panel"] {{
         color: #FFFFFF !important;
-    }
+    }}
     
     [data-baseweb="tab-panel"] p, 
     [data-baseweb="tab-panel"] label, 
-    [data-baseweb="tab-panel"] span {
+    [data-baseweb="tab-panel"] span {{
         color: #FFFFFF !important;
-    }
+    }}
 
     [data-testid="stViewerBadge"],
     div[class*="viewerBadge"],
@@ -73,7 +73,6 @@ st.markdown(
         display: none !important;
         visibility: hidden !important;
     }}
-
 
     footer,
     [data-testid="stManageAppButton"],
@@ -86,8 +85,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-
 
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
