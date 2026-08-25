@@ -33,7 +33,7 @@ st.markdown(
     /* 4. Primary Accent Elements (Buttons) */
     [data-testid="stBaseButton-primary"], button {{
         background-color: #FFDB58 !important;
-        color: #31333F !important;
+        color: #000000 !important; /* FIXED: Primary action button text changed to solid black */
         border: none !important;
     }}
 
