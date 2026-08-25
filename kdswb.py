@@ -30,18 +30,18 @@ st.markdown(
         color: #000000 !important;
     }}
 
-    /* 4. Primary Accent Elements (Buttons) */
-    [data-testid="stBaseButton-primary"], button {{
+    /* 4. Primary Accent Elements & All Main Page Buttons (FORCED TO BLACK FONT) */
+    [data-testid="stBaseButton-primary"], 
+    [data-testid="stBaseButton-secondary"],
+    [data-testid="stAppViewBlockContainer"] button,
+    [data-testid="stAppViewBlockContainer"] button p,
+    button {{
         background-color: #FFDB58 !important;
-        color: #000000 !important; /* FIXED: Primary action button text changed to solid black */
+        color: #000000 !important; /* Forces all main page button text to true black */
         border: none !important;
     }}
 
-     /* ==================================================== */
     /* FIXED TITLE & TAB SELECTORS FOR NATIVE STREAMLIT OVERRIDES */
-    /* ==================================================== */
-    
-    /* Targets any title or heading block within the main frame */
     .stApp h1, 
     .stApp h2, 
     .stApp h3,
@@ -50,14 +50,12 @@ st.markdown(
         color: #FFFFFF !important;
     }}
 
-    /* Target both unselected and active Streamlit Tab font labels */
-    [data-testid="stHorizontalBlock"] button p,
-    [data-testid="stTabs"] button p,
-    [data-testid="stTabs"] p,
-    .stTabs [role="tab"] p {{
-        color: #FFFFFF !important;
+    /* Target ONLY the horizontal Tab header labels, leaving buttons alone */
+    [data-testid="stTabs"] [role="tablist"] p,
+    .stTabs [role="tab"] p,
+    [data-testid="stTabs"] button[role="tab"] p {{
+        color: #FFFFFF !important; /* Keeps your tab row text white */
     }}
-    
     </style>
     """,
     unsafe_allow_html=True
