@@ -79,6 +79,12 @@ st.markdown(
         -webkit-text-fill-color: #000000 !important;
     }}
 
+    [data-testid="stNotification"] p,
+    [data-testid="stNotification"] div,
+    [data-testid="stNotification"] span {{
+        color: #000000 !important; /* Change this hex code to your preferred font color */
+    }}
+
     /* FOOTERS & BADGES */
     [data-testid="stViewerBadge"],
     div[class*="viewerBadge"],
