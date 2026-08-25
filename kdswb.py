@@ -15,6 +15,24 @@ img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
 st.markdown(
     f"""
     <style>
+    /* HIDE TOP STREAMLIT DEPLOY TOOLBAR ("Manage app", "Fork", GitHub Icon, Menu) */
+    header, 
+    [data-testid="stHeader"], 
+    [data-testid="stHeaderToolbar"],
+    .stHeader,
+    iframe + div div[role="navigation"] {{
+        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+    }}
+    
+    /* Remove the red/colored top decoration line */
+    [data-testid="stDecoration"] {{
+        display: none !important;
+        visibility: hidden !important;
+    }}
+
+    /* GLOBAL APP CONTAINER BACKGROUND */
     [data-testid="stAppViewContainer"] {{
         background-image: url('{img_srcy}') !important;
         background-size: cover !important;
@@ -23,6 +41,7 @@ st.markdown(
         background-attachment: fixed !important;
     }}
 
+    /* SIDEBAR & BUTTON STYLES */
     [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {{
         background-color: #FDE3E6 !important;
         color: #000000 !important;
@@ -37,6 +56,7 @@ st.markdown(
         border: none !important;
     }}
 
+    /* HEADERS */
     h1, h2, h3, .stApp h1, .stApp h2, .stApp h3 {{
         color: #FFFFFF !important;
     }}
@@ -45,17 +65,16 @@ st.markdown(
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {{
-        color: #000000 !important; /* This overrides Rule A specifically for the sidebar */
+        color: #000000 !important; 
     }}
 
-     /* 1. Target the Tab Header texts - Fixed Braces */
+    /* TAB CONFIGURATION */
     [data-testid="stTabs"] [role="tablist"] p,
     .stTabs [role="tab"] p,
     [data-testid="stTabs"] button[role="tab"] p {{
         color: #FFFFFF !important; 
     }}
 
-    /* 2. Target the Tab Content - Fixed Braces */
     [data-baseweb="tab-panel"] {{
         color: #FFFFFF !important;
     }}
@@ -66,6 +85,17 @@ st.markdown(
         color: #FFFFFF !important;
     }}
 
+    /* TEXT INPUT STYLING */
+    .stTextInput label p {{
+        color: #FFFFFF !important;
+    }}
+    
+    .stTextInput input {{
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }}
+
+    /* FOOTERS & BADGES */
     [data-testid="stViewerBadge"],
     div[class*="viewerBadge"],
     a[class*="viewerBadge"],
@@ -81,20 +111,11 @@ st.markdown(
         display: none !important;
         visibility: hidden !important;
     }}
-
-    .stTextInput label p {{
-        color: #FFFFFF !important;
-    }}
-    
-    .stTextInput input {{
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-    }}
-    
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
