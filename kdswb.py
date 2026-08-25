@@ -80,9 +80,7 @@ st.markdown(
         -webkit-text-fill-color: #FFFFFF !important;
     }}
 
-    .stWrite label p {{
-        color: #FFFFFF !important;
-    }}
+ 
 
     /* FOOTERS & BADGES */
     [data-testid="stViewerBadge"],
