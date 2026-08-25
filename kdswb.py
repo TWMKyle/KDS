@@ -11,6 +11,7 @@ from PIL import Image
 
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
 img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
+img_srcp = "https://raw.githubusercontent.com/TWMKyle/KDS/main/playful-colorful-border-with-paper-airplanes-stars_978023-875.jpg.jpg"
 
 left_co, cent_co, right_co = st.columns([1, 2, 1])
 
@@ -21,7 +22,17 @@ with cent_co:
 st.markdown(
     f"""
     <style>
-  
+    /* SIDEBAR WITH BACKGROUND IMAGE */
+    [data-testid="stSidebar"] {{
+        background-image: url('{img_srcp}') !important; /* Pass your image variable here */
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+        color: #000000 !important; /* Keeps your fallback text color rule intact */
+    }}
+
+
     /* GLOBAL APP CONTAINER BACKGROUND */
     [data-testid="stAppViewContainer"] {{
         background-image: url('{img_srcy}') !important;
