@@ -16,6 +16,110 @@ img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
 current_calendar_month = datetime.now().strftime("%B")
 current_calendar_year = datetime.now().strftime("%Y")
 
+st.markdown(
+    f"""
+    <style>
+    /* HIDE TOP STREAMLIT DEPLOY TOOLBAR ("Manage app", "Fork", GitHub Icon, Menu) */
+    header, 
+    [data-testid="stHeader"], 
+    [data-testid="stHeaderToolbar"],
+    .stHeader,
+    iframe + div div[role="navigation"] {{
+        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+    }}
+    
+    /* Remove the red/colored top decoration line */
+    [data-testid="stDecoration"] {{
+        display: none !important;
+        visibility: hidden !important;
+    }}
+
+    /* GLOBAL APP CONTAINER BACKGROUND */
+    [data-testid="stAppViewContainer"] {{
+        background-image: url('{img_srcy}') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }}
+
+    /* SIDEBAR & BUTTON STYLES */
+    [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {{
+        background-color: #FDE3E6 !important;
+        color: #000000 !important;
+    }}
+    [data-testid="stBaseButton-primary"], 
+    [data-testid="stBaseButton-secondary"],
+    [data-testid="stAppViewBlockContainer"] button,
+    [data-testid="stAppViewBlockContainer"] button p,
+    button {{
+        background-color: #FFDB58 !important;
+        color: #000000 !important; 
+        border: none !important;
+    }}
+
+    /* HEADERS */
+    h1, h2, h3, .stApp h1, .stApp h2, .stApp h3 {{
+        color: #FFFFFF !important;
+    }}
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3 {{
+        color: #000000 !important; 
+    }}
+
+    /* TAB CONFIGURATION */
+    [data-testid="stTabs"] [role="tablist"] p,
+    .stTabs [role="tab"] p,
+    [data-testid="stTabs"] button[role="tab"] p {{
+        color: #FFFFFF !important; 
+    }}
+
+    [data-baseweb="tab-panel"] {{
+        color: #FFFFFF !important;
+    }}
+    
+    [data-baseweb="tab-panel"] p, 
+    [data-baseweb="tab-panel"] label, 
+    [data-baseweb="tab-panel"] span {{
+        color: #FFFFFF !important;
+    }}
+
+    /* TEXT INPUT STYLING */
+    .stTextInput label p {{
+        color: #FFFFFF !important;
+    }}
+    
+    .stTextInput input {{
+        color: #000000 !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }}
+
+    /* FOOTERS & BADGES */
+    [data-testid="stViewerBadge"],
+    div[class*="viewerBadge"],
+    a[class*="viewerBadge"],
+    .stViewerBadge {{
+        display: none !important;
+        visibility: hidden !important;
+    }}
+
+    footer,
+    [data-testid="stManageAppButton"],
+    div[class*="manageAppButton"],
+    button[class*="manageAppButton"] {{
+        display: none !important;
+        visibility: hidden !important;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 
 st.set_page_config(page_title="Kids Church", layout="centered")
 st.title("Kids Church Registration Portal")
