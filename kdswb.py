@@ -76,6 +76,11 @@ st.markdown(
     }}
     
     .stTextInput input {{
+        color: #000000 !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }}
+
+    .stwrite label {{
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
     }}
