@@ -47,7 +47,21 @@ st.html("""
             border: none !important;
         }
 
+ /* ... Your existing background-image CSS goes here ... */
 
+    /* Styles the container block holding your text/widgets */
+    [data-testid="stAppViewBlockContainer"] {{
+        background-color: rgba(255, 255, 255, 0.85) !important; /* Semi-transparent white card */
+        padding: 2rem !important;
+        border-radius: 15px !important;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    }}
+
+    /* Keeps text sharp and readable inside the glass card */
+    [data-testid="stAppViewBlockContainer"] h1,
+    [data-testid="stAppViewBlockContainer"] p {{
+        color: #111111 !important; /* Crisp dark gray/black text */
+    }}
 
     </style>
 """)
