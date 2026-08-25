@@ -81,6 +81,16 @@ st.markdown(
         display: none !important;
         visibility: hidden !important;
     }}
+
+    .stTextInput label p {{
+        color: #FFFFFF !important;
+    }}
+    
+    .stTextInput input {{
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }}
+    
     </style>
     """,
     unsafe_allow_html=True
