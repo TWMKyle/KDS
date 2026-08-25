@@ -82,7 +82,7 @@ st.markdown(
     [data-testid="stNotification"] p,
     [data-testid="stNotification"] div,
     [data-testid="stNotification"] span {{
-        color: #000000 !important; /* Change this hex code to your preferred font color */
+        color: #FFFFFF !important; /* Change this hex code to your preferred font color */
     }}
 
     /* FOOTERS & BADGES */
