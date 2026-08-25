@@ -10,6 +10,7 @@ from PIL import Image
 
 
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
+img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
 
 st.markdown(
     f"""
@@ -68,6 +69,12 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+st.logo(
+    "https://githubusercontent.com",
+    icon_image="https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg" # Optional tiny icon for collapsed mobile view
+)
+
 
 
 
