@@ -14,9 +14,6 @@ img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-text
 # 1. Page Configuration (Must stay at the absolute top of your script)
 st.set_page_config(page_title="Kids Church", layout="centered")
 
-# Your background image variable
-img_srcy = "https://githubusercontent.com"
-
 # 2. Unified CSS Injection Block (Using a standard string to completely avoid f-string brace bugs)
 st.markdown(
     """
