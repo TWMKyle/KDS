@@ -38,18 +38,23 @@ st.markdown(
     }}
 
      /* ==================================================== */
-    /* NEW RULES: FORCE MAIN PORTAL TEXT AND TABS TO WHITE */
+    /* FIXED TITLE & TAB SELECTORS FOR NATIVE STREAMLIT OVERRIDES */
     /* ==================================================== */
     
-    /* Force Title and structural tags to White */
-    [data-testid="stAppViewBlockContainer"] h1 {{
+    /* Targets any title or heading block within the main frame */
+    .stApp h1, 
+    .stApp h2, 
+    .stApp h3,
+    div[data-testid="stHeadingWithTitle"] h1,
+    h1 {{
         color: #FFFFFF !important;
     }}
 
     /* Target both unselected and active Streamlit Tab font labels */
     [data-testid="stHorizontalBlock"] button p,
     [data-testid="stTabs"] button p,
-    [data-testid="stTabs"] p {{
+    [data-testid="stTabs"] p,
+    .stTabs [role="tab"] p {{
         color: #FFFFFF !important;
     }}
     
