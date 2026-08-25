@@ -55,12 +55,11 @@ st.markdown(
         color: #FFFFFF !important; 
     }
 
-    /* 2. Target the Tab Content (everything inside the active tab panel) */
+    /* 2. Target the Tab Content */
     [data-baseweb="tab-panel"] {
         color: #FFFFFF !important;
     }
     
-    /* Optional: If standard markdown texts (like st.write) inside the tab remain black */
     [data-baseweb="tab-panel"] p, 
     [data-baseweb="tab-panel"] label, 
     [data-baseweb="tab-panel"] span {
