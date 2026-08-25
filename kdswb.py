@@ -76,7 +76,7 @@ st.markdown(
     
     .stTextInput input {{
         color: #000000 !important;
-        -webkit-text-fill-color: #FFFFFF !important;
+        -webkit-text-fill-color: #000000 !important;
     }}
 
     /* FOOTERS & BADGES */
