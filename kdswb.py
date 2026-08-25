@@ -10,7 +10,7 @@ from PIL import Image
 
 
 
-img_srcx = "https://raw.githubusercontent.com/TWMKyle/KDS/main/360_F_785703636_rd7q7qqRbtrJAnUrslc5yqbNlq2eDX4y.jpg"
+img_srcx = "https://raw.githubusercontent.com/TWMKyle/KDS/main/istockphoto-2187386432-612x612.jpg"
 #img_srcy = "https://raw.githubusercontent.com/TWMKyle/twm/main/a38d642b-d7f2-4989-91bc-13fd2048683c.jpg"
 
 # 2. Inject styling to target the ENTIRE Streamlit app frame
