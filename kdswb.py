@@ -15,7 +15,6 @@ img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
 st.markdown(
     f"""
     <style>
-    /* This selector targets the entire background canvas of Streamlit */
     [data-testid="stAppViewContainer"] {{
         background-image: url('{img_srcy}') !important;
         background-size: cover !important;
@@ -24,13 +23,10 @@ st.markdown(
         background-attachment: fixed !important;
     }}
 
-    /* 2. Sidebar and Input Widgets Background Color */
     [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {{
         background-color: #FDE3E6 !important;
         color: #000000 !important;
     }}
-
-    /* 4. Primary Accent Elements & All Main Page Buttons (FORCED TO BLACK FONT) */
     [data-testid="stBaseButton-primary"], 
     [data-testid="stBaseButton-secondary"],
     [data-testid="stAppViewBlockContainer"] button,
@@ -41,16 +37,9 @@ st.markdown(
         border: none !important;
     }}
 
-    /* ==================================================== */
-    /* FIXED TYPOGRAPHY RULES: GLOBAL WHITE vs SIDEBAR BLACK */
-    /* ==================================================== */
-
-    /* Rule A: Force ALL titles and headers on the site to be White first */
     h1, h2, h3, .stApp h1, .stApp h2, .stApp h3 {{
         color: #FFFFFF !important;
     }}
-
-    /* Rule B: Force ALL text and subheaders inside the Sidebar back to Black */
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] label, 
     [data-testid="stSidebar"] h1, 
@@ -59,18 +48,12 @@ st.markdown(
         color: #000000 !important; /* This overrides Rule A specifically for the sidebar */
     }}
 
-    /* Target ONLY the horizontal Tab header labels, leaving buttons alone */
     [data-testid="stTabs"] [role="tablist"] p,
     .stTabs [role="tab"] p,
     [data-testid="stTabs"] button[role="tab"] p {{
         color: #FFFFFF !important; 
     }}
 
-     /* ==================================================== */
-    /* NEW PERMANENT FIX: WIPE OUT COMMUNITY CLOUD OVERLAYS */
-    /* ==================================================== */
-
-    /* 1. Hides the GitHub code icon and Streamlit cloud logo in the top right */
     [data-testid="stViewerBadge"],
     div[class*="viewerBadge"],
     a[class*="viewerBadge"],
@@ -79,7 +62,7 @@ st.markdown(
         visibility: hidden !important;
     }}
 
-    /* 2. Hides the "Manage App" floating button & footer in the bottom right corner */
+
     footer,
     [data-testid="stManageAppButton"],
     div[class*="manageAppButton"],
