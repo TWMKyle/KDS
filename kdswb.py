@@ -36,6 +36,23 @@ st.markdown(
         color: #31333F !important;
         border: none !important;
     }}
+
+     /* ==================================================== */
+    /* NEW RULES: FORCE MAIN PORTAL TEXT AND TABS TO WHITE */
+    /* ==================================================== */
+    
+    /* Force Title and structural tags to White */
+    [data-testid="stAppViewBlockContainer"] h1 {{
+        color: #FFFFFF !important;
+    }}
+
+    /* Target both unselected and active Streamlit Tab font labels */
+    [data-testid="stHorizontalBlock"] button p,
+    [data-testid="stTabs"] button p,
+    [data-testid="stTabs"] p {{
+        color: #FFFFFF !important;
+    }}
+    
     </style>
     """,
     unsafe_allow_html=True
