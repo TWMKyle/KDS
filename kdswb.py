@@ -70,7 +70,7 @@ st.markdown(
         color: #FFFFFF !important;
     }}
 
-    /* TEXT INPUT STYLING */
+      /* Text Inputs */
     .stTextInput label p {{
         color: #FFFFFF !important;
     }}
