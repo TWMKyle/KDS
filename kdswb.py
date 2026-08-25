@@ -33,7 +33,7 @@ st.markdown(
     [data-testid="stAppViewBlockContainer"] button p,
     button {{
         background-color: #FFDB58 !important;
-        color: #FFFFFF !important; 
+        color: #000000 !important; 
         border: none !important;
     }}
 
