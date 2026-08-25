@@ -51,7 +51,7 @@ st.markdown(
     [data-testid="stTabs"] [role="tablist"] p,
     .stTabs [role="tab"] p,
     [data-testid="stTabs"] button[role="tab"] p {{
-        color: #000000 !important; 
+        color: #FFFFFF !important; 
     }}
 
     [data-testid="stViewerBadge"],
