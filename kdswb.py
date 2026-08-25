@@ -11,66 +11,24 @@ from PIL import Image
 
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
 
-# 1. Page Configuration (Must stay at the absolute top of your script)
-st.set_page_config(page_title="Kids Church", layout="centered")
 
-# 2. Unified CSS Injection Block (Using a standard string to completely avoid f-string brace bugs)
+# 2. Inject styling to target the ENTIRE Streamlit app frame
 st.markdown(
-    """
+    f"""
     <style>
-    /* 1. Entire canvas layout background */
-    [data-testid="stAppViewContainer"] {
+    /* This selector targets the entire background canvas of Streamlit */
+    [data-testid="stAppViewContainer"] {{
         background-image: url('{img_srcy}') !important;
         background-size: cover !important;
         background-position: center !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
-    }
-
-    /* 2. Transparent Header to prevent top-bar block */
-    [data-testid="stHeader"] {
-        background-color: rgba(0, 0, 0, 0) !important;
-    }
-
-    /* 3. Sidebar background color (Pink Accent) */
-    [data-testid="stSidebar"] {
-        background-color: #FDE3E6 !important;
-    }
-
-    /* 4. Text inside Sidebar to be readable black */
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {
-        color: #000000 !important;
-    }
-
-    /* 5. Main page content font colors - Forced to solid White */
-    [data-testid="stAppViewBlockContainer"] h1,
-    [data-testid="stAppViewBlockContainer"] h2,
-    [data-testid="stAppViewBlockContainer"] h3,
-    [data-testid="stAppViewBlockContainer"] p,
-    [data-testid="stAppViewBlockContainer"] label {
-        color: #FFFFFF !important;
-    }
-
-    /* 6. Primary Action Buttons styling (Yellow Accent) */
-    [data-testid="stBaseButton-primary"], button {
-        background-color: #FFDB58 !important;
-        color: #31333F !important;
-        border: none !important;
-    }
-    
-    /* 7. Secondary Buttons layout configuration */
-    [data-testid="stBaseButton-secondary"] {
-        background-color: #FDE3E6 !important;
-        color: #000000 !important;
-    }
+    }}
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 
 current_calendar_month = datetime.now().strftime("%B")
