@@ -9,15 +9,13 @@ import gspread
 from PIL import Image
 
 
-
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
-#img_srcx = "https://raw.githubusercontent.com/TWMKyle/twm/main/a38d642b-d7f2-4989-91bc-13fd2048683c.jpg"
 
-# 2. Inject styling to target the ENTIRE Streamlit app frame
+# Combined unified CSS Injection Block
 st.markdown(
     f"""
     <style>
-    /* This selector targets the entire background canvas of Streamlit */
+    /* 1. Entire canvas layout background */
     [data-testid="stAppViewContainer"] {{
         background-image: url('{img_srcy}') !important;
         background-size: cover !important;
@@ -25,46 +23,53 @@ st.markdown(
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
     }}
+
+    /* 2. Transparent Header to prevent top-bar block */
+    [data-testid="stHeader"] {{
+        background-color: rgba(0, 0, 0, 0) !important;
+    }}
+
+    /* 3. Sidebar background color (Pink Accent) */
+    [data-testid="stSidebar"] {{
+        background-color: #FDE3E6 !important;
+    }}
+    
+    /* 4. Text inside Sidebar to be readable black */
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3 {{
+        color: #000000 !important;
+    }}
+/* 5. Main page content font colors (Crisp White and Star Yellow) */
+    [data-testid="stAppViewBlockContainer"] p,
+    [data-testid="stAppViewBlockContainer"] label {{
+        color: #FFFFFF !important;  /* Standard text becomes white */
+    }}
+    
+    [data-testid="stAppViewBlockContainer"] h1,
+    [data-testid="stAppViewBlockContainer"] h2,
+    [data-testid="stAppViewBlockContainer"] h3 {{
+        color: #FFDB58 !important;  /* Main titles match the yellow clay stars */
+    }}
+
+    /* 6. Primary Action Buttons styling */
+    [data-testid="stBaseButton-primary"], button {{
+        background-color: #FFDB58 !important;
+        color: #31333F !important;
+        border: none !important;
+    }}
+    
+    /* 7. Secondary Buttons layout configuration */
+    [data-testid="stBaseButton-secondary"] {{
+        background-color: #FDE3E6 !important;
+        color: #000000 !important;
+    }}
     </style>
     """,
     unsafe_allow_html=True
 )
-
-st.html("""
-    <style>
-     
-
-/* 2. Sidebar and Input Widgets Background Color */
-[data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {
-    background-color: #FDE3E6 !important;
-    color: #000000 !important;
-}
-
-        /* 4. Primary Accent Elements (Buttons) */
-        [data-testid="stBaseButton-primary"], button {
-            background-color: #FFDB58 !important;
-            color: #31333F !important;
-            border: none !important;
-        }
-
- /* ... Your existing background-image CSS goes here ... */
-
-    /* Styles the container block holding your text/widgets */
-    [data-testid="stAppViewBlockContainer"] {{
-        background-color: rgba(255, 255, 255, 0.85) !important; /* Semi-transparent white card */
-        padding: 2rem !important;
-        border-radius: 15px !important;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    }}
-
-    /* Keeps text sharp and readable inside the glass card */
-    [data-testid="stAppViewBlockContainer"] h1,
-    [data-testid="stAppViewBlockContainer"] p {{
-        color: #111111 !important; /* Crisp dark gray/black text */
-    }}
-
-    </style>
-""")
 
 
 
