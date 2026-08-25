@@ -66,26 +66,27 @@ st.markdown(
         color: #FFFFFF !important; 
     }}
 
-    /* Add these lines inside your existing working f-string block to hide cloud overlays */
+     /* ==================================================== */
+    /* NEW PERMANENT FIX: WIPE OUT COMMUNITY CLOUD OVERLAYS */
+    /* ==================================================== */
 
     /* 1. Hides the GitHub code icon and Streamlit cloud logo in the top right */
-    .stViewerBadge,
     [data-testid="stViewerBadge"],
-    div[class^="viewerBadge"],
-    a[class^="viewerBadge"] {{
+    div[class*="viewerBadge"],
+    a[class*="viewerBadge"],
+    .stViewerBadge {{
         display: none !important;
         visibility: hidden !important;
     }}
 
-    /* 2. Hides the "Manage App" floating button in the bottom right corner */
+    /* 2. Hides the "Manage App" floating button & footer in the bottom right corner */
     footer,
     [data-testid="stManageAppButton"],
-    div[class^="manageAppButton"],
-    button[class^="manageAppButton"] {{
+    div[class*="manageAppButton"],
+    button[class*="manageAppButton"] {{
         display: none !important;
         visibility: hidden !important;
     }}
-    
     </style>
     """,
     unsafe_allow_html=True
