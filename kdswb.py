@@ -48,18 +48,18 @@ st.markdown(
     }}
 
     /* HEADERS */
-    h1, h2, .stApp h1, .stApp h2 {{
+    h1, h3, .stApp h1, .stApp h3 {{
         color: #000000 !important;
     }}
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] label, 
     [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, {{
+    [data-testid="stSidebar"] h3, {{
         color: #FFFFFF !important; 
     }}
 
     /* HEADERS */
-    h3, .stApp h3 {{
+    h2, .stApp h2 {{
         color: #000000 !important;
     }}
 
@@ -732,9 +732,9 @@ with tab3:
             <img src="{img_src6}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Jinky 
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Staff | Worship Service Leader | Worship Service Team Leader
                  6PM | Week 2 | Week 4
@@ -758,9 +758,9 @@ with tab3:
             <img src="{img_src1}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 John Venn
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                 Worship Service Leader
                 12NN
@@ -781,9 +781,9 @@ with tab3:
             <img src="{img_src7}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Chris
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                 Worship Service Leader
                 2PM
@@ -806,9 +806,9 @@ with tab3:
             <img src="{img_src3}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Fitz 
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Worship Service Leader
                  4PM
@@ -830,9 +830,9 @@ with tab3:
             <img src="{img_src4}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Pat 
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Worship Service Team Leader
                  4PM | Week 4
@@ -854,9 +854,9 @@ with tab3:
             <img src="{img_src5}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Hydee 
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Worship Service Team Leader
                  4PM | Week 2
@@ -876,9 +876,9 @@ with tab3:
             <img src="{img_src9}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Talaine 
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Worship Service Team Leader
                  6PM | Week 1 | Week 3
@@ -899,9 +899,9 @@ with tab3:
             <img src="{img_src8}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Sydney 
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Music Worship Team Leader
             </p>
@@ -922,9 +922,9 @@ with tab3:
             <img src="{img_src2}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Kyle 
-            </h3>
+            </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                  Music Worship Team Leader | Web Support
             </p>
