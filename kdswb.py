@@ -639,7 +639,7 @@ with tab2:
         teacherteamweek_lookup()
 
 with tab3:
-    st.write("If you have any questions or concerns, you can reach out to the following coordinators: ")
+    st.markdown('<p style="color:white;">This text is white.</p>', unsafe_allow_html=True)
 
     image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
     image_kyle = "images-2.jpeg"
