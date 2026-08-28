@@ -48,16 +48,21 @@ st.markdown(
     }}
 
     /* HEADERS */
-    h1, h2, h3, .stApp h1, .stApp h2, .stApp h3 {{
+    h1, h2, .stApp h1, .stApp h2 {{
         color: #000000 !important;
     }}
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] label, 
     [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {{
-        color: #000000 !important; 
+    [data-testid="stSidebar"] h2, {{
+        color: #FFFFFF !important; 
     }}
+
+    /* HEADERS */
+    h3, .stApp h3 {{
+        color: #000000 !important;
+    }}
+
 
     /* TAB CONFIGURATION */
     [data-testid="stTabs"] [role="tablist"] p,
