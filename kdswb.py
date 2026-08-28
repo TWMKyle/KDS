@@ -55,7 +55,7 @@ st.markdown(
     [data-testid="stSidebar"] label, 
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h3, {{
-        color: #FFFFFF !important; 
+        color: #000000 !important; 
     }}
 
     /* HEADERS */
