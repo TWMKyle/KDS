@@ -49,7 +49,7 @@ st.markdown(
 
     /* HEADERS */
     h1, h2, h3, .stApp h1, .stApp h2, .stApp h3 {{
-        color: #FFFFFF !important;
+        color: #000000 !important;
     }}
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] label, 
