@@ -727,7 +727,7 @@ with tab3:
             <img src="{img_src6}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Jinky 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -753,7 +753,7 @@ with tab3:
             <img src="{img_src1}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 John Venn
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -776,7 +776,7 @@ with tab3:
             <img src="{img_src7}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Chris
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -801,7 +801,7 @@ with tab3:
             <img src="{img_src3}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Fitz 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -825,7 +825,7 @@ with tab3:
             <img src="{img_src4}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Pat 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -849,7 +849,7 @@ with tab3:
             <img src="{img_src5}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Hydee 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -871,7 +871,7 @@ with tab3:
             <img src="{img_src9}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Talaine 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -894,7 +894,7 @@ with tab3:
             <img src="{img_src8}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Sydney 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
@@ -917,7 +917,7 @@ with tab3:
             <img src="{img_src2}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
-            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px; font-weight: bold;">
+            <h3 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
                 Kyle 
             </h3>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
