@@ -150,6 +150,8 @@ st.sidebar.write("---")
 st.sidebar.subheader("**This week's songs:**")
 st.sidebar.markdown("[     Slow song - This Is Your Church](https://www.youtube.com/watch?v=WtSalvfyPXU)")
 st.sidebar.markdown("[     Fast song - O What A Savior](https://www.youtube.com/watch?v=QZspQBJf0-Y)")
+
+st.video(https://www.youtube.com/watch?v=QZspQBJf0-Y)
 st.sidebar.write("---")
 
 st.sidebar.subheader("This month's series grid:")
