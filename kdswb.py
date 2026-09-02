@@ -257,7 +257,7 @@ def run_kds_music():
                 f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
 
         with st.form("registration_form", clear_on_submit=True):
-            st.subheader("Serving Schedules")
+            st.info("Serving Schedules")
 
             srv_term = st.selectbox("Select Service Time:", options=service_list)
             wk_term = st.selectbox("Select Serving Week:", options=week_list)
@@ -419,7 +419,7 @@ def run_kds_teacher():
                 f"I cannot find any registered services for you, **{current_name2}**. You can fill out the form below:")
 
         with st.form("registration_form2", clear_on_submit=True):
-            st.subheader("Serving Schedules")
+            st.info("Serving Schedules")
 
             srv_term2 = st.selectbox("Select Service Time:", options=service_list2)
             wk_term2 = st.selectbox("Select Serving Week:", options=week_list2)
