@@ -19,6 +19,8 @@ with cent_co:
     st.image("https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-21.jpg", use_container_width=True)
 
 
+
+   
 st.markdown(
     f"""
     <style>
@@ -32,8 +34,17 @@ st.markdown(
         background-attachment: fixed !important;
     }}
 
+    /* PROTECT THE MAIN APP HEADER & TOP NAVIGATION FROM SIDEBAR BLEED */
+    header[data-testid="stHeader"], 
+    header[data-testid="stHeader"] *, 
+    .stAppHeader,
+    .stAppHeader * {{
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+    }}
+
     /* =========================================================================
-       1. SIDEBAR FONTS BLACK (REGARDLESS OF HEADER SIZE)
+       1. SIDEBAR FONTS BLACK (REGARDLESS OF HEADER SIZE) + SELECTBOXES
        ========================================================================= */
     [data-testid="stSidebar"],
     [data-testid="stSidebar"] p, 
@@ -44,7 +55,9 @@ st.markdown(
     [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] h4,
     [data-testid="stSidebar"] h5,
-    [data-testid="stSidebar"] h6 {{
+    [data-testid="stSidebar"] h6,
+    [data-testid="stSidebar"] .stSelectbox label p,
+    [data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] div {{
         color: #000000 !important; 
     }}
 
@@ -63,19 +76,30 @@ st.markdown(
     }}
 
     /* =========================================================================
-       2. MAIN PAGE FONTS WHITE (REGARDLESS OF HEADER SIZE)
+       2. MAIN PAGE FONTS WHITE (REGARDLESS OF HEADER SIZE) + SELECTBOXES
        ========================================================================= */
-    [data-testid="stAppViewMain"],
-    [data-testid="stAppViewMain"] p,
-    [data-testid="stAppViewMain"] label,
-    [data-testid="stAppViewMain"] span,
     [data-testid="stAppViewMain"] h1,
     [data-testid="stAppViewMain"] h2,
     [data-testid="stAppViewMain"] h3,
     [data-testid="stAppViewMain"] h4,
     [data-testid="stAppViewMain"] h5,
-    [data-testid="stAppViewMain"] h6 {{
+    [data-testid="stAppViewMain"] h6,
+    [data-testid="stAppViewBlockContainer"] h1,
+    [data-testid="stAppViewBlockContainer"] h2,
+    [data-testid="stAppViewBlockContainer"] h3,
+    [data-testid="stAppViewBlockContainer"] h4,
+    [data-testid="stAppViewBlockContainer"] h5,
+    [data-testid="stAppViewBlockContainer"] h6,
+    [data-testid="stAppViewMain"] p,
+    [data-testid="stAppViewMain"] label,
+    [data-testid="stAppViewMain"] span,
+    [data-testid="stAppViewMain"] .stSelectbox label p {{
         color: #FFFFFF !important;
+    }}
+
+    /* Keep text color legible (black) inside main page selectbox dropdown fields */
+    [data-testid="stAppViewMain"] .stSelectbox div[data-baseweb="select"] div {{
+        color: #000000 !important;
     }}
 
     /* TAB CONFIGURATION */
@@ -163,6 +187,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 st.set_page_config(page_title="Kids Church", layout="centered")
