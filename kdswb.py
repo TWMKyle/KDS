@@ -433,7 +433,7 @@ def run_kds_teacher():
                     matching_slots2 = df_latest2.iloc[0:0]
                 else:
                     matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2]
-                    duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
+                    duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
                 
                 if duplicate_collision2:
                     st.error(
