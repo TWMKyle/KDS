@@ -22,6 +22,7 @@ st.markdown(
     f"""
     <style>
     
+
     /* GLOBAL APP CONTAINER BACKGROUND */
     [data-testid="stAppViewContainer"] {{
         background-image: url('{img_srcy}') !important;
@@ -31,34 +32,10 @@ st.markdown(
         background-attachment: fixed !important;
     }}
 
-    /* =========================================================================
-       FIX 1: ABSOLUTE WHITE FOR TOP APPLICATION HEADER & ICONS
-       ========================================================================= */
-    header[data-testid="stHeader"], 
-    header[data-testid="stHeader"] *, 
-    .stAppHeader,
-    .stAppHeader * {{
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-    }}
-
-    /* =========================================================================
-       FIX 2: SIDEBAR FONTS & SIDEBAR SELECTBOXES ALL BLACK
-       ========================================================================= */
-    [data-testid="stSidebar"],
-    [data-testid="stSidebar"] *,
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] span,
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {{
-        color: #000000 !important; 
-    }}
-
-    /* SIDEBAR CONTAINER & BUTTON STYLES */
-    [data-testid="stSidebar"] {{
+    /* SIDEBAR & BUTTON STYLES */
+    [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {{
         background-color: #FDE3E6 !important;
+        color: #000000 !important;
     }}
     [data-testid="stBaseButton-primary"], 
     [data-testid="stBaseButton-secondary"],
@@ -70,36 +47,22 @@ st.markdown(
         border: none !important;
     }}
 
-    /* =========================================================================
-       FIX 3: MAIN PAGE FONTS & MAIN PAGE SELECTBOX VALUE TEXTS WHITE
-       ========================================================================= */
-    /* Headers & Markdown elements */
-    [data-testid="stAppViewMain"] h1,
-    [data-testid="stAppViewMain"] h2,
-    [data-testid="stAppViewMain"] h3,
-    [data-testid="stAppViewBlockContainer"] h1,
-    [data-testid="stAppViewBlockContainer"] h2,
-    [data-testid="stAppViewBlockContainer"] h3,
-    [data-testid="stAppViewMain"] p,
-    [data-testid="stAppViewMain"] label,
-    [data-testid="stAppViewMain"] span {{
-        color: #FFFFFF !important;
-    }}
-
-    /* TARGET MAIN PAGE SELECTBOX LABELS AND INNER TEXT VALUES */
-    [data-testid="stAppViewMain"] .stSelectbox p,
-    [data-testid="stAppViewMain"] .stSelectbox label,
-    [data-testid="stAppViewMain"] div[data-baseweb="select"] div,
-    [data-testid="stAppViewMain"] div[data-baseweb="select"] span {{
-        color: #FFFFFF !important;
-    }}
-
-    /* Dropdown Options Popup Window (Keep text black so options are readable on list popups) */
-    div[data-baseweb="popover"] *, 
-    ul[role="listbox"] *, 
-    li[role="option"] * {{
+    /* HEADERS */
+    h2, h3, .stApp h2, .stApp h3 {{
         color: #000000 !important;
     }}
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3, {{
+        color: #000000 !important; 
+    }}
+
+    /* HEADERS */
+    h1, .stApp h1 {{
+        color: #FFFFFF !important;
+    }}
+
 
     /* TAB CONFIGURATION */
     [data-testid="stTabs"] [role="tablist"] p,
@@ -108,7 +71,10 @@ st.markdown(
         color: #FFFFFF !important; 
     }}
 
-    [data-baseweb="tab-panel"],
+    [data-baseweb="tab-panel"] {{
+        color: #FFFFFF !important;
+    }}
+    
     [data-baseweb="tab-panel"] p, 
     [data-baseweb="tab-panel"] label, 
     [data-baseweb="tab-panel"] span {{
@@ -119,37 +85,37 @@ st.markdown(
     .stTextInput label p {{
         color: #FFFFFF !important;
     }}
+    
     .stTextInput input {{
         color: #000000 !important;
         -webkit-text-fill-color: #000000 !important;
     }}
 
-    /* =========================================================================
-       FIX 4: NOTIFICATIONS SPLIT
-       ========================================================================= */
-    /* Main Page Notifications (White Font) */
-    [data-testid="stAppViewMain"] div[data-testid="stNotification"],
-    [data-testid="stAppViewMain"] div[data-testid="stNotification"] *,
-    [data-testid="stAppViewMain"] .stAlert,
-    [data-testid="stAppViewMain"] .stAlert * {{
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
+    div[data-testid="stNotification"],
+    div[data-testid="stNotification"] p,
+    div[data-testid="stNotification"] span,
+    div[data-testid="stNotification"] div,
+    .stAlert,
+    .stAlert p,
+    .stAlert div {{
+        color: #008080 !important; /* Change this hex code to your preferred text color */
     }}
-
-    /* Sidebar Notifications (Black Font) */
-    [data-testid="stSidebar"] div[data-testid="stNotification"],
-    [data-testid="stSidebar"] div[data-testid="stNotification"] *,
-    [data-testid="stSidebar"] .stAlert,
-    [data-testid="stSidebar"] .stAlert * {{
-        color: #000000 !important;
+    
+    /* Optional: Force the alert icons to match the text color */
+    div[data-testid="stNotification"] svg {{
         fill: #000000 !important;
+        color: #000000 !important;
     }}
 
-    /* FOOTERS & BADGES REMOVAL */
+    /* FOOTERS & BADGES */
     [data-testid="stViewerBadge"],
     div[class*="viewerBadge"],
     a[class*="viewerBadge"],
-    .stViewerBadge,
+    .stViewerBadge {{
+        display: none !important;
+        visibility: hidden !important;
+    }}
+
     footer,
     [data-testid="stManageAppButton"],
     div[class*="manageAppButton"],
@@ -162,7 +128,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-   
+
 
 
 st.set_page_config(page_title="Kids Church", layout="centered")
