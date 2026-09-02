@@ -249,12 +249,31 @@ def run_kds_music():
                 f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
 
         with st.form("registration_form", clear_on_submit=True):
-            st.subheader("Serving Schedules")
+            st.markdown(
+            '<h2 style="color: #FFFFFF !important; font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 1rem;">'
+            'Serving Schedules'
+            '</h2>', 
+            unsafe_allow_html=True
+            )
 
-            srv_term = st.selectbox("Select Service Time:", options=service_list)
-            wk_term = st.selectbox("Select Serving Week:", options=week_list)
-            rl_term = st.selectbox("Select Role:", options=role_list)
-            mnt_term = st.selectbox("Select Month:", options=month_list)
+            st.markdown('<label style="color: #FFFFFF !important;">Select an option below:</label>', unsafe_allow_html=True)
+            
+            # 1. Service Time Selectbox
+            st.markdown('<label style="color: #FFFFFF !important; font-size: 14px; font-weight: 500;">Select Service Time:</label>', unsafe_allow_html=True)
+            srv_term = st.selectbox("Select Service Time:", options=service_list, label_visibility="collapsed")
+
+            # 2. Serving Week Selectbox
+            st.markdown('<label style="color: #FFFFFF !important; font-size: 14px; font-weight: 500;">Select Serving Week:</label>', unsafe_allow_html=True)
+            wk_term = st.selectbox("Select Serving Week:", options=week_list, label_visibility="collapsed")
+
+            # 3. Role Selectbox
+            st.markdown('<label style="color: #FFFFFF !important; font-size: 14px; font-weight: 500;">Select Role:</label>', unsafe_allow_html=True)
+            rl_term = st.selectbox("Select Role:", options=role_list, label_visibility="collapsed")
+
+            # 4. Month Selectbox
+            st.markdown('<label style="color: #FFFFFF !important; font-size: 14px; font-weight: 500;">Select Month:</label>', unsafe_allow_html=True)
+            mnt_term = st.selectbox("Select Month:", options=month_list, label_visibility="collapsed")
+
 
             button_label = "Register for Kids Music" if has_profile else "Create New Entry"
             submit_shift = st.form_submit_button(button_label, type="primary")
