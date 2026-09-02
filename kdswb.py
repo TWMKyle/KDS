@@ -16,7 +16,7 @@ left_co, cent_co, right_co = st.columns([1, 2, 1])
 
 with cent_co:
     # 2. Place your logo image inside the middle column
-    st.image("https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg", use_container_width=True)
+    st.image("https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-21.jpg", use_container_width=True)
 
 st.markdown(
     f"""
