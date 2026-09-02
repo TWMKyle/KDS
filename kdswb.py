@@ -104,14 +104,14 @@ st.markdown(
     /* 1. Target the Selectbox Label Text */
 .stSelectbox label p,
 .stSelectbox [data-testid="stWidgetLabel"] p {{
-    color: #008080 !important;
+    color: #FFFFFF !important;
 }}
 
 /* 2. Target the Selected Value Text Inside the Dropdown Window */
 .stSelectbox div[data-baseweb="select"] div,
 .stSelectbox div[data-baseweb="select"] span {{
-    color: #008080 !important;
-    -webkit-text-fill-color: #008080 !important; /* Fix for Safari/Chrome rendering engines */
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important; /* Fix for Safari/Chrome rendering engines */
 }}
 
     /* Optional: Force the alert icons to match the text color */
