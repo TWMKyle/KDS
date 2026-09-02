@@ -148,8 +148,10 @@ current_calendar_year = datetime.now().strftime("%Y")
 
 st.sidebar.write("---")
 st.sidebar.subheader("**This week's songs:**")
+st.sidebar.markdown("Slow Song - This Is Your Church")
 st.sidebar.video("https://www.youtube.com/watch?v=QZspQBJf0-Y")
-st.sidebar.video("https://www.youtube.com/watch?v=QZspQBJf0-Y")
+st.sidebar.markdown("Fast Song - O What A Savior")
+st.sidebar.video("https://www.youtube.com/watch?v=WtSalvfyPXU")
 st.sidebar.write("---")
 
 st.sidebar.subheader("This month's series grid:")
