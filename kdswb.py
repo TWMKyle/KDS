@@ -203,7 +203,7 @@ st.markdown(
 
 
 st.set_page_config(page_title="Kids Church", layout="centered")
-st.title("Kids Church Registration Portal")
+st.title('<h1 style="color: #FFFFFF !important;">Kids Church Registration Portal</h1>', unsafe_allow_html=True)
 
 IMAGE_FILE2 = "kds.png"
 
