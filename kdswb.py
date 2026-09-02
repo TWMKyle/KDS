@@ -34,7 +34,9 @@ st.markdown(
         background-attachment: fixed !important;
     }}
 
-    /* PROTECT THE MAIN APP HEADER & TOP NAVIGATION FROM SIDEBAR BLEED */
+    /* =========================================================================
+       CRITICAL HEADER FIX: FORCE TOP APP MENU & ICONS TO REMAIN WHITE
+       ========================================================================= */
     header[data-testid="stHeader"], 
     header[data-testid="stHeader"] *, 
     .stAppHeader,
@@ -44,7 +46,7 @@ st.markdown(
     }}
 
     /* =========================================================================
-       1. SIDEBAR FONTS BLACK (REGARDLESS OF HEADER SIZE) + SELECTBOXES
+       1. SIDEBAR FONTS BLACK (REGARDLESS OF HEADER SIZE)
        ========================================================================= */
     [data-testid="stSidebar"],
     [data-testid="stSidebar"] p, 
@@ -56,7 +58,7 @@ st.markdown(
     [data-testid="stSidebar"] h4,
     [data-testid="stSidebar"] h5,
     [data-testid="stSidebar"] h6,
-    [data-testid="stSidebar"] .stSelectbox label p,
+    [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p,
     [data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] div {{
         color: #000000 !important; 
     }}
@@ -76,29 +78,38 @@ st.markdown(
     }}
 
     /* =========================================================================
-       2. MAIN PAGE FONTS WHITE (REGARDLESS OF HEADER SIZE) + SELECTBOXES
+       2. MAIN PAGE FONTS & SELECT BOXES WHITE (REGARDLESS OF HEADER SIZE)
        ========================================================================= */
+    /* Target page markdown headers */
     [data-testid="stAppViewMain"] h1,
     [data-testid="stAppViewMain"] h2,
     [data-testid="stAppViewMain"] h3,
     [data-testid="stAppViewMain"] h4,
     [data-testid="stAppViewMain"] h5,
     [data-testid="stAppViewMain"] h6,
+    /* Target markdown inside blocks */
     [data-testid="stAppViewBlockContainer"] h1,
     [data-testid="stAppViewBlockContainer"] h2,
     [data-testid="stAppViewBlockContainer"] h3,
     [data-testid="stAppViewBlockContainer"] h4,
     [data-testid="stAppViewBlockContainer"] h5,
     [data-testid="stAppViewBlockContainer"] h6,
+    /* Target regular paragraph, labels, and spans */
     [data-testid="stAppViewMain"] p,
     [data-testid="stAppViewMain"] label,
     [data-testid="stAppViewMain"] span,
-    [data-testid="stAppViewMain"] .stSelectbox label p {{
+    /* TARGET SELECT BOX LABELS */
+    [data-testid="stAppViewMain"] [data-testid="stWidgetLabel"] p,
+    /* TARGET SELECT BOX CURRENTLY SELECTED TEXT DISPLAY */
+    [data-testid="stAppViewMain"] .stSelectbox div[data-baseweb="select"] span,
+    [data-testid="stAppViewMain"] .stSelectbox div[data-baseweb="select"] div {{
         color: #FFFFFF !important;
     }}
 
-    /* Keep text color legible (black) inside main page selectbox dropdown fields */
-    [data-testid="stAppViewMain"] .stSelectbox div[data-baseweb="select"] div {{
+    /* Keeps selection option dropdowns readable if they pop up over standard white backgrounds */
+    [data-baseweb="popover"] *, 
+    ul[role="listbox"] *, 
+    li[role="option"] * {{
         color: #000000 !important;
     }}
 
@@ -188,6 +199,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+   
 
 
 st.set_page_config(page_title="Kids Church", layout="centered")
