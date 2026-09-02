@@ -21,10 +21,12 @@ with cent_co:
 
 
    
+
 st.markdown(
     f"""
     <style>
     
+
     /* GLOBAL APP CONTAINER BACKGROUND */
     [data-testid="stAppViewContainer"] {{
         background-image: url('{img_srcy}') !important;
@@ -34,38 +36,10 @@ st.markdown(
         background-attachment: fixed !important;
     }}
 
-    /* =========================================================================
-       CRITICAL HEADER FIX: FORCE TOP APP MENU & ICONS TO REMAIN WHITE
-       ========================================================================= */
-    header[data-testid="stHeader"], 
-    header[data-testid="stHeader"] *, 
-    .stAppHeader,
-    .stAppHeader * {{
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-    }}
-
-    /* =========================================================================
-       1. SIDEBAR FONTS BLACK (REGARDLESS OF HEADER SIZE)
-       ========================================================================= */
-    [data-testid="stSidebar"],
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] span,
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3,
-    [data-testid="stSidebar"] h4,
-    [data-testid="stSidebar"] h5,
-    [data-testid="stSidebar"] h6,
-    [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p,
-    [data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] div {{
-        color: #000000 !important; 
-    }}
-
-    /* SIDEBAR CONTAINER & BUTTON STYLES */
+    /* SIDEBAR & BUTTON STYLES */
     [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {{
         background-color: #FDE3E6 !important;
+        color: #000000 !important;
     }}
     [data-testid="stBaseButton-primary"], 
     [data-testid="stBaseButton-secondary"],
@@ -77,41 +51,22 @@ st.markdown(
         border: none !important;
     }}
 
-    /* =========================================================================
-       2. MAIN PAGE FONTS & SELECT BOXES WHITE (REGARDLESS OF HEADER SIZE)
-       ========================================================================= */
-    /* Target page markdown headers */
-    [data-testid="stAppViewMain"] h1,
-    [data-testid="stAppViewMain"] h2,
-    [data-testid="stAppViewMain"] h3,
-    [data-testid="stAppViewMain"] h4,
-    [data-testid="stAppViewMain"] h5,
-    [data-testid="stAppViewMain"] h6,
-    /* Target markdown inside blocks */
-    [data-testid="stAppViewBlockContainer"] h1,
-    [data-testid="stAppViewBlockContainer"] h2,
-    [data-testid="stAppViewBlockContainer"] h3,
-    [data-testid="stAppViewBlockContainer"] h4,
-    [data-testid="stAppViewBlockContainer"] h5,
-    [data-testid="stAppViewBlockContainer"] h6,
-    /* Target regular paragraph, labels, and spans */
-    [data-testid="stAppViewMain"] p,
-    [data-testid="stAppViewMain"] label,
-    [data-testid="stAppViewMain"] span,
-    /* TARGET SELECT BOX LABELS */
-    [data-testid="stAppViewMain"] [data-testid="stWidgetLabel"] p,
-    /* TARGET SELECT BOX CURRENTLY SELECTED TEXT DISPLAY */
-    [data-testid="stAppViewMain"] .stSelectbox div[data-baseweb="select"] span,
-    [data-testid="stAppViewMain"] .stSelectbox div[data-baseweb="select"] div {{
+    /* HEADERS */
+    h2, h3, .stApp h2, .stApp h3 {{
+        color: #000000 !important;
+    }}
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3, {{
+        color: #000000 !important; 
+    }}
+
+    /* HEADERS */
+    h1, .stApp h1 {{
         color: #FFFFFF !important;
     }}
 
-    /* Keeps selection option dropdowns readable if they pop up over standard white backgrounds */
-    [data-baseweb="popover"] *, 
-    ul[role="listbox"] *, 
-    li[role="option"] * {{
-        color: #000000 !important;
-    }}
 
     /* TAB CONFIGURATION */
     [data-testid="stTabs"] [role="tablist"] p,
@@ -140,40 +95,18 @@ st.markdown(
         -webkit-text-fill-color: #000000 !important;
     }}
 
-    /* =========================================================================
-       3. NOTIFICATIONS ON THE MAIN PAGE (WHITE FONT)
-       ========================================================================= */
-    [data-testid="stAppViewMain"] div[data-testid="stNotification"],
-    [data-testid="stAppViewMain"] div[data-testid="stNotification"] p,
-    [data-testid="stAppViewMain"] div[data-testid="stNotification"] span,
-    [data-testid="stAppViewMain"] div[data-testid="stNotification"] div,
-    [data-testid="stAppViewMain"] .stAlert,
-    [data-testid="stAppViewMain"] .stAlert p,
-    [data-testid="stAppViewMain"] .stAlert div {{
-        color: #FFFFFF !important;
+    div[data-testid="stNotification"],
+    div[data-testid="stNotification"] p,
+    div[data-testid="stNotification"] span,
+    div[data-testid="stNotification"] div,
+    .stAlert,
+    .stAlert p,
+    .stAlert div {{
+        color: #008080 !important; /* Change this hex code to your preferred text color */
     }}
     
-    /* Main Page Alert Icon Formatting */
-    [data-testid="stAppViewMain"] div[data-testid="stNotification"] svg {{
-        fill: #FFFFFF !important;
-        color: #FFFFFF !important;
-    }}
-
-    /* =========================================================================
-       4. NOTIFICATIONS ON THE SIDEBAR (BLACK FONT)
-       ========================================================================= */
-    [data-testid="stSidebar"] div[data-testid="stNotification"],
-    [data-testid="stSidebar"] div[data-testid="stNotification"] p,
-    [data-testid="stSidebar"] div[data-testid="stNotification"] span,
-    [data-testid="stSidebar"] div[data-testid="stNotification"] div,
-    [data-testid="stSidebar"] .stAlert,
-    [data-testid="stSidebar"] .stAlert p,
-    [data-testid="stSidebar"] .stAlert div {{
-        color: #000000 !important;
-    }}
-    
-    /* Sidebar Alert Icon Formatting */
-    [data-testid="stSidebar"] div[data-testid="stNotification"] svg {{
+    /* Optional: Force the alert icons to match the text color */
+    div[data-testid="stNotification"] svg {{
         fill: #000000 !important;
         color: #000000 !important;
     }}
@@ -198,6 +131,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
    
 
