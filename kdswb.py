@@ -18,15 +18,10 @@ with cent_co:
     # 2. Place your logo image inside the middle column
     st.image("https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-21.jpg", use_container_width=True)
 
-
-
-   
-
 st.markdown(
     f"""
     <style>
     
-
     /* GLOBAL APP CONTAINER BACKGROUND */
     [data-testid="stAppViewContainer"] {{
         background-image: url('{img_srcy}') !important;
@@ -36,10 +31,34 @@ st.markdown(
         background-attachment: fixed !important;
     }}
 
-    /* SIDEBAR & BUTTON STYLES */
-    [data-testid="stSidebar"], [data-testid="stBaseButton-secondary"] {{
+    /* =========================================================================
+       FIX 1: ABSOLUTE WHITE FOR TOP APPLICATION HEADER & ICONS
+       ========================================================================= */
+    header[data-testid="stHeader"], 
+    header[data-testid="stHeader"] *, 
+    .stAppHeader,
+    .stAppHeader * {{
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+    }}
+
+    /* =========================================================================
+       FIX 2: SIDEBAR FONTS & SIDEBAR SELECTBOXES ALL BLACK
+       ========================================================================= */
+    [data-testid="stSidebar"],
+    [data-testid="stSidebar"] *,
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3 {{
+        color: #000000 !important; 
+    }}
+
+    /* SIDEBAR CONTAINER & BUTTON STYLES */
+    [data-testid="stSidebar"] {{
         background-color: #FDE3E6 !important;
-        color: #000000 !important;
     }}
     [data-testid="stBaseButton-primary"], 
     [data-testid="stBaseButton-secondary"],
@@ -51,22 +70,36 @@ st.markdown(
         border: none !important;
     }}
 
-    /* HEADERS */
-    h2, h3, .stApp h2, .stApp h3 {{
-        color: #000000 !important;
-    }}
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3, {{
-        color: #000000 !important; 
-    }}
-
-    /* HEADERS */
-    h1, .stApp h1 {{
+    /* =========================================================================
+       FIX 3: MAIN PAGE FONTS & MAIN PAGE SELECTBOX VALUE TEXTS WHITE
+       ========================================================================= */
+    /* Headers & Markdown elements */
+    [data-testid="stAppViewMain"] h1,
+    [data-testid="stAppViewMain"] h2,
+    [data-testid="stAppViewMain"] h3,
+    [data-testid="stAppViewBlockContainer"] h1,
+    [data-testid="stAppViewBlockContainer"] h2,
+    [data-testid="stAppViewBlockContainer"] h3,
+    [data-testid="stAppViewMain"] p,
+    [data-testid="stAppViewMain"] label,
+    [data-testid="stAppViewMain"] span {{
         color: #FFFFFF !important;
     }}
 
+    /* TARGET MAIN PAGE SELECTBOX LABELS AND INNER TEXT VALUES */
+    [data-testid="stAppViewMain"] .stSelectbox p,
+    [data-testid="stAppViewMain"] .stSelectbox label,
+    [data-testid="stAppViewMain"] div[data-baseweb="select"] div,
+    [data-testid="stAppViewMain"] div[data-baseweb="select"] span {{
+        color: #FFFFFF !important;
+    }}
+
+    /* Dropdown Options Popup Window (Keep text black so options are readable on list popups) */
+    div[data-baseweb="popover"] *, 
+    ul[role="listbox"] *, 
+    li[role="option"] * {{
+        color: #000000 !important;
+    }}
 
     /* TAB CONFIGURATION */
     [data-testid="stTabs"] [role="tablist"] p,
@@ -75,10 +108,7 @@ st.markdown(
         color: #FFFFFF !important; 
     }}
 
-    [data-baseweb="tab-panel"] {{
-        color: #FFFFFF !important;
-    }}
-    
+    [data-baseweb="tab-panel"],
     [data-baseweb="tab-panel"] p, 
     [data-baseweb="tab-panel"] label, 
     [data-baseweb="tab-panel"] span {{
@@ -89,37 +119,37 @@ st.markdown(
     .stTextInput label p {{
         color: #FFFFFF !important;
     }}
-    
     .stTextInput input {{
         color: #000000 !important;
         -webkit-text-fill-color: #000000 !important;
     }}
 
-    div[data-testid="stNotification"],
-    div[data-testid="stNotification"] p,
-    div[data-testid="stNotification"] span,
-    div[data-testid="stNotification"] div,
-    .stAlert,
-    .stAlert p,
-    .stAlert div {{
-        color: #008080 !important; /* Change this hex code to your preferred text color */
-    }}
-    
-    /* Optional: Force the alert icons to match the text color */
-    div[data-testid="stNotification"] svg {{
-        fill: #000000 !important;
-        color: #000000 !important;
+    /* =========================================================================
+       FIX 4: NOTIFICATIONS SPLIT
+       ========================================================================= */
+    /* Main Page Notifications (White Font) */
+    [data-testid="stAppViewMain"] div[data-testid="stNotification"],
+    [data-testid="stAppViewMain"] div[data-testid="stNotification"] *,
+    [data-testid="stAppViewMain"] .stAlert,
+    [data-testid="stAppViewMain"] .stAlert * {{
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
     }}
 
-    /* FOOTERS & BADGES */
+    /* Sidebar Notifications (Black Font) */
+    [data-testid="stSidebar"] div[data-testid="stNotification"],
+    [data-testid="stSidebar"] div[data-testid="stNotification"] *,
+    [data-testid="stSidebar"] .stAlert,
+    [data-testid="stSidebar"] .stAlert * {{
+        color: #000000 !important;
+        fill: #000000 !important;
+    }}
+
+    /* FOOTERS & BADGES REMOVAL */
     [data-testid="stViewerBadge"],
     div[class*="viewerBadge"],
     a[class*="viewerBadge"],
-    .stViewerBadge {{
-        display: none !important;
-        visibility: hidden !important;
-    }}
-
+    .stViewerBadge,
     footer,
     [data-testid="stManageAppButton"],
     div[class*="manageAppButton"],
@@ -131,7 +161,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 
    
 
@@ -249,32 +278,13 @@ def run_kds_music():
                 f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
 
         with st.form("registration_form", clear_on_submit=True):
-            st.markdown(
-            '<h2 style="color: #FFFFFF !important; font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 1rem;">'
-            'Serving Schedules'
-            '</h2>', 
-            unsafe_allow_html=True
-            )
+            st.subheader("Serving Schedules")
 
-            st.markdown('<label style="color: #FFFFFF !important;">Select an option below:</label>', unsafe_allow_html=True)
+            srv_term = st.selectbox("Select Service Time:", options=service_list)
+            wk_term = st.selectbox("Select Serving Week:", options=week_list)
+            rl_term = st.selectbox("Select Role:", options=role_list)
+            mnt_term = st.selectbox("Select Month:", options=month_list)
             
-            # 1. Service Time Selectbox
-            st.markdown('<label style="color: #FFFFFF !important; font-size: 14px; font-weight: 500;">Select Service Time:</label>', unsafe_allow_html=True)
-            srv_term = st.selectbox("Select Service Time:", options=service_list, label_visibility="collapsed")
-
-            # 2. Serving Week Selectbox
-            st.markdown('<label style="color: #FFFFFF !important; font-size: 14px; font-weight: 500;">Select Serving Week:</label>', unsafe_allow_html=True)
-            wk_term = st.selectbox("Select Serving Week:", options=week_list, label_visibility="collapsed")
-
-            # 3. Role Selectbox
-            st.markdown('<label style="color: #FFFFFF !important; font-size: 14px; font-weight: 500;">Select Role:</label>', unsafe_allow_html=True)
-            rl_term = st.selectbox("Select Role:", options=role_list, label_visibility="collapsed")
-
-            # 4. Month Selectbox
-            st.markdown('<label style="color: #FFFFFF !important; font-size: 14px; font-weight: 500;">Select Month:</label>', unsafe_allow_html=True)
-            mnt_term = st.selectbox("Select Month:", options=month_list, label_visibility="collapsed")
-
-
             button_label = "Register for Kids Music" if has_profile else "Create New Entry"
             submit_shift = st.form_submit_button(button_label, type="primary")
 
