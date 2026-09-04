@@ -244,7 +244,7 @@ def run_kds_music():
         has_profile = not existing_entries.empty
 
         if has_profile:
-            st.success(f"Welcome back, **{current_name}**! Here are your active serving schedules:")
+            st.success(f"Welcome back, **{current_name}**! Here are your active and previous serving commitments:")
 
             display_df = existing_entries[required_columns].copy()
             display_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
@@ -405,7 +405,7 @@ def run_kds_teacher():
         has_profile2 = not existing_entries2.empty
 
         if has_profile2:
-            st.success(f"Welcome back, **{current_name2}**! Here are your active serving schedules:")
+            st.success(f"Welcome back, **{current_name2}**! Here are your active and previous serving commitments:")
 
             display_df2 = existing_entries2[required_columns2].copy()
             display_df2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled",
