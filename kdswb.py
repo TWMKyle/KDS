@@ -1025,20 +1025,20 @@ with tab4:
         allowed_srv = "ALL"
         
         # Apply strict organizational routing rules based on the logged-in Username
-        if active_user == "USER 1":
+        if active_user == "Fitz":
             allowed_srv = ["4PM"]
-        elif active_user == "USER 2":
+        elif active_user == "Chris":
             allowed_srv = ["2PM"]
-        elif active_user == "USER 3":
+        elif active_user == "User":
             allowed_srv = ["6PM"]
-        elif active_user == "USER 4":
+        elif active_user == "Johnvenn":
             allowed_srv = ["12NN"]
-        elif active_user == "USER 5":
+        elif active_user == "Oliver":
             allowed_srv = ["10AM"]
-        elif active_user == "USER 6":
+        elif active_user == "Teach13":
             allowed_weeks = ["Week1", "Week3"]
             allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
-        elif active_user == "USER 7":
+        elif active_user == "Teach24":
             allowed_weeks = ["Week2", "Week4"]
             allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
         
