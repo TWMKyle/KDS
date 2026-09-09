@@ -1012,8 +1012,7 @@ with tab4:
                     st.rerun()
                 else:
                     st.error("Authentication rejected. Invalid credentials combination.")
-        # 3. SCENARIO B: AUTHENTICATED USER INTERFACE & COMPREHENSIVE FILTER MATRIX
-    else:
+        else:
         active_user = st.session_state.get("current_user", "ADMIN")
         
         # Locate the specific user's row profile inside the credentials frame
@@ -1025,10 +1024,10 @@ with tab4:
         allowed_srv = "ALL"
         
         if not user_row.empty:
-            # Pull the role/profile configuration directly from the 'auth' column
-            user_auth_profile = str(user_row["auth"].values[0]).strip().upper()
+            # 💡 FIX: Use .iloc[0] to grab the clean, raw text cell directly without brackets
+            user_auth_profile = str(user_row["auth"].iloc[0]).strip().upper()
             
-            # Match the criteria rules based on the string value inside the 'auth' column
+            # Match the criteria rules based on the clean text value inside the 'auth' column
             if "4PM" in user_auth_profile:
                 allowed_srv = ["4PM"]
             elif "2PM" in user_auth_profile:
@@ -1045,6 +1044,7 @@ with tab4:
             elif "WEEK 2" in user_auth_profile or "WEEK2" in user_auth_profile:
                 allowed_weeks = ["Week2", "Week4"]
                 allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
+
         
         # Display custom metrics banner for the logged-in worker
         st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles} | ⏰ **Service:** {allowed_srv}")
