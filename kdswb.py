@@ -1073,7 +1073,7 @@ with tab4:
             # Isolate the segment this user profile is allowed to edit
             filtered_df = master_df[combined_filter_mask].copy()
             
-            st.caption("✏️ Modify cells, add or delete rows directly below. Remember to commit changes when finished.")
+            st.markdown('<span style="color: white; font-size: 0.85rem;">✏️ Modify cells, add or delete rows directly below. Remember to commit changes when finished.</span>', unsafe_allow_html=True)
             
             # Render interactive spreadsheet UI
             edited_filtered_df = st.data_editor(
