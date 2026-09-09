@@ -1013,43 +1013,50 @@ with tab4:
                 else:
                     st.error("Authentication rejected. Invalid credentials combination.")
     else:
-        active_user = st.session_state.get("current_user", "ADMIN")
+        active_user = st.session_state.get("current_user", "ADMIN").strip().upper()
         
-        # Locate the specific user's row profile inside the credentials frame
-        user_row = users_df[users_df["uz"].str.upper() == active_user]
+        # 💡 FIX 1: Clean and uppercase the entire column from Google Sheets before doing the match
+        clean_uz_series = users_df["uz"].astype(str).str.strip().str.upper()
+        user_row = users_df[clean_uz_series == active_user]
         
         # Default fallback states ("ALL" means unrestricted)
         allowed_weeks = "ALL"
         allowed_roles = "ALL"
         allowed_srv = "ALL"
         
+        # 💡 DIAGNOSTIC PANEL: Let's see what is actually happening behind the scenes
+        st.write("--- 🔍 Live Connection Debug Panel ---")
+        st.write(f"1. You typed in Username: `{active_user}`")
+        st.write(f"2. Found matching rows in user sheet? `{'YES' if not user_row.empty else 'NO'}`")
+        
         if not user_row.empty:
-            # Grab the clean string out of the first matching row's auth column
-            raw_val = user_row["auth"].values[0]
-            user_auth_profile = str(raw_val).strip().upper()
-            
-            # --- DIAGNOSTIC HELP ---
-            # This will print the raw text extracted from your sheet onto the screen 
-            # so we can see exactly what text it's trying to compare against.
-            st.write(f"⚙️ Debugging info: Cleaned 'auth' value from sheet is: `{user_auth_profile}`")
+            # 💡 FIX 2: Surgically pull the value out of the FIRST matched row's auth column
+            raw_auth_value = str(user_row["auth"].iloc[0]).strip().upper()
+            st.write(f"3. Raw string found inside your 'auth' cell: `{raw_auth_value}`")
             
             # Match the criteria rules based on the clean text value inside the 'auth' column
-            if "4PM" in user_auth_profile:
+            if "4PM" in raw_auth_value:
                 allowed_srv = ["4PM"]
-            elif "2PM" in user_auth_profile:
+            elif "2PM" in raw_auth_value:
                 allowed_srv = ["2PM"]
-            elif "6PM" in user_auth_profile:
+            elif "6PM" in raw_auth_value:
                 allowed_srv = ["6PM"]
-            elif "12NN" in user_auth_profile:
+            elif "12NN" in raw_auth_value:
                 allowed_srv = ["12NN"]
-            elif "10AM" in user_auth_profile:
+            elif "10AM" in raw_auth_value:
                 allowed_srv = ["10AM"]
-            elif "WEEK 1" in user_auth_profile or "WEEK1" in user_auth_profile:
+            elif "WEEK 1" in raw_auth_value or "WEEK1" in raw_auth_value:
                 allowed_weeks = ["Week1", "Week3"]
                 allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
-            elif "WEEK 2" in user_auth_profile or "WEEK2" in user_auth_profile:
+            elif "WEEK 2" in raw_auth_value or "WEEK2" in raw_auth_value:
                 allowed_weeks = ["Week2", "Week4"]
                 allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
+        else:
+            # If the user row wasn't found, output everything in your sheet to check for errors
+            st.write("3. ❌ USER NOT FOUND. Here are the usernames currently sitting in your Google Sheet:")
+            st.write(list(users_df["uz"].unique()))
+            
+        st.write("-------------------------------------")
         
         # Display custom metrics banner for the logged-in worker
         st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles} | ⏰ **Service:** {allowed_srv}")
