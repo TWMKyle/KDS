@@ -1003,7 +1003,7 @@ with tab4:
 
     # 2. SCENARIO A: THE SECURE LOGIN GATE
     if not st.session_state.get("logged_in", False):
-        st.warning("🔒 Secure Terminal: This workspace requires valid credentials to access data frames.")
+        st.warning("🔒 Please login only when you have been supplied with kids church credentials")
         
         with st.form("tab4_secure_login_form"):
             username_input = st.text_input("Username").strip().upper()
