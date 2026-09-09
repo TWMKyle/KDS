@@ -971,16 +971,15 @@ with tab3:
 
 with tab4:
 
-    with tab4:
-    st.subheader("Custom Multi-Week & Role Data Portal")
+ 
 
     # 1. USER CREDENTIALS BANK (5 Users Total)
     USER_CREDENTIALS = {
         "ADMIN": "ADMIN123",          # Super Admin (All Access)
-        "ADMIN_MINISTRY": "MIN123",  # Admin 2: Weeks 1&3 + Ministry Roles
-        "ADMIN_MUSIC": "MUS123",     # Admin 3: Weeks 2&4 + Music Roles
-        "USER_FOUR": "FOUR123",      # User 4 (Placeholder)
-        "USER_FIVE": "FIVE123"       # User 5 (Placeholder)
+        "TEACH13": "admin",  # Admin 2: Weeks 1&3 + Ministry Roles
+        "TEACH24": "admin",     # Admin 3: Weeks 2&4 + Music Roles
+        "MUSIC13": "admin",      # User 4 (Placeholder)
+        "MUSIC24": "admin"       # User 5 (Placeholder)
     }
 
     # 2. DOUBLE-FILTER MATRIX MAP (Weeks & Roles)
@@ -990,21 +989,21 @@ with tab4:
             "weeks": ["Week1", "Week2", "Week3", "Week4", "Week5"],
             "roles": "ALL"
         },
-        "ADMIN_MINISTRY": {
+        "TEACH13": {
             "weeks": ["Week1", "Week3"],
             "roles": ["Preacher", "Volunteer", "Backup Teacher"]
         },
-        "ADMIN_MUSIC": {
+        "TEACH24": {
             "weeks": ["Week2", "Week4"],
+            "roles": ["Preacher", "Volunteer", "Backup Teacher"]
+        },
+        "MUSIC13": {
+            "weeks": ["Week1", "Week3"],
             "roles": ["WL", "AG", "Backup Singer"]
         },
-        "USER_FOUR": {
-            "weeks": ["Week1", "Week2", "Week3", "Week4", "Week5"],
-            "roles": "ALL"
-        },
-        "USER_FIVE": {
-            "weeks": ["Week1", "Week2", "Week3", "Week4", "Week5"],
-            "roles": "ALL"
+        "MUSIC24": {
+            "weeks": ["Week2", "Week4"],
+            "roles": ["WL", "AG", "Backup Singer"]
         }
     }
 
