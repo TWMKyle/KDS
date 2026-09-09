@@ -1012,7 +1012,7 @@ with tab4:
                     st.rerun()
                 else:
                     st.error("Authentication rejected. Invalid credentials combination.")
-        else:
+    else:
         active_user = st.session_state.get("current_user", "ADMIN")
         
         # Locate the specific user's row profile inside the credentials frame
