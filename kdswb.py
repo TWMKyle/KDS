@@ -986,39 +986,39 @@ with tab4:
 
     try:
     # Pull live data from Google Sheets
-    conn = st.connection("gsheets", type=GSheetsConnection)
-    master_df = conn.read(ttl=0)
+        conn = st.connection("gsheets", type=GSheetsConnection)
+        master_df = conn.read(ttl=0)
     
     # Clean up any trailing/leading spaces from your sheet values
-    master_df['WK'] = master_df['WK'].astype(str).str.strip()
+        master_df['WK'] = master_df['WK'].astype(str).str.strip()
     
     # Build the filter mask using your list of text tags
-    row_filter_mask = master_df['WK'].isin(allowed_weeks)
+        row_filter_mask = master_df['WK'].isin(allowed_weeks)
     
     # Isolate the segment this user is allowed to edit
-    filtered_df = master_df[row_filter_mask].copy()
+        filtered_df = master_df[row_filter_mask].copy()
     
-    st.write(f"Showing rows assigned to your profile workflow (Column: `WK`):")
-    edited_filtered_df = st.data_editor(
+        st.write(f"Showing rows assigned to your profile workflow (Column: `WK`):")
+        edited_filtered_df = st.data_editor(
         filtered_df, 
         num_rows="dynamic", 
         use_container_width=True
     )
     
     # Compile and save back to the cloud
-    if st.button("Commit Target Changes", type="primary"):
-        with st.spinner("Surgically updating cloud master record..."):
+        if st.button("Commit Target Changes", type="primary"):
+            with st.spinner("Surgically updating cloud master record..."):
             
             # Grab all the data the current user WAS NOT allowed to see
-            unchanged_master_records = master_df[~row_filter_mask]
+                unchanged_master_records = master_df[~row_filter_mask]
             
             # Merge the untouched records with the newly edited segment
-            final_compiled_df = pd.concat([unchanged_master_records, edited_filtered_df], ignore_index=True)
+                final_compiled_df = pd.concat([unchanged_master_records, edited_filtered_df], ignore_index=True)
             
             # Overwrite Google Sheet with the master composite dataframe
-            conn.update(data=final_compiled_df)
-            st.success("Changes uploaded and merged with master sheet successfully!")
-            st.rerun()
+                conn.update(data=final_compiled_df)
+                st.success("Changes uploaded and merged with master sheet successfully!")
+                st.rerun()
             
-except Exception as e:
-    st.error(f"Execution Error: {e}")
+    except Exception as e:
+        st.error(f"Execution Error: {e}")
