@@ -1024,8 +1024,14 @@ with tab4:
         allowed_srv = "ALL"
         
         if not user_row.empty:
-            # 💡 FIX: Use .iloc[0] to grab the clean, raw text cell directly without brackets
-            user_auth_profile = str(user_row["auth"].iloc[0]).strip().upper()
+            # Grab the clean string out of the first matching row's auth column
+            raw_val = user_row["auth"].values[0]
+            user_auth_profile = str(raw_val).strip().upper()
+            
+            # --- DIAGNOSTIC HELP ---
+            # This will print the raw text extracted from your sheet onto the screen 
+            # so we can see exactly what text it's trying to compare against.
+            st.write(f"⚙️ Debugging info: Cleaned 'auth' value from sheet is: `{user_auth_profile}`")
             
             # Match the criteria rules based on the clean text value inside the 'auth' column
             if "4PM" in user_auth_profile:
@@ -1044,7 +1050,6 @@ with tab4:
             elif "WEEK 2" in user_auth_profile or "WEEK2" in user_auth_profile:
                 allowed_weeks = ["Week2", "Week4"]
                 allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
-
         
         # Display custom metrics banner for the logged-in worker
         st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles} | ⏰ **Service:** {allowed_srv}")
