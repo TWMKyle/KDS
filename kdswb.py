@@ -971,33 +971,39 @@ with tab3:
 
 
 with tab4:
-    
 
-    # 1. LOAD CONFIGURATION DIRECTLY FROM THE "Users" WORKSHEET TAB
+    import streamlit as st
+from streamlit_gsheets import GSheetsConnection
+import pandas as pd
+
+with tab4:
+    st.subheader("Dynamic Multi-Week & Role Data Portal")
+
+    # 1. LOAD USER REGISTRY SYSTEM FROM GOOGLE SHEETS
     try:
         conn = st.connection("gsheets", type=GSheetsConnection)
         
-        # Read the specialized "Users" worksheet tab (ttl=0 ensures immediate password changes apply)
+        # Read the specialized user credential sheet (ttl=0 ensures live permission changes sync instantly)
         users_df = conn.read(worksheet="Users", ttl=0)
         
-        # Clean string formats and remove accidental leading/trailing spaces
+        # Standardize security column arrays (strip trailing/leading whitespace blocks)
         for col in ["uz", "pc", "auth"]:
             if col in users_df.columns:
                 users_df[col] = users_df[col].astype(str).str.strip()
             else:
-                st.error(f"❌ Could not find target user header column `{col}` inside your Users tab. Found: {list(users_df.columns)}")
+                st.error(f"❌ Target column `{col}` was missing from your Users worksheet header row. Detected fields: {list(users_df.columns)}")
                 st.stop()
         
-        # Compile user credential dictionary mapping (Username: Passcode)
+        # Build live credentials bank mapping dictionary (Username: Passcode)
         USER_CREDENTIALS = dict(zip(users_df["uz"].str.upper(), users_df["pc"]))
         
-    except Exception as user_sheet_error:
-        st.error(f"❌ User registry failure. Ensure a worksheet tab named 'Users' exists with columns `uz`, `pc`, and `auth`. Trace: {user_sheet_error}")
+    except Exception as registry_error:
+        st.error(f"❌ User database pipeline offline. Ensure your Google Sheet has a 'Users' tab with headers: uz, pc, auth. Details: {registry_error}")
         st.stop()
 
-    # 2. SCENARIO A: THE LOGIN GATE
+    # 2. SCENARIO A: THE SECURE LOGIN GATE
     if not st.session_state.get("logged_in", False):
-        st.warning("🔒 This portal requires authentication to view and manage production data rows.")
+        st.warning("🔒 Secure Terminal: This workspace requires valid credentials to access data frames.")
         
         with st.form("tab4_secure_login_form"):
             username_input = st.text_input("Username").strip().upper()
@@ -1008,42 +1014,38 @@ with tab4:
                 if username_input in USER_CREDENTIALS and USER_CREDENTIALS[username_input] == password_input:
                     st.session_state.logged_in = True
                     st.session_state.current_user = username_input
-                    st.success(f"Access granted for user: {username_input}")
+                    st.success(f"Access granted for user profile: {username_input}")
                     st.rerun()
                 else:
                     st.error("Authentication rejected. Invalid credentials combination.")
+
+    # 3. SCENARIO B: AUTHENTICATED WORKSPACE & DATA FILTER ENGINE
     else:
         active_user = st.session_state.get("current_user", "ADMIN").strip().upper()
         
-        # 💡 FIX 1: Clean and uppercase the entire column from Google Sheets before doing the match
+        # Locate the precise structural permission metrics for the user row
         clean_uz_series = users_df["uz"].astype(str).str.strip().str.upper()
         user_row = users_df[clean_uz_series == active_user]
         
-        # Default fallback states ("ALL" means unrestricted)
+        # Default global states ("ALL" indicates unrestricted viewing limits)
         allowed_weeks = "ALL"
         allowed_roles = "ALL"
         allowed_srv = "ALL"
         
-        # 💡 DIAGNOSTIC PANEL: Let's see what is actually happening behind the scenes
-        st.write("--- 🔍 Live Connection Debug Panel ---")
-        st.write(f"1. You typed in Username: `{active_user}`")
-        st.write(f"2. Found matching rows in user sheet? `{'YES' if not user_row.empty else 'NO'}`")
-        
         if not user_row.empty:
-            # 💡 FIX 2: Surgically pull the value out of the FIRST matched row's auth column
+            # Safely capture clean string tag out of the 'auth' matrix cell
             raw_auth_value = str(user_row["auth"].iloc[0]).strip().upper()
-            st.write(f"3. Raw string found inside your 'auth' cell: `{raw_auth_value}`")
             
-            # Match the criteria rules based on the clean text value inside the 'auth' column
-            if "4PM" in raw_auth_value:
+            # --- CUSTOM ACCESS ROUTING FILTERS ---
+            if "FOURONLY" in raw_auth_value or "4PM" in raw_auth_value:
                 allowed_srv = ["4PM"]
-            elif "2PM" in raw_auth_value:
+            elif "TWOONLY" in raw_auth_value or "2PM" in raw_auth_value:
                 allowed_srv = ["2PM"]
-            elif "6PM" in raw_auth_value:
+            elif "SIXONLY" in raw_auth_value or "6PM" in raw_auth_value:
                 allowed_srv = ["6PM"]
-            elif "12NN" in raw_auth_value:
+            elif "TWELVEONLY" in raw_auth_value or "12NN" in raw_auth_value:
                 allowed_srv = ["12NN"]
-            elif "10AM" in raw_auth_value:
+            elif "TENONLY" in raw_auth_value or "10AM" in raw_auth_value:
                 allowed_srv = ["10AM"]
             elif "WEEK 1" in raw_auth_value or "WEEK1" in raw_auth_value:
                 allowed_weeks = ["Week1", "Week3"]
@@ -1051,14 +1053,8 @@ with tab4:
             elif "WEEK 2" in raw_auth_value or "WEEK2" in raw_auth_value:
                 allowed_weeks = ["Week2", "Week4"]
                 allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
-        else:
-            # If the user row wasn't found, output everything in your sheet to check for errors
-            st.write("3. ❌ USER NOT FOUND. Here are the usernames currently sitting in your Google Sheet:")
-            st.write(list(users_df["uz"].unique()))
-            
-        st.write("-------------------------------------")
         
-        # Display custom metrics banner for the logged-in worker
+        # Render operational session header banner
         st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles} | ⏰ **Service:** {allowed_srv}")
         
         if st.button("Log Out of Workspace"):
@@ -1068,63 +1064,65 @@ with tab4:
 
         st.divider()
 
-        # 4. PRIMARY SCHEDULING SHEET FILTER ENGINE
+        # 4. PRIMARY SCHEDULING SHEET PIPELINE FILTERING
         try:
-            # Read your primary schedule worksheet data
+            # Read primary production scheduling spreadsheet
             master_df = conn.read(ttl=0)
             
-            # Target Column Validation Check (Ensuring WK, Role, and SRV exist)
+            # Column Integrity Assertions
             required_cols = ["WK", "Role", "SRV"]
-            missing_cols = [col for col in required_cols if col not in master_df.columns]
-            if missing_cols:
-                st.error(f"❌ Missing target data columns in your schedule worksheet: {missing_cols}. Live columns detected: {list(master_df.columns)}")
+            missing_data_cols = [col for col in required_cols if col not in master_df.columns]
+            if missing_data_cols:
+                st.error(f"❌ Primary data matrix layout broken. Missing expected sheet columns: {missing_data_cols}. Detected: {list(master_df.columns)}")
                 st.stop()
             
-            # Force conversion to clean text strings and remove trailing whitespaces
+            # Strip trailing/leading spaces from production schedule elements to avoid string matching gaps
             for col in required_cols:
                 master_df[col] = master_df[col].astype(str).str.strip()
             
-            # --- BUILD FILTER 1: WEEK MATCHING ---
+            # --- EVALUATE MULTI-COLUMN FILTER MASKS ---
+            # 1. Week Matching
             if allowed_weeks == "ALL":
                 week_mask = pd.Series(True, index=master_df.index)
             else:
                 week_mask = master_df["WK"].isin(allowed_weeks)
-            
-            # --- BUILD FILTER 2: ROLE MATCHING ---
+                
+            # 2. Role Matching
             if allowed_roles == "ALL":
                 role_mask = pd.Series(True, index=master_df.index)
             else:
-                # Lowercase comparison prevents spelling discrepancies from breaking the filter
+                # Mute case mismatches seamlessly by forcing lower comparisons
                 allowed_roles_lower = [r.lower() for r in allowed_roles]
                 role_mask = master_df["Role"].str.lower().isin(allowed_roles_lower)
-            
-            # --- BUILD FILTER 3: SERVICE TIME MATCHING ---
+                
+            # 3. Service Time Matching
             if allowed_srv == "ALL":
                 srv_mask = pd.Series(True, index=master_df.index)
             else:
                 srv_mask = master_df["SRV"].isin(allowed_srv)
             
-            # Triple Isolation Matrix merge (Row must satisfy all 3 criteria concurrently)
+            # Combine all three masks securely into a single logical slice
             combined_filter_mask = week_mask & role_mask & srv_mask
             filtered_df = master_df[combined_filter_mask].copy()
             
+            # Customized White Instructional Caption Block
             st.markdown('<span style="color: white; font-size: 0.85rem;">✏️ Modify cells, add or delete rows directly below. Remember to commit changes when finished.</span>', unsafe_allow_html=True)
             
-            # Render interactive spreadsheet editor frame
+            # Render interactive spreadsheet editor grid frame
             edited_filtered_df = st.data_editor(
                 filtered_df, 
                 num_rows="dynamic", 
                 use_container_width=True
             )
             
-            # 5. UPSTREAM MASTER COMPILE AND SECURE OVERWRITE
+            # 5. SURGICAL UPSTREAM RE-COMPILATION AND SAVE
             if st.button("Commit Workspace Changes", type="primary"):
                 with st.spinner("Compiling and syncing changes securely with Google Cloud..."):
                     
-                    # Target only row data that this current user WAS restricted from modifying
+                    # Target only the data that the current user WAS NOT allowed to alter
                     unaltered_system_records = master_df[~combined_filter_mask]
                     
-                    # Auto-fill safety fallbacks for newly created lines
+                    # Auto-fill safety fallbacks on new row dynamic additions
                     if not edited_filtered_df.empty:
                         if allowed_weeks != "ALL" and len(allowed_weeks) > 0:
                             edited_filtered_df["WK"] = edited_filtered_df["WK"].fillna(allowed_weeks[0]).replace("", allowed_weeks[0])
@@ -1133,13 +1131,14 @@ with tab4:
                         if allowed_srv != "ALL" and len(allowed_srv) > 0:
                             edited_filtered_df["SRV"] = edited_filtered_df["SRV"].fillna(allowed_srv[0]).replace("", allowed_srv[0])
                     
-                    # Merge static baseline data with modified segments
+                    # Concat unaltered records back together with the modified slice
                     final_compiled_df = pd.concat([unaltered_system_records, edited_filtered_df], ignore_index=True)
                     
-                    # Update master Google Sheets worksheet tab data
+                    # Overwrite master Google Sheet upstream
                     conn.update(data=final_compiled_df)
                     st.success("🎉 Data pipeline synchronized! Live spreadsheet overwritten successfully.")
                     st.rerun()
                     
         except Exception as data_pipeline_error:
             st.error(f"Pipeline Interruption: {data_pipeline_error}")
+
