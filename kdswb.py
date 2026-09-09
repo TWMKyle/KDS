@@ -3,16 +3,33 @@ import os
 import pandas as pd
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
-from datetime import datetime
+from datetime import datetime, timedelta
 import ssl
 import gspread
 from PIL import Image
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+if "current_user" not in st.session_state:
+    st.session_state.current_user = None
+    
 
-CORRECT_USERNAME = "JOHN316"
-CORRECT_PASSWORD = "VPASIG"
+
+USER_CREDENTIALS = {
+    "ADMIN": "ADMIN123",
+    "13WKU": "WEEK13",
+    "24WKU": "WEEK24"
+}
+
+def get_current_week_range():
+    """Calculates the start (Monday) and end (Sunday) dates of the current week."""
+    today = datetime.now().date()
+    # today.weekday() returns 0 for Monday, 6 for Sunday
+    start_of_week = today - timedelta(days=today.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
+    return pd.to_datetime(start_of_week), pd.to_datetime(end_of_week)
+
+
     
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
 img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
@@ -960,51 +977,87 @@ with tab3:
     )
 
 with tab4:
-    # Scenario A: User is NOT logged in -> Show Login Form
+
+    # SCENARIO A: LOGIN GATE
     if not st.session_state.logged_in:
-        st.warning("You must authenticate to access and edit the live data.")
-        
-        # Using st.form stops the page from refreshing on every keystroke
         with st.form("login_form"):
-            username = st.text_input("Username")
+            username = st.text_input("Username").strip().lower()
             password = st.text_input("Password", type="password")
-            submit_button = st.form_submit_button("Access Database")
+            submit_button = st.form_submit_button("Access My Data")
             
             if submit_button:
-                if username == CORRECT_USERNAME and password == CORRECT_PASSWORD:
+                if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
                     st.session_state.logged_in = True
-                    st.success("Authentication successful!")
-                    st.rerun() # Refresh immediately to render the sheet editor
+                    st.session_state.current_user = username
+                    st.success(f"Welcome back, {username.capitalize()}!")
+                    st.rerun()
                 else:
-                    st.error("Invalid username or password.")
+                    st.error("Invalid credentials.")
 
-    # Scenario B: User IS logged in -> Show Google Sheet Editor
+
+    # SCENARIO B: AUTHENTICATED & FILTERED VIEW
     else:
-        st.info("🔓 Authorized Session: You have active read/write access to Google Sheets.")
+        current_user = st.session_state.current_user
+        start_date, end_date = get_current_week_range()
         
-        # Logout button specific to this tab
-        if st.button("Log Out of Editor"):
+        st.info(f"👤 **User:** {current_user.capitalize()} | 📅 **Current Week Window:** {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
+        
+        if st.button("Log Out"):
             st.session_state.logged_in = False
+            st.session_state.current_user = None
             st.rerun()
 
         st.divider()
 
-        # Connect and load the Google Sheet directly
         try:
+            # 1. Fetch Master Data from Google Sheets
             conn = st.connection("gsheets", type=GSheetsConnection)
-            # ttl=0 bypasses the default 10-minute caching to fetch live cloud data
-            df = conn.read(ttl=0)
+            master_df = conn.read(ttl=0)
             
-            st.write("Edit cells below. Dynamic row addition/deletion is enabled.")
-            # st.data_editor creates the editable spreadsheet UI
-            edited_df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+            # 2. Ensure date columns are clean and parsed as datetime objects
+            # Change 'Date' and 'Assigned_To' to match your actual Google Sheet column names exactly!
+            master_df['Date'] = pd.to_datetime(master_df['Date']) 
             
-            # Save button writes changes directly back to the cloud
-            if st.button("Push Changes to Google Sheets", type="primary"):
-                with st.spinner("Syncing changes with Google Cloud..."):
-                    conn.update(data=edited_df)
-                    st.success("Changes deployed directly to Google Sheets!")
+            # 3. Apply the double-isolation filter (User + Current Week)
+            user_mask = master_df['Assigned_To'].str.strip().str.lower() == current_user
+            date_mask = (master_df['Date'] >= start_date) & (master_df['Date'] <= end_date)
+            
+            # Isolate the chunk of data this user is allowed to see/edit
+            filtered_df = master_df[user_mask & date_mask].copy()
+
+            if filtered_df.empty:
+                st.warning("No records found assigned to you for this current week.")
+                # We still provide an empty dataframe structure so they can append new records
+                filtered_df = pd.DataFrame(columns=master_df.columns)
+                filtered_df['Assigned_To'] = current_user
+            
+            # 4. Display the isolated data in the editor
+            st.write("### Your Schedule / Actions")
+            edited_filtered_df = st.data_editor(
+                filtered_df, 
+                num_rows="dynamic", 
+                use_container_width=True
+            )
+
+            # 5. Re-merging changes on Save
+            if st.button("Save My Changes", type="primary"):
+                with st.spinner("Merging adjustments back into database..."):
+                    # Step A: Drop the old records for this user's specific week from the master copy
+                    inverted_mask = ~(user_mask & date_mask)
+                    clean_master_df = master_df[inverted_mask]
+                    
+                    # Step B: Auto-fill credentials for newly created rows so they aren't lost
+                    if 'Assigned_To' in edited_filtered_df.columns:
+                        edited_filtered_df['Assigned_To'] = edited_filtered_df['Assigned_To'].fillna(current_user)
+                    
+                    # Step C: Concatenate the unchanged master records with the newly edited records
+                    updated_master_df = pd.concat([clean_master_df, edited_filtered_df], ignore_index=True)
+                    
+                    # Step D: Overwrite Google Sheets with the fully compiled dataset
+                    conn.update(data=updated_master_df)
+                    st.success("Your weekly updates have been safely committed!")
                     st.rerun()
                     
         except Exception as e:
-            st.error(f"Error connecting to Google Sheets. Verify your secrets configuration. Details: {e}")
+            st.error(f"Data pipeline broken. Verify column naming schema matches perfectly. Trace: {e}")
+
