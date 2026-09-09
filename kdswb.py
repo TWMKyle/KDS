@@ -977,7 +977,7 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 
 with tab4:
-    st.subheader("Dynamic Multi-Week & Role Data Portal")
+    
 
     # 1. LOAD USER REGISTRY SYSTEM FROM GOOGLE SHEETS
     try:
@@ -1008,7 +1008,7 @@ with tab4:
         with st.form("tab4_secure_login_form"):
             username_input = st.text_input("Username").strip().upper()
             password_input = st.text_input("Password", type="password")
-            submit_login = st.form_submit_button("Access Workspace")
+            submit_login = st.form_submit_button("Access Database")
             
             if submit_login:
                 if username_input in USER_CREDENTIALS and USER_CREDENTIALS[username_input] == password_input:
@@ -1057,7 +1057,7 @@ with tab4:
         # Render operational session header banner
         st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles} | ⏰ **Service:** {allowed_srv}")
         
-        if st.button("Log Out of Workspace"):
+        if st.button("Log Off"):
             st.session_state.logged_in = False
             st.session_state.current_user = None
             st.rerun()
@@ -1116,7 +1116,7 @@ with tab4:
             )
             
             # 5. SURGICAL UPSTREAM RE-COMPILATION AND SAVE
-            if st.button("Commit Workspace Changes", type="primary"):
+            if st.button("Commit Changes", type="primary"):
                 with st.spinner("Compiling and syncing changes securely with Google Cloud..."):
                     
                     # Target only the data that the current user WAS NOT allowed to alter
