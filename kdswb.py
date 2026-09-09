@@ -1047,12 +1047,15 @@ with tab4:
                 allowed_srv = ["12NN"]
             elif "TENONLY" in raw_auth_value or "10AM" in raw_auth_value:
                 allowed_srv = ["10AM"]
-            elif "WEEK 1" in raw_auth_value or "WEEK1" in raw_auth_value:
+            elif "TEACHER13" in raw_auth_value
                 allowed_weeks = ["Week1", "Week3"]
                 allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
-            elif "WEEK 2" in raw_auth_value or "WEEK2" in raw_auth_value:
+            elif "TEACHER24" in raw_auth_value
                 allowed_weeks = ["Week2", "Week4"]
                 allowed_roles = ["Preacher", "Volunteer", "Backup Teacher"]
+            elif "MUSICONLY" in raw_auth_value or "WEEK2" in raw_auth_value:
+                allowed_weeks = "ALL"
+                allowed_roles = ["WL", "AG", "Backup Singer"]
         
         # Render operational session header banner
         st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles} | ⏰ **Service:** {allowed_srv}")
