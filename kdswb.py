@@ -639,7 +639,7 @@ if st.sidebar.button("Musicians and Teachers -  Yearly Roster 🔍", use_contain
 
 ## TABS
 
-tab1, tab2, tab3, tab4 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators", "📋 Announcement(s)"])
+tab1, tab2, tab3, tab4 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators", "📋 Admin(s) Page"])
 
 with tab1:
     run_kds_music()
@@ -955,29 +955,51 @@ with tab3:
     )
 
 with tab4:
-    st.subheader("🚧 This tab 🏗️ is under 🔨 construction 🛠️")
+    # Scenario A: User is NOT logged in -> Show Login Form
+    if not st.session_state.logged_in:
+        st.warning("You must authenticate to access and edit the live data.")
+        
+        # Using st.form stops the page from refreshing on every keystroke
+        with st.form("login_form"):
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            submit_button = st.form_submit_button("Access Database")
+            
+            if submit_button:
+                if username == KYLE and password == KYLE:
+                    st.session_state.logged_in = True
+                    st.success("Authentication successful!")
+                    st.rerun() # Refresh immediately to render the sheet editor
+                else:
+                    st.error("Invalid username or password.")
 
-    # 1. Display individual checkboxes and store their True/False status
-    week1 = st.checkbox("Week 1")
-    week2 = st.checkbox("Week 2")
-    week3 = st.checkbox("Week 3")
-    week4 = st.checkbox("Week 4")
-    week5 = st.checkbox("Week 5")
+    # Scenario B: User IS logged in -> Show Google Sheet Editor
+    else:
+        st.info("🔓 Authorized Session: You have active read/write access to Google Sheets.")
+        
+        # Logout button specific to this tab
+        if st.button("Log Out of Editor"):
+            st.session_state.logged_in = False
+            st.rerun()
 
-    # 2. Map the boolean variables to their text labels
-    weeks_dict = {
-        "Week 1": week1,
-        "Week 2": week2,
-        "Week 3": week3,
-        "Week 4": week4,
-        "Week 5": week5
-        }
+    st.divider()
 
-    # 3. Create a list containing ONLY the text names of checked weeks
-    srvwk = [name for name, checked in weeks_dict.items() if checked]
-
-    # 4. If the list is not empty (at least one week is checked), show the message
-    if srvwk:
-        # Join the selected weeks with commas (e.g., "Week 1, Week 3")
-        weeks_string = ", ".join(srvwk)
-        st.write(f"Welcome to Kids Church!, you are serving: **{weeks_string}**")
+        # Connect and load the Google Sheet directly
+        try:
+            conn = st.connection("gsheets", type=GSheetsConnection)
+            # ttl=0 bypasses the default 10-minute caching to fetch live cloud data
+            df = conn.read(ttl=0)
+            
+            st.write("Edit cells below. Dynamic row addition/deletion is enabled.")
+            # st.data_editor creates the editable spreadsheet UI
+            edited_df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+            
+            # Save button writes changes directly back to the cloud
+            if st.button("Push Changes to Google Sheets", type="primary"):
+                with st.spinner("Syncing changes with Google Cloud..."):
+                    conn.update(data=edited_df)
+                    st.success("Changes deployed directly to Google Sheets!")
+                    st.rerun()
+                    
+        except Exception as e:
+            st.error(f"Error connecting to Google Sheets. Verify your secrets configuration. Details: {e}")
