@@ -968,7 +968,7 @@ with tab4:
             submit_button = st.form_submit_button("Access Database")
             
             if submit_button:
-                if username == KYLE and password == KYLE:
+                if username == CORRECT_USERNAME and password == CORRECT_PASSWORD:
                     st.session_state.logged_in = True
                     st.success("Authentication successful!")
                     st.rerun() # Refresh immediately to render the sheet editor
