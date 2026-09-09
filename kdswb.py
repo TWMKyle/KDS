@@ -21,6 +21,12 @@ USER_CREDENTIALS = {
     "24WKU": "WEEK24"
 }
 
+USER_WEEK_MAPPING = {
+    "ADMIN":,  # Full access
+    "13WKU":,        # Only Weeks 1 and 3
+    "24WKU": [2, 4]         # Only Weeks 2 and 4
+}
+
 def get_current_week_range():
     """Calculates the start (Monday) and end (Sunday) dates of the current week."""
     today = datetime.now().date()
@@ -981,28 +987,28 @@ with tab4:
     # SCENARIO A: LOGIN GATE
     if not st.session_state.logged_in:
         with st.form("login_form"):
-            username = st.text_input("Username").strip().lower()
+            # Stripping spaces, but keeping UPPERCASE to match your dictionary keys
+            username = st.text_input("Username").strip().upper()
             password = st.text_input("Password", type="password")
-            submit_button = st.form_submit_button("Access My Data")
+            submit_button = st.form_submit_button("Log In")
             
             if submit_button:
                 if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
                     st.session_state.logged_in = True
                     st.session_state.current_user = username
-                    st.success(f"Welcome back, {username.capitalize()}!")
+                    st.success(f"Successfully authenticated as {username}!")
                     st.rerun()
                 else:
-                    st.error("Invalid credentials.")
+                    st.error("Invalid Username or Password.")
 
-
-    # SCENARIO B: AUTHENTICATED & FILTERED VIEW
+    # SCENARIO B: AUTHENTICATED & ROLE-FILTERED VIEW
     else:
         current_user = st.session_state.current_user
-        start_date, end_date = get_current_week_range()
+        allowed_weeks = USER_WEEK_MAPPING.get(current_user, [])
         
-        st.info(f"👤 **User:** {current_user.capitalize()} | 📅 **Current Week Window:** {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
+        st.info(f"👤 **Session:** {current_user} | 📊 **Authorized Weeks:** {allowed_weeks}")
         
-        if st.button("Log Out"):
+        if st.button("Log Out of Session"):
             st.session_state.logged_in = False
             st.session_state.current_user = None
             st.rerun()
@@ -1010,54 +1016,45 @@ with tab4:
         st.divider()
 
         try:
-            # 1. Fetch Master Data from Google Sheets
+            # 1. Pull live data from Google Sheets
             conn = st.connection("gsheets", type=GSheetsConnection)
             master_df = conn.read(ttl=0)
             
-            # 2. Ensure date columns are clean and parsed as datetime objects
-            # Change 'Date' and 'Assigned_To' to match your actual Google Sheet column names exactly!
-            master_df['Date'] = pd.to_datetime(master_df['Date']) 
+            # ⚠️ CRITICAL: Ensure your Google Sheet column name matches "Week" exactly.
+            # Convert values to numeric integers so matching works flawlessly.
+            master_df['Week'] = pd.to_numeric(master_df['Week'], errors='coerce')
             
-            # 3. Apply the double-isolation filter (User + Current Week)
-            user_mask = master_df['Assigned_To'].str.strip().str.lower() == current_user
-            date_mask = (master_df['Date'] >= start_date) & (master_df['Date'] <= end_date)
+            # 2. Build the filter mask based on allowed weeks
+            row_filter_mask = master_df['Week'].isin(allowed_weeks)
             
-            # Isolate the chunk of data this user is allowed to see/edit
-            filtered_df = master_df[user_mask & date_mask].copy()
-
-            if filtered_df.empty:
-                st.warning("No records found assigned to you for this current week.")
-                # We still provide an empty dataframe structure so they can append new records
-                filtered_df = pd.DataFrame(columns=master_df.columns)
-                filtered_df['Assigned_To'] = current_user
+            # Isolate the segment this user is allowed to edit
+            filtered_df = master_df[row_filter_mask].copy()
             
-            # 4. Display the isolated data in the editor
-            st.write("### Your Schedule / Actions")
+            st.write(f"Showing rows assigned to your profile workflow:")
             edited_filtered_df = st.data_editor(
                 filtered_df, 
                 num_rows="dynamic", 
                 use_container_width=True
             )
-
-            # 5. Re-merging changes on Save
-            if st.button("Save My Changes", type="primary"):
-                with st.spinner("Merging adjustments back into database..."):
-                    # Step A: Drop the old records for this user's specific week from the master copy
-                    inverted_mask = ~(user_mask & date_mask)
-                    clean_master_df = master_df[inverted_mask]
+            
+            # 3. Compile and save back to the cloud
+            if st.button("Commit Target Changes", type="primary"):
+                with st.spinner("Surgically updating cloud master record..."):
                     
-                    # Step B: Auto-fill credentials for newly created rows so they aren't lost
-                    if 'Assigned_To' in edited_filtered_df.columns:
-                        edited_filtered_df['Assigned_To'] = edited_filtered_df['Assigned_To'].fillna(current_user)
+                    # Grab all the data the current user WAS NOT allowed to see
+                    unchanged_master_records = master_df[~row_filter_mask]
                     
-                    # Step C: Concatenate the unchanged master records with the newly edited records
-                    updated_master_df = pd.concat([clean_master_df, edited_filtered_df], ignore_index=True)
+                    # Merge the untouched records with the newly edited segment
+                    final_compiled_df = pd.concat([unchanged_master_records, edited_filtered_df], ignore_index=True)
                     
-                    # Step D: Overwrite Google Sheets with the fully compiled dataset
-                    conn.update(data=updated_master_df)
-                    st.success("Your weekly updates have been safely committed!")
+                    # Clean up data formatting before deploying to cloud
+                    final_compiled_df['Week'] = final_compiled_df['Week'].fillna(0).astype(int)
+                    
+                    # Overwrite Google Sheet with the master composite dataframe
+                    conn.update(data=final_compiled_df)
+                    st.success("Changes uploaded and merged with master sheet successfully!")
                     st.rerun()
-                    
-        except Exception as e:
-            st.error(f"Data pipeline broken. Verify column naming schema matches perfectly. Trace: {e}")
 
+                
+        except Exception as e:
+            st.error(f"Execution Error. Please check if your column name matches 'Week'. Trace: {e}")
