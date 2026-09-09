@@ -985,7 +985,7 @@ with tab4:
     st.divider()
 
         # Connect and load the Google Sheet directly
-        try:
+            try:
             conn = st.connection("gsheets", type=GSheetsConnection)
             # ttl=0 bypasses the default 10-minute caching to fetch live cloud data
             df = conn.read(ttl=0)
