@@ -14,19 +14,6 @@ if "current_user" not in st.session_state:
     st.session_state.current_user = None
     
 
-
-USER_CREDENTIALS = {
-    "ADMIN": "ADMIN123",
-    "13WKU": "WEEK13",
-    "24WKU": "WEEK24"
-}
-
-USER_WEEK_MAPPING = {
-    "ADMIN": ["Week1", "Week2", "Week3", "Week4", "Week5"],  # Full access
-    "13WKU": ["Week1", "Week3"],                             # Only Week 1 and 3 text tags
-    "24WKU": ["Week2", "Week4"]                              # Only Week 2 and 4 text tags
-}
-
 def get_current_week_range():
     """Calculates the start (Monday) and end (Sunday) dates of the current week."""
     today = datetime.now().date()
@@ -983,42 +970,104 @@ with tab3:
     )
 
 with tab4:
+    st.subheader("Custom Multi-Week Data Portal")
 
-    try:
-    # Pull live data from Google Sheets
-        conn = st.connection("gsheets", type=GSheetsConnection)
-        master_df = conn.read(ttl=0)
-    
-    # Clean up any trailing/leading spaces from your sheet values
-        master_df['WK'] = master_df['WK'].astype(str).str.strip()
-    
-    # Build the filter mask using your list of text tags
-        row_filter_mask = master_df['WK'].isin(allowed_weeks)
-    
-    # Isolate the segment this user is allowed to edit
-        filtered_df = master_df[row_filter_mask].copy()
-    
-        st.write(f"Showing rows assigned to your profile workflow (Column: `WK`):")
-        edited_filtered_df = st.data_editor(
-        filtered_df, 
-        num_rows="dynamic", 
-        use_container_width=True
-    )
-    
-    # Compile and save back to the cloud
-        if st.button("Commit Target Changes", type="primary"):
-            with st.spinner("Surgically updating cloud master record..."):
+    # 1. LOCAL DATA CONTEXT
+    # Hardcoded dictionary matching your exact profile requirements
+    USER_CREDENTIALS = {
+        "ADMIN": "ADMIN123",
+        "13WKU": "WEEK13",
+        "24WKU": "WEEK24"
+    }
+
+    # Custom mapping matching your precise string data tags ["Week1", "Week2", ...]
+    USER_WEEK_MAPPING = {
+        "ADMIN": ["Week1", "Week2", "Week3", "Week4", "Week5"],
+        "13WKU": ["Week1", "Week3"],
+        "24WKU": ["Week2", "Week4"]
+    }
+
+    # 2. SCENARIO A: THE LOGIN GATE
+    if not st.session_state.get("logged_in", False):
+        st.warning("🔒 This portal requires authentication to view and manage production data rows.")
+        
+        with st.form("tab4_secure_login_form"):
+            username_input = st.text_input("Username").strip().upper()
+            password_input = st.text_input("Password", type="password")
+            submit_login = st.form_submit_button("Access Workspace")
             
-            # Grab all the data the current user WAS NOT allowed to see
-                unchanged_master_records = master_df[~row_filter_mask]
+            if submit_login:
+                if username_input in USER_CREDENTIALS and USER_CREDENTIALS[username_input] == password_input:
+                    st.session_state.logged_in = True
+                    st.session_state.current_user = username_input
+                    st.success(f"Access granted for user: {username_input}")
+                    st.rerun()
+                else:
+                    st.error("Authentication rejected. Invalid credentials combination.")
+
+    # 3. SCENARIO B: AUTHENTICATED USER INTERFACE
+    else:
+        # Pull profile markers straight out of session state memory
+        active_user = st.session_state.get("current_user", "ADMIN")
+        allowed_weeks = USER_WEEK_MAPPING.get(active_user, [])
+        
+        # Display operational metrics banner
+        st.info(f"👤 **Active Session:** {active_user} | 📊 **Authorized Data Segments:** {allowed_weeks}")
+        
+        if st.button("Log Out of Workspace"):
+            st.session_state.logged_in = False
+            st.session_state.current_user = None
+            st.rerun()
+
+        st.divider()
+
+        # 4. DATA ENGINE PIPELINE
+        try:
+            # Connect directly to your live Google Sheets setup
+            conn = st.connection("gsheets", type=GSheetsConnection)
+            master_df = conn.read(ttl=0)
             
-            # Merge the untouched records with the newly edited segment
-                final_compiled_df = pd.concat([unchanged_master_records, edited_filtered_df], ignore_index=True)
+            # Defensive check: Ensure the column actually exists in your raw data
+            if "WK" not in master_df.columns:
+                st.error(f"❌ The system failed to find the target data column `WK`. Live columns detected: {list(master_df.columns)}")
+                st.stop()
             
-            # Overwrite Google Sheet with the master composite dataframe
-                conn.update(data=final_compiled_df)
-                st.success("Changes uploaded and merged with master sheet successfully!")
-                st.rerun()
+            # Force conversion to clean string data and strip hidden spaces
+            master_df["WK"] = master_df["WK"].astype(str).str.strip()
             
-    except Exception as e:
-        st.error(f"Execution Error: {e}")
+            # Slice only the target rows this worker profile is cleared to modify
+            row_filter_mask = master_df["WK"].isin(allowed_weeks)
+            filtered_df = master_df[row_filter_mask].copy()
+            
+            st.caption("✏️ Modify cells, add or delete rows directly below. Remember to commit changes when finished.")
+            
+            # Render interactive spreadsheet UI
+            edited_filtered_df = st.data_editor(
+                filtered_df, 
+                num_rows="dynamic", 
+                use_container_width=True
+            )
+            
+            # 5. SURGICAL UPSTREAM MERGE & CLOUD COMMIT
+            if st.button("Commit Workspace Changes", type="primary"):
+                with st.spinner("Compiling and syncing changes securely with Google Cloud..."):
+                    
+                    # Grab everything the current user was restricted from editing
+                    unaltered_system_records = master_df[~row_filter_mask]
+                    
+                    # Auto-fill newly created rows with the user's first allowed week text tag
+                    # This prevents row errors if they click 'Add Row' and leave the 'WK' cell blank
+                    if not edited_filtered_df.empty and len(allowed_weeks) > 0:
+                        edited_filtered_df["WK"] = edited_filtered_df["WK"].fillna(allowed_weeks[0]).replace("", allowed_weeks[0])
+                    
+                    # Concat unmodified system rows with the newly altered data window
+                    final_compiled_df = pd.concat([unaltered_system_records, edited_filtered_df], ignore_index=True)
+                    
+                    # Update Google Sheets upstream
+                    conn.update(data=final_compiled_df)
+                    st.success("🎉 Data pipeline synchronized! Live spreadsheet overwritten successfully.")
+                    st.rerun()
+                    
+        except Exception as data_pipeline_error:
+            st.error(f"Pipeline Interruption: {data_pipeline_error}")
+
