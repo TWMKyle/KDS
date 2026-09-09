@@ -970,7 +970,6 @@ with tab3:
     )
 
 with tab4:
-    st.subheader("Custom Multi-Week Data Portal")
 
     # 1. LOCAL DATA CONTEXT
     # Hardcoded dictionary matching your exact profile requirements
