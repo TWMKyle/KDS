@@ -10,6 +10,9 @@ from PIL import Image
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+
+CORRECT_USERNAME = "JOHN316"
+CORRECT_PASSWORD = "VPASIG"
     
 img_srcy = "https://raw.githubusercontent.com/TWMKyle/KDS/main/space-rocket-textured-background-blue-plasticine-clay-craft-kids.jpg"
 img_srcv = "https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-6.jpg"
