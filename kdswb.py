@@ -22,8 +22,8 @@ USER_CREDENTIALS = {
 }
 
 USER_WEEK_MAPPING = {
-    "ADMIN":,  # Full access to all weeks
-    "13WKU":,        # Only Weeks 1 and 3
+    "ADMIN": [1, 2, 3, 4],  # Full access to all weeks
+    "13WKU": [1, 3],        # Only Weeks 1 and 3
     "24WKU": [2, 4]         # Only Weeks 2 and 4
 }
 
