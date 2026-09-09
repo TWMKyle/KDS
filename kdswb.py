@@ -1009,12 +1009,12 @@ with tab4:
 
     # 3. SCENARIO A: THE LOGIN GATE
     if not st.session_state.get("logged_in", False):
-        st.warning("🔒 This portal requires authentication to view and manage production data rows.")
+        st.warning("🔒 Please login with your supplied credentials")
         
         with st.form("tab4_secure_login_form"):
             username_input = st.text_input("Username").strip().upper()
             password_input = st.text_input("Password", type="password")
-            submit_login = st.form_submit_button("Access Workspace")
+            submit_login = st.form_submit_button("Access Database")
             
             if submit_login:
                 if username_input in USER_CREDENTIALS and USER_CREDENTIALS[username_input] == password_input:
@@ -1036,7 +1036,7 @@ with tab4:
         # Display operational metrics banner
         st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles}")
         
-        if st.button("Log Out of Workspace"):
+        if st.button("Log off"):
             st.session_state.logged_in = False
             st.session_state.current_user = None
             st.rerun()
@@ -1083,7 +1083,7 @@ with tab4:
             )
             
             # 6. SURGICAL UPSTREAM MERGE & CLOUD COMMIT
-            if st.button("Commit Workspace Changes", type="primary"):
+            if st.button("Commit Changes", type="primary"):
                 with st.spinner("Compiling and syncing changes securely with Google Cloud..."):
                     
                     # Grab everything the current user was restricted from seeing/editing
@@ -1101,7 +1101,7 @@ with tab4:
                     
                     # Update Google Sheets upstream
                     conn.update(data=final_compiled_df)
-                    st.success("🎉 Data pipeline synchronized! Live spreadsheet overwritten successfully.")
+                    st.success("🎉 Database updated, thank you, teacher!")
                     st.rerun()
                     
         except Exception as data_pipeline_error:
