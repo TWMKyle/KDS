@@ -1034,7 +1034,7 @@ with tab4:
         allowed_roles = user_rules["roles"]
         
         # Display operational metrics banner
-        st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles}")
+        st.info(f"👤 **Active Session:** {active_user}, you are only allowed to modify {allowed_weeks}")
         
         if st.button("Log off"):
             st.session_state.logged_in = False
