@@ -982,10 +982,10 @@ with tab4:
             st.session_state.logged_in = False
             st.rerun()
 
-    st.divider()
+        st.divider()
 
         # Connect and load the Google Sheet directly
-            try:
+        try:
             conn = st.connection("gsheets", type=GSheetsConnection)
             # ttl=0 bypasses the default 10-minute caching to fetch live cloud data
             df = conn.read(ttl=0)
