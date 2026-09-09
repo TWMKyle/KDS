@@ -971,22 +971,44 @@ with tab3:
 
 with tab4:
 
-    # 1. LOCAL DATA CONTEXT
-    # Hardcoded dictionary matching your exact profile requirements
+    with tab4:
+    st.subheader("Custom Multi-Week & Role Data Portal")
+
+    # 1. USER CREDENTIALS BANK (5 Users Total)
     USER_CREDENTIALS = {
-        "ADMIN": "ADMIN123",
-        "13WKU": "WEEK13",
-        "24WKU": "WEEK24"
+        "ADMIN": "ADMIN123",          # Super Admin (All Access)
+        "ADMIN_MINISTRY": "MIN123",  # Admin 2: Weeks 1&3 + Ministry Roles
+        "ADMIN_MUSIC": "MUS123",     # Admin 3: Weeks 2&4 + Music Roles
+        "USER_FOUR": "FOUR123",      # User 4 (Placeholder)
+        "USER_FIVE": "FIVE123"       # User 5 (Placeholder)
     }
 
-    # Custom mapping matching your precise string data tags ["Week1", "Week2", ...]
-    USER_WEEK_MAPPING = {
-        "ADMIN": ["Week1", "Week2", "Week3", "Week4", "Week5"],
-        "13WKU": ["Week1", "Week3"],
-        "24WKU": ["Week2", "Week4"]
+    # 2. DOUBLE-FILTER MATRIX MAP (Weeks & Roles)
+    # If a list is empty or True, it means "Give access to everything"
+    USER_PERMISSIONS = {
+        "ADMIN": {
+            "weeks": ["Week1", "Week2", "Week3", "Week4", "Week5"],
+            "roles": "ALL"
+        },
+        "ADMIN_MINISTRY": {
+            "weeks": ["Week1", "Week3"],
+            "roles": ["Preacher", "Volunteer", "Backup Teacher"]
+        },
+        "ADMIN_MUSIC": {
+            "weeks": ["Week2", "Week4"],
+            "roles": ["WL", "AG", "Backup Singer"]
+        },
+        "USER_FOUR": {
+            "weeks": ["Week1", "Week2", "Week3", "Week4", "Week5"],
+            "roles": "ALL"
+        },
+        "USER_FIVE": {
+            "weeks": ["Week1", "Week2", "Week3", "Week4", "Week5"],
+            "roles": "ALL"
+        }
     }
 
-    # 2. SCENARIO A: THE LOGIN GATE
+    # 3. SCENARIO A: THE LOGIN GATE
     if not st.session_state.get("logged_in", False):
         st.warning("🔒 This portal requires authentication to view and manage production data rows.")
         
@@ -1004,14 +1026,16 @@ with tab4:
                 else:
                     st.error("Authentication rejected. Invalid credentials combination.")
 
-    # 3. SCENARIO B: AUTHENTICATED USER INTERFACE
+    # 4. SCENARIO B: AUTHENTICATED USER INTERFACE
     else:
-        # Pull profile markers straight out of session state memory
         active_user = st.session_state.get("current_user", "ADMIN")
-        allowed_weeks = USER_WEEK_MAPPING.get(active_user, [])
+        user_rules = USER_PERMISSIONS.get(active_user, {"weeks": [], "roles": []})
+        
+        allowed_weeks = user_rules["weeks"]
+        allowed_roles = user_rules["roles"]
         
         # Display operational metrics banner
-        st.info(f"👤 **Active Session:** {active_user} | 📊 **Authorized Data Segments:** {allowed_weeks}")
+        st.info(f"👤 **Active Session:** {active_user} | 📅 **Weeks:** {allowed_weeks} | 🏷️ **Roles:** {allowed_roles}")
         
         if st.button("Log Out of Workspace"):
             st.session_state.logged_in = False
@@ -1020,23 +1044,35 @@ with tab4:
 
         st.divider()
 
-        # 4. DATA ENGINE PIPELINE
+        # 5. DOUBLE-FILTER DATA ENGINE PIPELINE
         try:
-            # Connect directly to your live Google Sheets setup
             conn = st.connection("gsheets", type=GSheetsConnection)
             master_df = conn.read(ttl=0)
             
-            # Defensive check: Ensure the column actually exists in your raw data
-            if "WK" not in master_df.columns:
-                st.error(f"❌ The system failed to find the target data column `WK`. Live columns detected: {list(master_df.columns)}")
+            # Target Column Validation Check
+            missing_cols = [col for col in ["WK", "Role"] if col not in master_df.columns]
+            if missing_cols:
+                st.error(f"❌ Missing target data columns in your Google Sheet: {missing_cols}. Live columns detected: {list(master_df.columns)}")
                 st.stop()
             
-            # Force conversion to clean string data and strip hidden spaces
+            # Clean string spaces from sheet values to avoid hidden space bugs
             master_df["WK"] = master_df["WK"].astype(str).str.strip()
+            master_df["Role"] = master_df["Role"].astype(str).str.strip()
             
-            # Slice only the target rows this worker profile is cleared to modify
-            row_filter_mask = master_df["WK"].isin(allowed_weeks)
-            filtered_df = master_df[row_filter_mask].copy()
+            # --- FILTER STEP 1: WEEK MATCHING ---
+            week_mask = master_df["WK"].isin(allowed_weeks)
+            
+            # --- FILTER STEP 2: ROLE MATCHING ---
+            if allowed_roles == "ALL":
+                role_mask = pd.Series(True, index=master_df.index)  # Select everything
+            else:
+                role_mask = master_df["Role"].isin(allowed_roles)
+            
+            # Combine both masks (Row must match Week filter AND Role filter)
+            combined_filter_mask = week_mask & role_mask
+            
+            # Isolate the segment this user profile is allowed to edit
+            filtered_df = master_df[combined_filter_mask].copy()
             
             st.caption("✏️ Modify cells, add or delete rows directly below. Remember to commit changes when finished.")
             
@@ -1047,17 +1083,19 @@ with tab4:
                 use_container_width=True
             )
             
-            # 5. SURGICAL UPSTREAM MERGE & CLOUD COMMIT
+            # 6. SURGICAL UPSTREAM MERGE & CLOUD COMMIT
             if st.button("Commit Workspace Changes", type="primary"):
                 with st.spinner("Compiling and syncing changes securely with Google Cloud..."):
                     
-                    # Grab everything the current user was restricted from editing
-                    unaltered_system_records = master_df[~row_filter_mask]
+                    # Grab everything the current user was restricted from seeing/editing
+                    unaltered_system_records = master_df[~combined_filter_mask]
                     
-                    # Auto-fill newly created rows with the user's first allowed week text tag
-                    # This prevents row errors if they click 'Add Row' and leave the 'WK' cell blank
-                    if not edited_filtered_df.empty and len(allowed_weeks) > 0:
-                        edited_filtered_df["WK"] = edited_filtered_df["WK"].fillna(allowed_weeks[0]).replace("", allowed_weeks[0])
+                    # Auto-fill newly created rows with default parameters so they don't break the rules
+                    if not edited_filtered_df.empty:
+                        if len(allowed_weeks) > 0:
+                            edited_filtered_df["WK"] = edited_filtered_df["WK"].fillna(allowed_weeks[0]).replace("", allowed_weeks[0])
+                        if allowed_roles != "ALL" and len(allowed_roles) > 0:
+                            edited_filtered_df["Role"] = edited_filtered_df["Role"].fillna(allowed_roles[0]).replace("", allowed_roles[0])
                     
                     # Concat unmodified system rows with the newly altered data window
                     final_compiled_df = pd.concat([unaltered_system_records, edited_filtered_df], ignore_index=True)
@@ -1069,4 +1107,3 @@ with tab4:
                     
         except Exception as data_pipeline_error:
             st.error(f"Pipeline Interruption: {data_pipeline_error}")
-
