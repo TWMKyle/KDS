@@ -22,9 +22,9 @@ USER_CREDENTIALS = {
 }
 
 USER_WEEK_MAPPING = {
-    "ADMIN": [1, 2, 3, 4],  # Full access to all weeks
-    "13WKU": [1, 3],        # Only Weeks 1 and 3
-    "24WKU": [2, 4]         # Only Weeks 2 and 4
+    "ADMIN": ["Week1", "Week2", "Week3", "Week4", "Week5"],  # Full access
+    "13WKU": ["Week1", "Week3"],                             # Only Week 1 and 3 text tags
+    "24WKU": ["Week2", "Week4"]                              # Only Week 2 and 4 text tags
 }
 
 def get_current_week_range():
@@ -984,77 +984,41 @@ with tab3:
 
 with tab4:
 
-    # SCENARIO A: LOGIN GATE
-    if not st.session_state.logged_in:
-        with st.form("login_form"):
-            # Stripping spaces, but keeping UPPERCASE to match your dictionary keys
-            username = st.text_input("Username").strip().upper()
-            password = st.text_input("Password", type="password")
-            submit_button = st.form_submit_button("Log In")
+    try:
+    # Pull live data from Google Sheets
+    conn = st.connection("gsheets", type=GSheetsConnection)
+    master_df = conn.read(ttl=0)
+    
+    # Clean up any trailing/leading spaces from your sheet values
+    master_df['WK'] = master_df['WK'].astype(str).str.strip()
+    
+    # Build the filter mask using your list of text tags
+    row_filter_mask = master_df['WK'].isin(allowed_weeks)
+    
+    # Isolate the segment this user is allowed to edit
+    filtered_df = master_df[row_filter_mask].copy()
+    
+    st.write(f"Showing rows assigned to your profile workflow (Column: `WK`):")
+    edited_filtered_df = st.data_editor(
+        filtered_df, 
+        num_rows="dynamic", 
+        use_container_width=True
+    )
+    
+    # Compile and save back to the cloud
+    if st.button("Commit Target Changes", type="primary"):
+        with st.spinner("Surgically updating cloud master record..."):
             
-            if submit_button:
-                if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
-                    st.session_state.logged_in = True
-                    st.session_state.current_user = username
-                    st.success(f"Successfully authenticated as {username}!")
-                    st.rerun()
-                else:
-                    st.error("Invalid Username or Password.")
-
-    # SCENARIO B: AUTHENTICATED & ROLE-FILTERED VIEW
-    else:
-        current_user = st.session_state.current_user
-        allowed_weeks = USER_WEEK_MAPPING.get(current_user, [])
-        
-        st.info(f"👤 **Session:** {current_user} | 📊 **Authorized Weeks:** {allowed_weeks}")
-        
-        if st.button("Log Out of Session"):
-            st.session_state.logged_in = False
-            st.session_state.current_user = None
+            # Grab all the data the current user WAS NOT allowed to see
+            unchanged_master_records = master_df[~row_filter_mask]
+            
+            # Merge the untouched records with the newly edited segment
+            final_compiled_df = pd.concat([unchanged_master_records, edited_filtered_df], ignore_index=True)
+            
+            # Overwrite Google Sheet with the master composite dataframe
+            conn.update(data=final_compiled_df)
+            st.success("Changes uploaded and merged with master sheet successfully!")
             st.rerun()
-
-        st.divider()
-
-        try:
-            # 1. Pull live data from Google Sheets
-            conn = st.connection("gsheets", type=GSheetsConnection)
-            master_df = conn.read(ttl=0)
             
-            # ⚠️ CRITICAL: Ensure your Google Sheet column name matches "Week" exactly.
-            # Convert values to numeric integers so matching works flawlessly.
-            master_df['Week'] = pd.to_numeric(master_df['Week'], errors='coerce')
-            
-            # 2. Build the filter mask based on allowed weeks
-            row_filter_mask = master_df['Week'].isin(allowed_weeks)
-            
-            # Isolate the segment this user is allowed to edit
-            filtered_df = master_df[row_filter_mask].copy()
-            
-            st.write(f"Showing rows assigned to your profile workflow:")
-            edited_filtered_df = st.data_editor(
-                filtered_df, 
-                num_rows="dynamic", 
-                use_container_width=True
-            )
-            
-            # 3. Compile and save back to the cloud
-            if st.button("Commit Target Changes", type="primary"):
-                with st.spinner("Surgically updating cloud master record..."):
-                    
-                    # Grab all the data the current user WAS NOT allowed to see
-                    unchanged_master_records = master_df[~row_filter_mask]
-                    
-                    # Merge the untouched records with the newly edited segment
-                    final_compiled_df = pd.concat([unchanged_master_records, edited_filtered_df], ignore_index=True)
-                    
-                    # Clean up data formatting before deploying to cloud
-                    final_compiled_df['Week'] = final_compiled_df['Week'].fillna(0).astype(int)
-                    
-                    # Overwrite Google Sheet with the master composite dataframe
-                    conn.update(data=final_compiled_df)
-                    st.success("Changes uploaded and merged with master sheet successfully!")
-                    st.rerun()
-
-                
-        except Exception as e:
-            st.error(f"Execution Error. Please check if your column name matches 'Week'. Trace: {e}")
+except Exception as e:
+    st.error(f"Execution Error: {e}")
