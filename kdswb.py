@@ -750,6 +750,7 @@ with tab3:
         img_src7 = "https://unsplash.com"
         img_src8 = "https://unsplash.com"
         img_src9 = "https://unsplash.com"
+        img_src10 = "https://unsplash.com"
         st.error(f"Missing local file: {e.filename}")
 
     # 3. Inject the data string directly into the HTML source
@@ -783,29 +784,7 @@ with tab3:
         </div>
         """
         
-       
-
-       f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src2}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
-
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Oliver 
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Music Worship Team Leader | Web Support
-            </p>
-        </div>
-        """
+    
          f"""
          
         <div style="
