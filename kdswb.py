@@ -783,7 +783,7 @@ with tab3:
         </div>
         """
         
-        f"""
+       
 
        f"""
         <div style="
@@ -806,7 +806,8 @@ with tab3:
             </p>
         </div>
         """
-        
+         f"""
+         
         <div style="
             border: 2px solid #4A90E2;
             border-radius: 10px;
