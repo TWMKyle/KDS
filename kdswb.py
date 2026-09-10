@@ -686,6 +686,7 @@ with tab3:
     image_chris = "images-6.jpeg"
     image_syd = "images-3.jpeg"
     image_talaine = "658858024_10243496849142518_9061089755130801581_n.jpg"
+    image_oliver = "images-7.jpeg"
 
     try:
         # 2. Read the local file and convert it into a string
@@ -731,6 +732,10 @@ with tab3:
         with open(image_talaine, "rb") as file9:
             encoded9 = base64.b64encode(file9.read()).decode("utf-8")
             img_src9 = f"data:image/jpeg;base64,{encoded9}"
+
+        with open(image_oliver, "rb") as file10:
+            encoded10 = base64.b64encode(file10.read()).decode("utf-8")
+            img_src10 = f"data:image/jpeg;base64,{encoded10}"
 
 
     
@@ -780,7 +785,27 @@ with tab3:
         
         f"""
 
-       
+       f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src2}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Oliver 
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Music Worship Team Leader | Web Support
+            </p>
+        </div>
+        """
         
         <div style="
             border: 2px solid #4A90E2;
@@ -791,15 +816,15 @@ with tab3:
             background-color: #f9f9f9;
             font-family: sans-serif;
         ">
-            <img src="{img_src1}" 
+            <img src="{img_src10}" 
                  style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
 
             <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                John Venn
+                Oliver
             </h2>
             <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
                 Worship Service Leader
-                12NN
+                10AM
             </p>
         </div>
         """
@@ -966,6 +991,8 @@ with tab3:
             </p>
         </div>
         """
+
+        
         
     )
 
