@@ -1178,15 +1178,15 @@ with tab5:
     st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory</h2>', unsafe_allow_html=True)
 
 # 1. Image Upload Expandable Drawer
-    with st.expander("➕ Upload Volunteer Profile Photo"):
-        uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
-        uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
+with st.expander("➕ Upload Volunteer Profile Photo"):
+    uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
+    uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
     
-        if uploaded_file is not None and uploader_name:
-            image = Image.open(uploaded_file)
-            st.image(image, caption="Preview Image", width=150)
+    if uploaded_file is not None and uploader_name:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Preview Image", width=150)
         
-          if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
+        if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
             try:
                 from io import BytesIO
                 buffered = BytesIO()
@@ -1204,9 +1204,9 @@ with tab5:
                 # Read fresh cloud copy
                 df_master = conn.read(ttl="0d")
                 
-                # CRITICAL SAFETY CHECK: If the read dataframe comes back blank or missing headers, ABORT!
+                # CRITICAL SAFETY CHECK
                 if df_master.empty or "FNM" not in df_master.columns:
-                    st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column. Read aborted to protect database records.")
+                    st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column.")
                     return
                 
                 # Safely ensure column exists without resetting data
