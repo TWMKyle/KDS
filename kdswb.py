@@ -1184,45 +1184,50 @@ with st.expander("➕ Upload Volunteer Profile Photo"):
     
     if uploaded_file is not None and uploader_name:
         image = Image.open(uploaded_file)
-        st.image(image, caption="Preview Image", width=150)
+        st.image(image, caption="Preview Image", width=120)
         
         if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
             try:
                 from io import BytesIO
                 buffered = BytesIO()
                 
+                # Force strictly to RGB color profile layer
                 if image.mode in ("RGBA", "P"):
                     image = image.convert("RGB")
                 
-                # Resize strictly down to clear the 50,000 char threshold
-                max_size = (300, 300)
-                image.thumbnail(max_size, Image.Resampling.LANCZOS)
+                # Drop image canvas limits to absolute minimum grid card dimensions
+                # This guarantees the Base64 text stays well under 10k-15k characters (far below the 50k limit)
+                max_thumbnail_dimensions = (180, 180)
+                image.thumbnail(max_thumbnail_dimensions, Image.Resampling.LANCZOS)
                 
-                image.save(buffered, format="JPEG", quality=60)
+                # Encode with optimized low block density allocation matrix
+                image.save(buffered, format="JPEG", quality=50, optimize=True)
                 img_str = base64.b64encode(buffered.getvalue()).decode()
                 
-                # Read fresh cloud copy
+                # Fetch clean structural dataset frame matrix
                 df_master = conn.read(ttl="0d")
                 
-                # CRITICAL SAFETY CHECK
                 if df_master.empty or "FNM" not in df_master.columns:
                     st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column.")
                     st.stop()
                 
-                # Safely ensure column exists without resetting data
                 if "Photo_Base64" not in df_master.columns:
                     df_master["Photo_Base64"] = ""
                 
-                # Check if name matches FNM row
+                # Verify structural lookup matches active indices tracking values
                 match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == uploader_name.lower()
                 
                 if match_mask.any():
-                    # Only modify the matched index lines locally
                     df_master.loc[match_mask, "Photo_Base64"] = img_str
                     
-                    # Update live cloud spreadsheet safely
+                    # Push safe atomic line segment to server
                     conn.update(data=df_master)
                     st.success(f"🎉 Profile picture updated for {uploader_name}!")
+                    
+                    # Crucial: Clear out the cached image upload reference memory to prevent a loop crash
+                    if "dev_file_uploader" in st.session_state:
+                        del st.session_state["dev_file_uploader"]
+                        
                     st.rerun()
                 else:
                     st.error(f"Could not find '{uploader_name}' in the spreadsheet FNM records. Please make sure the name exists first.")
