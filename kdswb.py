@@ -10,13 +10,14 @@ from PIL import Image
 
 # Initialize Session States safely at the top of the file
 if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
+    st.session_state.logged_in = False  # This remains exclusively for your Admin Tab
+if "dev_logged_in" not in st.session_state:
+    st.session_state.dev_logged_in = False  # 🆕 Dedicated login strictly for Tab 5 Uploads
 if "current_user" not in st.session_state:
     st.session_state.current_user = None
 if "selected_volunteer" not in st.session_state:
     st.session_state.selected_volunteer = None
     
-
 def get_current_week_range():
     """Calculates the start (Monday) and end (Sunday) dates of the current week."""
     today = datetime.now().date()
@@ -1293,5 +1294,30 @@ with tab4:
 
 
 with tab5:
-    run_tab5_dev_sandbox()
+    # 🛡️ CHECK ISOLATED DEV LOGIN INSTANCE
+    if not st.session_state.dev_logged_in:
+        st.markdown("<h3 style='color: #FFFFFF;'>🔒 Dev / Upload Portal Login</h3>", unsafe_allow_html=True)
+        
+        # Simple standalone password entry box
+        dev_password = st.text_input("Enter Dev Sandbox Password:", type="password", key="dev_portal_pwd_input")
+        
+        if st.button("Unlock Upload Tab", type="primary", key="dev_login_submit_btn"):
+            # Set your preferred password string here (e.g., "KdsDev2026")
+            if dev_password == "KdsDev2026": 
+                st.session_state.dev_logged_in = True
+                st.success("🔓 Access granted to Dev Sandbox!")
+                st.rerun()
+            else:
+                st.error("Invalid Dev Password. Please try again.")
+    else:
+        # User is authenticated via the dedicated dev instance -> show logout button and sandbox tool
+        col_space, col_btn = st.columns([5, 1])
+        with col_btn:
+            if st.button("Log Out 🚪", key="dev_portal_logout_btn", type="secondary"):
+                st.session_state.dev_logged_in = False
+                st.session_state.selected_volunteer = None
+                st.rerun()
+                
+        # Call your standalone sandbox function safely!
+        run_tab5_dev_sandbox()
     
