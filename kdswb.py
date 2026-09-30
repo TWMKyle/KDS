@@ -1175,51 +1175,59 @@ with tab4:
 
 with tab5:
 
-    st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory</h2>', unsafe_allow_html=True)
+ st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory (Tab 5)</h2>', unsafe_allow_html=True)
 
+# --- WORKFLOW 1: IMAGE UPLOADER ACCORDION ---
+    with st.expander("➕ Upload Volunteer Profile Photo"):
+    uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
+    uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
+    
+     if uploaded_file is not None and uploader_name:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Preview Image", width=120)
+        
         if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
             try:
                 from io import BytesIO
                 buffered = BytesIO()
                 
-                # Force strictly to RGB color profile layer
+                # Convert color format space seamlessly
                 if image.mode in ("RGBA", "P"):
                     image = image.convert("RGB")
                 
-                # Shrink resolution strictly down to keep text extremely small
+                # Resize dimension down to guarantee character threshold security limits
                 max_thumbnail_dimensions = (180, 180)
                 image.thumbnail(max_thumbnail_dimensions, Image.Resampling.LANCZOS)
                 
-                # Encode with optimized configuration matrix
+                # Compress into byte stream
                 image.save(buffered, format="JPEG", quality=50, optimize=True)
                 img_str = base64.b64encode(buffered.getvalue()).decode()
                 
-                # Fetch clean copy from Google Sheets
+                # Read structural layout tracking parameters
                 df_master = conn.read(ttl="0d")
                 
+                # Hard data record protection safeguard
                 if df_master.empty or "FNM" not in df_master.columns:
                     st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column.")
                     st.stop()
                 
-                # --- FIX: FORCE COLUMN DATA TYPE TO STRING ---
+                # FIX: Force entire column data formatting schema to object string layout 
                 if "Photo_Base64" not in df_master.columns:
                     df_master["Photo_Base64"] = ""
                 else:
-                    # Convert the column to object/string type so it stops treating it as float64
                     df_master["Photo_Base64"] = df_master["Photo_Base64"].fillna("").astype(str)
                 
-                # Verify structural lookup matches active index tracking values
+                # Run exact database name match evaluation metric
                 match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == uploader_name.lower()
                 
                 if match_mask.any():
-                    # Safely map the text string onto the target rows now that it is forced to text type
                     df_master.loc[match_mask, "Photo_Base64"] = img_str
                     
-                    # Push safe atomic line segment to server
+                    # Persist adjustments back safely to online document structure
                     conn.update(data=df_master)
                     st.success(f"🎉 Profile picture successfully saved for {uploader_name}!")
                     
-                    # Clear out the cached image upload reference memory to prevent a loop crash
+                    # Flush interface cache registers
                     if "dev_file_uploader" in st.session_state:
                         del st.session_state["dev_file_uploader"]
                         
@@ -1229,24 +1237,26 @@ with tab5:
             except Exception as e:
                 st.error(f"Error handling file stream upload securely: {e}")
 
-
 st.write("---")
 
-# 2. Render Roster Grid Display
+# --- WORKFLOW 2: ROSTER CARDS INTERACTIVE GRID ---
 try:
     df_master = conn.read(ttl="0d")
 except Exception:
     st.error("Failed to connect to Google Sheets.")
     st.stop()
 
+# Ensure standard text format alignment metric properties are locked down
 if "Photo_Base64" in df_master.columns:
-    # Filter rows that have an actual valid image string attached
+    df_master["Photo_Base64"] = df_master["Photo_Base64"].fillna("").astype(str)
+    
+    # Filter only volunteers with valid uploaded data
     photo_df = df_master[df_master['Photo_Base64'].notna() & (df_master['Photo_Base64'] != "")].drop_duplicates(subset=['FNM'])
     
     if not photo_df.empty:
         st.markdown('<p style="color: #FFFFFF; font-size:1.1rem; font-weight:600;">✨ Click a team member profile below to inspect their schedules:</p>', unsafe_allow_html=True)
         
-        # Grid Configuration (Change to 4 or 5 columns if you have many profiles)
+        # Grid display partitioning engine
         columns_per_row = 3
         cols = st.columns(columns_per_row)
         
@@ -1258,38 +1268,42 @@ if "Photo_Base64" in df_master.columns:
             with current_col:
                 try:
                     decoded_bytes = base64.b64decode(base64_string)
-                    st.image(decoded_bytes, width=130)
-                    # Direct Click Interaction Trigger
-                    if st.button(f"👤 {name}", key=f"dev_card_{name}_{index}", type="secondary"):
+                    st.image(decoded_bytes, width=120)
+                    
+                    # The Action Link triggering mechanism layout
+                    if st.button(f"👤 {name}", key=f"tab5_card_{name}_{index}", type="secondary"):
                         st.session_state.selected_volunteer = name
                         st.rerun()
                 except Exception:
-                    st.error(f"Corrupt photo data stream for {name}")
+                    st.error(f"Corrupt profile data trace for {name}")
     else:
-        st.info("No active photo records found in the spreadsheet data pool. Open the expander above to link your first image!")
+        st.info("No active photo records found. Open the uploader drawer above to connect your first thumbnail image!")
 else:
-    st.info("The spreadsheet database column 'Photo_Base64' does not exist yet. Use the upload expander tool above to dynamically create it.")
+    st.info("The data column 'Photo_Base64' does not exist yet. Run an upload above to initialize database tracking matrices automatically.")
 
-
-# 3. Dynamic Conditional Schedule Output Module
+# --- WORKFLOW 3: DYNAMIC SCHEDULE DISPLAY WINDOW ---
 if st.session_state.get("selected_volunteer"):
     clicked_name = st.session_state.selected_volunteer
     st.write("---")
-
     
-    # Visual Layout Split for Profile Highlight
     st.markdown(f"<h3 style='color: #FFDB58;'>📋 Active Schedule Profile: {clicked_name}</h3>", unsafe_allow_html=True)
     
-    # Filter all matching schedule lines for the selected individual
+    # Fetch row commitments mapped directly onto this selection target parameter
     commitments = df_master[df_master['FNM'].fillna("").astype(str).str.strip().str.lower() == clicked_name.lower()]
     
     if not commitments.empty:
-        display_schedule = commitments[["SRV", "WK", "Role", "Month"]].copy()
-        display_schedule.columns = ["Service Time", "Week Assignment", "Role Assigned", "Month"]
+        # Check tracking metrics fallback validations
+        available_cols = [col for col in ["SRV", "WK", "Role", "Month"] if col in commitments.columns]
+        display_schedule = commitments[available_cols].copy()
+        
+        # Friendly column mappings
+        rename_map = {"SRV": "Service Time", "WK": "Week Assignment", "Role": "Role Assigned", "Month": "Month"}
+        display_schedule.rename(columns={k: v for k, v in rename_map.items() if k in available_cols}, inplace=True)
+        
         st.dataframe(display_schedule, use_container_width=True, hide_index=True)
     else:
-        st.warning(f"No schedule files logged for {clicked_name}.")
+        st.warning(f"No schedule tracking matrices found logged for {clicked_name}.")
         
-    if st.button("Close Profile Panel ✖️", key="close_profile_window"):
+    if st.button("Close Profile Panel ✖️", key="tab5_close_profile_window"):
         st.session_state.selected_volunteer = None
         st.rerun()
