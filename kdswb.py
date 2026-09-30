@@ -1176,3 +1176,104 @@ with tab4:
         except Exception as data_pipeline_error:
             st.error(f"Pipeline Interruption: {data_pipeline_error}")
 
+with tab5:
+
+st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory</h2>', unsafe_allow_html=True)
+
+# 1. Image Upload Expandable Drawer
+with st.expander("➕ Upload Volunteer Profile Photo"):
+    uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
+    uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
+    
+    if uploaded_file is not None and uploader_name:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Preview Image", width=150)
+        
+        if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
+            try:
+                from io import BytesIO
+                buffered = BytesIO()
+                if image.mode in ("RGBA", "P"):
+                    image = image.convert("RGB")
+                image.save(buffered, format="JPEG", quality=60)
+                img_str = base64.b64encode(buffered.getvalue()).decode()
+                
+                df_master = conn.read(ttl="0d")
+                
+                if "Photo_Base64" not in df_master.columns:
+                    df_master["Photo_Base64"] = ""
+                
+                # Check if name matches FNM row
+                match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == uploader_name.lower()
+                
+                if match_mask.any():
+                    df_master.loc[match_mask, "Photo_Base64"] = img_str
+                    conn.update(data=df_master)
+                    st.success(f"🎉 Profile picture updated for {uploader_name}!")
+                    st.rerun()
+                    else:
+                    st.error(f"Could not find '{uploader_name}' in the spreadsheet FNM records. Please make sure the name exists first.")
+            except Exception as e:
+                st.error(f"Error handling file stream upload: {e}")
+
+st.write("---")
+
+# 2. Render Roster Grid Display
+try:
+    df_master = conn.read(ttl="0d")
+except Exception:
+    st.error("Failed to connect to Google Sheets.")
+    st.stop()
+
+if "Photo_Base64" in df_master.columns:
+    # Filter rows that have an actual valid image string attached
+    photo_df = df_master[df_master['Photo_Base64'].notna() & (df_master['Photo_Base64'] != "")].drop_duplicates(subset=['FNM'])
+    
+    if not photo_df.empty:
+        st.markdown('<p style="color: #FFFFFF; font-size:1.1rem; font-weight:600;">✨ Click a team member profile below to inspect their schedules:</p>', unsafe_allow_html=True)
+        
+        # Grid Configuration (Change to 4 or 5 columns if you have many profiles)
+        columns_per_row = 3
+        cols = st.columns(columns_per_row)
+        
+        for index, row in photo_df.reset_index().iterrows():
+            name = row['FNM']
+            base64_string = row['Photo_Base64']
+            current_col = cols[index % columns_per_row]
+            
+            with current_col:
+                try:
+                    decoded_bytes = base64.b64decode(base64_string)
+                    st.image(decoded_bytes, width=130)
+                    # Direct Click Interaction Trigger
+                    if st.button(f"👤 {name}", key=f"dev_card_{name}_{index}", type="secondary"):
+                        st.session_state.selected_volunteer = name
+                        st.rerun()
+                except Exception:
+                    st.error(f"Corrupt photo data stream for {name}")
+    else:
+        st.info("No active photo records found in the spreadsheet data pool. Open the expander above to link your first image!")
+else:
+    st.info("The spreadsheet database column 'Photo_Base64' does not exist yet. Use the upload expander tool above to dynamically create it.")
+
+# 3. Dynamic Conditional Schedule Output Module
+if st.session_state.selected_volunteer:
+    clicked_name = st.session_state.selected_volunteer
+    st.write("---")
+    
+    # Visual Layout Split for Profile Highlight
+    st.markdown(f"<h3 style='color: #FFDB58;'>📋 Active Schedule Profile: {clicked_name}</h3>", unsafe_allow_html=True)
+    
+    # Filter all matching schedule lines for the selected individual
+    commitments = df_master[df_master['FNM'].fillna("").astype(str).str.strip().str.lower() == clicked_name.lower()]
+    
+    if not commitments.empty:
+        display_schedule = commitments[["SRV", "WK", "Role", "Month"]].copy()
+        display_schedule.columns = ["Service Time", "Week Assignment", "Role Assigned", "Month"]
+        st.dataframe(display_schedule, use_container_width=True, hide_index=True)
+    else:
+        st.warning(f"No schedule files logged for {clicked_name}.")
+        
+    if st.button("Close Profile Panel ✖️", key="close_profile_window"):
+        st.session_state.selected_volunteer = None
+        st.rerun()
