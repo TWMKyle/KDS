@@ -1177,15 +1177,6 @@ with tab5:
 
     st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory</h2>', unsafe_allow_html=True)
 
-# 1. Image Upload Expandable Drawer
-with st.expander("➕ Upload Volunteer Profile Photo"):
-    uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
-    uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
-    
-    if uploaded_file is not None and uploader_name:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Preview Image", width=120)
-        
         if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
             try:
                 from io import BytesIO
@@ -1195,36 +1186,40 @@ with st.expander("➕ Upload Volunteer Profile Photo"):
                 if image.mode in ("RGBA", "P"):
                     image = image.convert("RGB")
                 
-                # Drop image canvas limits to absolute minimum grid card dimensions
-                # This guarantees the Base64 text stays well under 10k-15k characters (far below the 50k limit)
+                # Shrink resolution strictly down to keep text extremely small
                 max_thumbnail_dimensions = (180, 180)
                 image.thumbnail(max_thumbnail_dimensions, Image.Resampling.LANCZOS)
                 
-                # Encode with optimized low block density allocation matrix
+                # Encode with optimized configuration matrix
                 image.save(buffered, format="JPEG", quality=50, optimize=True)
                 img_str = base64.b64encode(buffered.getvalue()).decode()
                 
-                # Fetch clean structural dataset frame matrix
+                # Fetch clean copy from Google Sheets
                 df_master = conn.read(ttl="0d")
                 
                 if df_master.empty or "FNM" not in df_master.columns:
                     st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column.")
                     st.stop()
                 
+                # --- FIX: FORCE COLUMN DATA TYPE TO STRING ---
                 if "Photo_Base64" not in df_master.columns:
                     df_master["Photo_Base64"] = ""
+                else:
+                    # Convert the column to object/string type so it stops treating it as float64
+                    df_master["Photo_Base64"] = df_master["Photo_Base64"].fillna("").astype(str)
                 
-                # Verify structural lookup matches active indices tracking values
+                # Verify structural lookup matches active index tracking values
                 match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == uploader_name.lower()
                 
                 if match_mask.any():
+                    # Safely map the text string onto the target rows now that it is forced to text type
                     df_master.loc[match_mask, "Photo_Base64"] = img_str
                     
                     # Push safe atomic line segment to server
                     conn.update(data=df_master)
-                    st.success(f"🎉 Profile picture updated for {uploader_name}!")
+                    st.success(f"🎉 Profile picture successfully saved for {uploader_name}!")
                     
-                    # Crucial: Clear out the cached image upload reference memory to prevent a loop crash
+                    # Clear out the cached image upload reference memory to prevent a loop crash
                     if "dev_file_uploader" in st.session_state:
                         del st.session_state["dev_file_uploader"]
                         
@@ -1233,6 +1228,7 @@ with st.expander("➕ Upload Volunteer Profile Photo"):
                     st.error(f"Could not find '{uploader_name}' in the spreadsheet FNM records. Please make sure the name exists first.")
             except Exception as e:
                 st.error(f"Error handling file stream upload securely: {e}")
+
 
 
 st.write("---")
