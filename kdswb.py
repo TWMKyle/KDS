@@ -1296,7 +1296,7 @@ with tab4:
 with tab5:
     # 🛡️ CHECK ISOLATED DEV LOGIN INSTANCE
     if not st.session_state.dev_logged_in:
-        st.markdown("<h3 style='color: #000000;'>🔒 Dev / Upload Portal Login</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='color: #FFFFFF;'>🔒 Upload Portal Login</h3>", unsafe_allow_html=True)
         
         dev_password = st.text_input("Enter Dev Sandbox Password:", type="password", key="dev_portal_pwd_input")
         
