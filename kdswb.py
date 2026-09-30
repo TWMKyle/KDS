@@ -235,7 +235,7 @@ def run_tab5_dev_sandbox():
                     if image.mode in ("RGBA", "P"):
                         image = image.convert("RGB")
                     
-                    max_thumbnail_dimensions = (180, 180)
+                    max_thumbnail_dimensions = (350, 350)
                     image.thumbnail(max_thumbnail_dimensions, Image.Resampling.LANCZOS)
                     
                     image.save(buffered, format="JPEG", quality=50, optimize=True)
@@ -396,7 +396,7 @@ def run_kds_music():
                     if st.session_state.show_lookup_photo:
                         try:
                             decoded_pic_bytes = base64.b64decode(str(photo_str))
-                            st.image(decoded_pic_bytes, caption=f"Profile Photo: {current_name}", width=150)
+                            st.image(decoded_pic_bytes, caption=f"Profile Photo: {current_name}", width=300)
                         except Exception:
                             st.error("Could not decode profile image formatting records.")
                 else:
