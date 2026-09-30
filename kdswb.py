@@ -182,14 +182,14 @@ current_calendar_year = datetime.now().strftime("%Y")
 
 st.sidebar.write("---")
 st.sidebar.subheader("**This week's songs:**")
-st.sidebar.markdown("Slow Song - This Is Your Church")
-st.sidebar.video("https://www.youtube.com/watch?v=QZspQBJf0-Y")
-st.sidebar.markdown("Fast Song - Dance In Freedom")
-st.sidebar.video("https://www.youtube.com/watch?v=qUkzmQDehEo")
+st.sidebar.markdown("Slow Song - Beauty For Ashes)
+st.sidebar.video("https://www.youtube.com/watch?v=6avkSDoXPV8")
+st.sidebar.markdown("Fast Song - Lead Me Onward")
+st.sidebar.video("https://www.youtube.com/watch?v=h2DQdFNqOJg")
 st.sidebar.write("---")
 
 st.sidebar.subheader("This month's series grid:")
-IMAGE_FILE = "series.jpg"
+IMAGE_FILE = "seriesoctober.jpg"
 
 if os.path.exists(IMAGE_FILE):
     st.sidebar.image(
