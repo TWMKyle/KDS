@@ -241,7 +241,7 @@ def run_tab5_dev_sandbox():
                     image.save(buffered, format="JPEG", quality=50, optimize=True)
                     img_str = base64.b64encode(buffered.getvalue()).decode()
                     
-                    df_master = conn.read(ttl="0d")
+                    df_master = conn.read(ttl="10s")
                     
                     if df_master.empty or "FNM" not in df_master.columns:
                         st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column.")
@@ -272,7 +272,7 @@ def run_tab5_dev_sandbox():
 
     # --- WORKFLOW 2: ROSTER CARDS INTERACTIVE GRID ---
     try:
-        df_master = conn.read(ttl="0d")
+        df_master = conn.read(ttl="10s")
     except Exception:
         st.error("Failed to connect to Google Sheets.")
         st.stop()
