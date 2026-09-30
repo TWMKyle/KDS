@@ -1174,6 +1174,15 @@ with tab4:
 
 
 with tab5:
+
+    # 🛡️ Match the same security check your Admin tab uses
+    if st.session_state.get("logged_in") == True:
+        # If authorized, run the sandbox directory tool
+        run_tab5_dev_sandbox()
+    else:
+        # Otherwise, block access with a stylized warning message
+        st.markdown("<h3 style='color: #FFDB58; text-align: center;'>🔒 Restricted Access</h3>", unsafe_allow_html=True)
+        st.error("You must log in through the main authentication portal to view the Dev/s sandbox directory.")
     st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory (Tab 5)</h2>', unsafe_allow_html=True)
 
     # --- WORKFLOW 1: IMAGE UPLOADER ACCORDION ---
