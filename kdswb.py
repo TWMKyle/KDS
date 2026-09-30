@@ -1000,13 +1000,6 @@ with tab3:
         
     )
 
-
-with tab4:
-
-    import streamlit as st
-from streamlit_gsheets import GSheetsConnection
-import pandas as pd
-
 with tab4:
     
 
@@ -1176,12 +1169,13 @@ with tab4:
         except Exception as data_pipeline_error:
             st.error(f"Pipeline Interruption: {data_pipeline_error}")
 
+
 with tab5:
 
-st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory</h2>', unsafe_allow_html=True)
 
 # 1. Image Upload Expandable Drawer
-with st.expander("➕ Upload Volunteer Profile Photo"):
+    with st.expander("➕ Upload Volunteer Profile Photo"):
     uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
     uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
     
