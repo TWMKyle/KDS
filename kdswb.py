@@ -1207,7 +1207,7 @@ with st.expander("➕ Upload Volunteer Profile Photo"):
                 # CRITICAL SAFETY CHECK
                 if df_master.empty or "FNM" not in df_master.columns:
                     st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column.")
-                    return
+                    st.stop()
                 
                 # Safely ensure column exists without resetting data
                 if "Photo_Base64" not in df_master.columns:
