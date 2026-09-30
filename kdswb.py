@@ -1186,26 +1186,30 @@ with tab5:
             image = Image.open(uploaded_file)
             st.image(image, caption="Preview Image", width=150)
         
-      
-        if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
+          if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
             try:
                 from io import BytesIO
                 buffered = BytesIO()
                 
-                # 1. Convert image mode to RGB if it's RGBA/PNG
                 if image.mode in ("RGBA", "P"):
                     image = image.convert("RGB")
                 
-                # 2. NEW: Resize the image dimensions down so the text string stays tiny
-                max_size = (300, 300) # Width, Height max constraints
+                # Resize strictly down to clear the 50,000 char threshold
+                max_size = (300, 300)
                 image.thumbnail(max_size, Image.Resampling.LANCZOS)
                 
-                # 3. Save compressed file stream
                 image.save(buffered, format="JPEG", quality=60)
                 img_str = base64.b64encode(buffered.getvalue()).decode()
                 
+                # Read fresh cloud copy
                 df_master = conn.read(ttl="0d")
                 
+                # CRITICAL SAFETY CHECK: If the read dataframe comes back blank or missing headers, ABORT!
+                if df_master.empty or "FNM" not in df_master.columns:
+                    st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column. Read aborted to protect database records.")
+                    return
+                
+                # Safely ensure column exists without resetting data
                 if "Photo_Base64" not in df_master.columns:
                     df_master["Photo_Base64"] = ""
                 
@@ -1213,14 +1217,18 @@ with tab5:
                 match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == uploader_name.lower()
                 
                 if match_mask.any():
+                    # Only modify the matched index lines locally
                     df_master.loc[match_mask, "Photo_Base64"] = img_str
+                    
+                    # Update live cloud spreadsheet safely
                     conn.update(data=df_master)
                     st.success(f"🎉 Profile picture updated for {uploader_name}!")
                     st.rerun()
                 else:
                     st.error(f"Could not find '{uploader_name}' in the spreadsheet FNM records. Please make sure the name exists first.")
             except Exception as e:
-                st.error(f"Error handling file stream upload: {e}")
+                st.error(f"Error handling file stream upload securely: {e}")
+
 
 st.write("---")
 
