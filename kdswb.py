@@ -216,7 +216,7 @@ if "show_teacher_lookup" not in st.session_state:
 # MOVE THIS BLOC HIGHER UP (E.G., NEAR THE TOP OF YOUR FILE)
 # ==========================================
 def run_tab5_dev_sandbox():
-    st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Dev Sandbox: Photo Directory</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Photo Directory</h2>', unsafe_allow_html=True)
     
     # --- WORKFLOW 1: IMAGE UPLOADER ACCORDION ---
     with st.expander("➕ Upload Volunteer Profile Photo"):
@@ -1296,28 +1296,25 @@ with tab4:
 with tab5:
     # 🛡️ CHECK ISOLATED DEV LOGIN INSTANCE
     if not st.session_state.dev_logged_in:
-        st.markdown("<h3 style='color: #FFFFFF;'>🔒 Dev / Upload Portal Login</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='color: #000000;'>🔒 Dev / Upload Portal Login</h3>", unsafe_allow_html=True)
         
-        # Simple standalone password entry box
         dev_password = st.text_input("Enter Dev Sandbox Password:", type="password", key="dev_portal_pwd_input")
         
-        if st.button("Unlock Upload Tab", type="primary", key="dev_login_submit_btn"):
+        if st.button("Login as a Dev", type="primary", key="dev_login_submit_btn"):
             # Set your preferred password string here (e.g., "KdsDev2026")
             if dev_password == "KdsDev2026": 
                 st.session_state.dev_logged_in = True
-                st.success("🔓 Access granted to Dev Sandbox!")
+                st.success("🔓 Access granted!")
                 st.rerun()
             else:
                 st.error("Invalid Dev Password. Please try again.")
     else:
-        # User is authenticated via the dedicated dev instance -> show logout button and sandbox tool
         col_space, col_btn = st.columns([5, 1])
         with col_btn:
-            if st.button("Log Out 🚪", key="dev_portal_logout_btn", type="secondary"):
+            if st.button("Log Out", key="dev_portal_logout_btn", type="secondary"):
                 st.session_state.dev_logged_in = False
                 st.session_state.selected_volunteer = None
                 st.rerun()
-                
-        # Call your standalone sandbox function safely!
+    
         run_tab5_dev_sandbox()
     
