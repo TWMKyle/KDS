@@ -332,22 +332,21 @@ def run_tab5_dev_sandbox():
             st.rerun()
 
 def run_kds_music():
-    service_list = ["10AM", "12NN", "2PM", "4PM", "6PM"]
-    week_list = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-    role_list = ["AG", "WL", "Backup Singer"]
-    month_list = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ]
-
+    st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">🎵 Music Ministry Directory</h2>', unsafe_allow_html=True)
+    
+    # Initialize lookup session states safely inside the function
     if "search_clicked" not in st.session_state:
         st.session_state.search_clicked = False
     if "searched_name" not in st.session_state:
         st.session_state.searched_name = ""
+    if "show_lookup_photo" not in st.session_state:
+        st.session_state.show_lookup_photo = False
 
     search_input = st.text_input(
         "Would you like to serve as a worship leader or play the guitar? Please search your name:",
-        value=st.session_state.searched_name).strip()
+        value=st.session_state.searched_name,
+        key="music_search_field"
+    ).strip()
 
     if st.button("Music lookup", type="secondary", key="music_lookup_button"):
         if not search_input:
@@ -356,14 +355,14 @@ def run_kds_music():
         else:
             st.session_state.search_clicked = True
             st.session_state.searched_name = search_input
-
+            # Reset photo viewing state on a brand-new search execution
+            st.session_state.show_lookup_photo = False
             st.rerun()
 
     if st.session_state.search_clicked:
         current_name = st.session_state.searched_name
         st.write("---")
 
-        # 1. Fetch live production sheet data from the cloud
         try:
             df = conn.read(ttl="0d")
         except Exception:
@@ -371,7 +370,6 @@ def run_kds_music():
             st.stop()
 
         required_columns = ["FNM", "SRV", "WK", "Role", "Month"]
-
         if not all(col in df.columns for col in required_columns):
             st.error("Google Sheet headers are missing structural column fields (FNM, SRV, WK, Role, Month).")
             st.stop()
@@ -379,78 +377,40 @@ def run_kds_music():
         match_indices = df["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name.lower()
         existing_entries = df[match_indices]
 
-        has_profile = not existing_entries.empty
-
-        if has_profile:
-            st.success(f"Welcome back, **{current_name}**! Here are your active and previous serving commitments:")
-
+        if not existing_entries.empty:
+            st.success(f"Welcome back, **{current_name}**! Here are your active serving commitments:")
+            
+            # 📋 RENDER THE VOLUNTEER SCHEDULE TABLE
             display_df = existing_entries[required_columns].copy()
-            display_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
+            display_df.columns = ["Name", "Service Time", "Week", "Role", "Month"]
             st.dataframe(display_df, use_container_width=True, hide_index=True)
-
-            st.info("If you have more time available, you can fill out the this form again but note that If you wish to change the schedule(s) you have, please create a new entry and reach out to the admin.")
-        
-        else:
-            st.warning(
-                f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
-
-        with st.form("registration_form", clear_on_submit=True):
-            st.markdown('<p style="color:white;">Serving Schedules</p>', unsafe_allow_html=True)
             
-            srv_term = st.selectbox("Select Service Time:", options=service_list)
-            wk_term = st.selectbox("Select Serving Week:", options=week_list)
-            rl_term = st.selectbox("Select Role:", options=role_list)
-            mnt_term = st.selectbox("Select Month:", options=month_list)
-            
-            button_label = "Register for Kids Music" if has_profile else "Create New Entry"
-            submit_shift = st.form_submit_button(button_label, type="primary")
-
-            if submit_shift:
-                df_latest = conn.read(ttl="0d")
-
-                m_name = df_latest["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name.lower()
-                m_srv = df_latest["SRV"].fillna("").astype(str).str.strip().str.lower() == srv_term.lower()
-                m_wk = df_latest["WK"].fillna("").astype(str).str.strip().str.lower() == wk_term.lower()
-                m_role = df_latest["Role"].fillna("").astype(str).str.strip().str.lower() == rl_term.lower()
-                m_mnt = df_latest["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term.lower()
-
-                duplicate_collision = (m_name & m_srv & m_wk & m_role & m_mnt).any()
-                matching_slots = df_latest[m_srv & m_wk & m_role & m_mnt]
-                duplicate_service = (m_srv & m_wk & m_role & m_mnt).any()
-
-                if duplicate_collision:
-                    st.error(
-                        f"Duplicate Error: You are already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
-
-                elif duplicate_service:
-                    st.error(
-                        f"Oops, someone is already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
-                    conflicting_row = matching_slots[required_columns].copy()
-                    conflicting_row.columns = ["Name", "Service Time", "Serving Week", "Role Assignment",
-                                               "Month Scheduled"]
-                    st.dataframe(conflicting_row, use_container_width=True, hide_index=True)
-
-                else:
-                    new_row = pd.DataFrame([{
-                        "FNM": current_name,
-                        "SRV": srv_term,
-                        "WK": wk_term,
-                        "Role": rl_term,
-                        "Month": mnt_term,
-                        "YR": str(2026),
-                        "Agegroup": "Primary"
-                    }])
-                    df_updated = pd.concat([df_latest, new_row], ignore_index=True)
-
-                    try:
-                        conn.update(data=df_updated)
-                        st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
-                        st.success(
-                            f"Success! Registered {current_name} for {wk_term} ({srv_term}) as {rl_term} for {mnt_term}.")
-
+            # 📸 NEW: VOLUNTEER PHOTO LOOKUP BUTTON
+            if "Photo_Base64" in existing_entries.columns:
+                # FIX: Safely access the first row's image column value using row position index 0
+                photo_str = existing_entries.iloc[0]["Photo_Base64"]
+                
+                if pd.notna(photo_str) and str(photo_str).strip() != "":
+                    st.write("")
+                    # Button acting as a show/hide toggle switcher
+                    btn_label = "Hide Profile Picture 👤" if st.session_state.show_lookup_photo else "View Profile Picture 📸"
+                    
+                    if st.button(btn_label, key="toggle_lookup_photo_btn", type="secondary"):
+                        st.session_state.show_lookup_photo = not st.session_state.show_lookup_photo
                         st.rerun()
-                    except Exception as e:
-                        st.error(f"Network write error occurred: {e}")
+                    
+                    # Dynamically show picture if toggle condition is True
+                    if st.session_state.show_lookup_photo:
+                        try:
+                            decoded_pic_bytes = base64.b64decode(str(photo_str))
+                            st.image(decoded_pic_bytes, caption=f"Profile Photo: {current_name}", width=150)
+                        except Exception:
+                            st.error("Could not decode profile image formatting records.")
+                else:
+                    st.info("💡 No profile photo linked to this account yet. A developer can upload one in Tab 5.")
+        else:
+            st.info(f"No records found for '{current_name}'.")
+
 
 def musicteamweek_lookup():
 
