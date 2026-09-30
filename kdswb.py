@@ -1179,8 +1179,8 @@ with tab5:
 
 # --- WORKFLOW 1: IMAGE UPLOADER ACCORDION ---
     with st.expander("➕ Upload Volunteer Profile Photo"):
-    uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
-    uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
+     uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
+     uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
     
      if uploaded_file is not None and uploader_name:
         image = Image.open(uploaded_file)
