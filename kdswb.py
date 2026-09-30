@@ -332,7 +332,6 @@ def run_tab5_dev_sandbox():
             st.rerun()
 
 def run_kds_music():
-    st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">🎵 Music Ministry Directory</h2>', unsafe_allow_html=True)
     
     # Initialize lookup session states safely inside the function
     if "search_clicked" not in st.session_state:
