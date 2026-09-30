@@ -235,10 +235,12 @@ def run_tab5_dev_sandbox():
                     if image.mode in ("RGBA", "P"):
                         image = image.convert("RGB")
                     
-                    max_thumbnail_dimensions = (350, 350)
+                    # 1. Bump the canvas dimensions to a generous profile card size
+                    max_thumbnail_dimensions = (400, 400)
                     image.thumbnail(max_thumbnail_dimensions, Image.Resampling.LANCZOS)
-                    
-                    image.save(buffered, format="JPEG", quality=50, optimize=True)
+
+                    # 2. UPGRADE: Crank the quality compression from 50 up to 85, keeping optimization ON
+                    image.save(buffered, format="JPEG", quality=85, optimize=True)
                     img_str = base64.b64encode(buffered.getvalue()).decode()
                     
                     df_master = conn.read(ttl="10s")
