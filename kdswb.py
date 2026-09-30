@@ -332,6 +332,7 @@ def run_tab5_dev_sandbox():
             st.rerun()
 
 def run_kds_music():
+    st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">🎵 Music Ministry Directory</h2>', unsafe_allow_html=True)
     
     # Initialize lookup session states safely inside the function
     if "search_clicked" not in st.session_state:
@@ -363,7 +364,8 @@ def run_kds_music():
         st.write("---")
 
         try:
-            df = conn.read(ttl="0d")
+            # ⚡ OPTIMIZED: Uses 10-second caching to preserve your Google Sheets read quota limits
+            df = conn.read(ttl="10s")
         except Exception:
             st.error("Failed to connect to Google Sheets. Verify your link configurations.")
             st.stop()
@@ -379,26 +381,19 @@ def run_kds_music():
         if not existing_entries.empty:
             st.success(f"Welcome back, **{current_name}**! Here are your active serving commitments:")
             
-            # 📋 RENDER THE VOLUNTEER SCHEDULE TABLE
-            display_df = existing_entries[required_columns].copy()
-            display_df.columns = ["Name", "Service Time", "Week", "Role", "Month"]
-            st.dataframe(display_df, use_container_width=True, hide_index=True)
-            
-            # 📸 NEW: VOLUNTEER PHOTO LOOKUP BUTTON
+            # 📸 1. VOLUNTEER PHOTO LOOKUP BUTTON (POSITIONED AT THE TOP)
             if "Photo_Base64" in existing_entries.columns:
-                # FIX: Safely access the first row's image column value using row position index 0
                 photo_str = existing_entries.iloc[0]["Photo_Base64"]
                 
                 if pd.notna(photo_str) and str(photo_str).strip() != "":
-                    st.write("")
-                    # Button acting as a show/hide toggle switcher
+                    # Toggle label string changer
                     btn_label = "Hide Profile Picture 👤" if st.session_state.show_lookup_photo else "View Profile Picture 📸"
                     
                     if st.button(btn_label, key="toggle_lookup_photo_btn", type="secondary"):
                         st.session_state.show_lookup_photo = not st.session_state.show_lookup_photo
                         st.rerun()
                     
-                    # Dynamically show picture if toggle condition is True
+                    # Dynamically render picture if toggle state is true
                     if st.session_state.show_lookup_photo:
                         try:
                             decoded_pic_bytes = base64.b64decode(str(photo_str))
@@ -407,8 +402,18 @@ def run_kds_music():
                             st.error("Could not decode profile image formatting records.")
                 else:
                     st.info("💡 No profile photo linked to this account yet. A developer can upload one in Tab 5.")
+            
+            # Horizontal divider rule separating profile elements from scheduling data
+            st.write("---") 
+
+            # 📋 2. RENDER THE VOLUNTEER SCHEDULE TABLE (POSITIONED BENEATH THE PHOTO)
+            display_df = existing_entries[required_columns].copy()
+            display_df.columns = ["Name", "Service Time", "Week", "Role", "Month"]
+            st.dataframe(display_df, use_container_width=True, hide_index=True)
+            
         else:
             st.info(f"No records found for '{current_name}'.")
+
 
 
 def musicteamweek_lookup():
