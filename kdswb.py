@@ -8,10 +8,13 @@ import ssl
 import gspread
 from PIL import Image
 
+# Initialize Session States safely at the top of the file
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "current_user" not in st.session_state:
     st.session_state.current_user = None
+if "selected_volunteer" not in st.session_state:
+    st.session_state.selected_volunteer = None
     
 
 def get_current_week_range():
