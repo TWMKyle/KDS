@@ -189,7 +189,7 @@ st.sidebar.video("https://www.youtube.com/watch?v=h2DQdFNqOJg")
 st.sidebar.write("---")
 
 st.sidebar.subheader("This month's series grid:")
-IMAGE_FILE = "seriesoctober.jpg"
+IMAGE_FILE = "seriesgridoctober.jpg"
 
 if os.path.exists(IMAGE_FILE):
     st.sidebar.image(
