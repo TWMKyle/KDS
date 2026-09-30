@@ -1187,31 +1187,40 @@ with tab5:
             st.image(image, caption="Preview Image", width=150)
         
             if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
-                try:
-                    from io import BytesIO
-                    buffered = BytesIO()
-                    if image.mode in ("RGBA", "P"):
-                        image = image.convert("RGB")
-                    image.save(buffered, format="JPEG", quality=60)
-                    img_str = base64.b64encode(buffered.getvalue()).decode()
+            try:
+                from io import BytesIO
+                buffered = BytesIO()
                 
-                    df_master = conn.read(ttl="0d")
+                # 1. Convert image mode to RGB if it's RGBA/PNG
+                if image.mode in ("RGBA", "P"):
+                    image = image.convert("RGB")
                 
-                    if "Photo_Base64" not in df_master.columns:
-                        df_master["Photo_Base64"] = ""
+                # 2. NEW: Resize the image dimensions down so the text string stays tiny
+                max_size = (300, 300) # Width, Height max constraints
+                image.thumbnail(max_size, Image.Resampling.LANCZOS)
+                
+                # 3. Save compressed file stream
+                image.save(buffered, format="JPEG", quality=60)
+                img_str = base64.b64encode(buffered.getvalue()).decode()
+                
+                df_master = conn.read(ttl="0d")
+                
+                if "Photo_Base64" not in df_master.columns:
+                    df_master["Photo_Base64"] = ""
                 
                 # Check if name matches FNM row
-                    match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == uploader_name.lower()
+                match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == uploader_name.lower()
                 
-                    if match_mask.any():
-                        df_master.loc[match_mask, "Photo_Base64"] = img_str
-                        conn.update(data=df_master)
-                        st.success(f"🎉 Profile picture updated for {uploader_name}!")
-                        st.rerun()
-                    else:
-                        st.error(f"Could not find '{uploader_name}' in the spreadsheet FNM records. Please make sure the name exists first.")
-                except Exception as e:
-                    st.error(f"Error handling file stream upload: {e}")
+                if match_mask.any():
+                    df_master.loc[match_mask, "Photo_Base64"] = img_str
+                    conn.update(data=df_master)
+                    st.success(f"🎉 Profile picture updated for {uploader_name}!")
+                    st.rerun()
+                else:
+                    st.error(f"Could not find '{uploader_name}' in the spreadsheet FNM records. Please make sure the name exists first.")
+            except Exception as e:
+                st.error(f"Error handling file stream upload: {e}")
+                
 
 st.write("---")
 
