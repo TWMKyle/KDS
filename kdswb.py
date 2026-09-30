@@ -1230,7 +1230,6 @@ with tab5:
                 st.error(f"Error handling file stream upload securely: {e}")
 
 
-
 st.write("---")
 
 # 2. Render Roster Grid Display
