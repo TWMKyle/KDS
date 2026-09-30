@@ -1253,10 +1253,12 @@ if "Photo_Base64" in df_master.columns:
 else:
     st.info("The spreadsheet database column 'Photo_Base64' does not exist yet. Use the upload expander tool above to dynamically create it.")
 
+
 # 3. Dynamic Conditional Schedule Output Module
-if st.session_state.selected_volunteer:
+if st.session_state.get("selected_volunteer"):
     clicked_name = st.session_state.selected_volunteer
     st.write("---")
+
     
     # Visual Layout Split for Profile Highlight
     st.markdown(f"<h3 style='color: #FFDB58;'>📋 Active Schedule Profile: {clicked_name}</h3>", unsafe_allow_html=True)
