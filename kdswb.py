@@ -1205,7 +1205,7 @@ with tab5:
                         conn.update(data=df_master)
                         st.success(f"🎉 Profile picture updated for {uploader_name}!")
                         st.rerun()
-                        else:
+                    else:
                         st.error(f"Could not find '{uploader_name}' in the spreadsheet FNM records. Please make sure the name exists first.")
                 except Exception as e:
                     st.error(f"Error handling file stream upload: {e}")
