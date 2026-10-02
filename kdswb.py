@@ -31,7 +31,7 @@ left_co, cent_co, right_co = st.columns([1, 2, 1])
 
 with cent_co:
     # 2. Place your logo image inside the middle column
-    st.image("https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-21.jpg", use_container_width=True)
+    st.image("https://raw.githubusercontent.com/TWMKyle/KDS/main/seriesoctober.jpg", use_container_width=True)
 
 st.markdown(
     f"""
@@ -182,14 +182,14 @@ current_calendar_year = datetime.now().strftime("%Y")
 
 st.sidebar.write("---")
 st.sidebar.subheader("**This week's songs:**")
-st.sidebar.markdown("Slow Song - This Is Your Church")
-st.sidebar.video("https://www.youtube.com/watch?v=QZspQBJf0-Y")
-st.sidebar.markdown("Fast Song - Dance In Freedom")
-st.sidebar.video("https://www.youtube.com/watch?v=qUkzmQDehEo")
+st.sidebar.markdown("Slow Song - Beauty For Ashes")
+st.sidebar.video("https://www.youtube.com/watch?v=6avkSDoXPV8)
+st.sidebar.markdown("Fast Song - Lead Me Onward")
+st.sidebar.video("https://www.youtube.com/watch?v=v8xJarDQwh0")
 st.sidebar.write("---")
 
 st.sidebar.subheader("This month's series grid:")
-IMAGE_FILE = "series.jpg"
+IMAGE_FILE = "seriesgridoctober.jpg"
 
 if os.path.exists(IMAGE_FILE):
     st.sidebar.image(
