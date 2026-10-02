@@ -214,11 +214,12 @@ if "show_music_lookup" not in st.session_state:
 if "show_teacher_lookup" not in st.session_state:
     st.session_state.show_teacher_lookup = False
 
+
 def run_kds_music():
     # 1. Option Lists structured exactly like the teacher tab variations
     service_list_m = ["10AM", "12NN", "2PM", "4PM", "6PM"]
     week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-    role_list_m = ["Lead Vocalist", "Backing Vocals", "Acoustic Guitar", "Electric Guitar", "Keys", "Drums", "Media Tech"]
+    role_list_m = ["WL", "AG", "Backup Singer"]
     month_list_m = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -347,6 +348,43 @@ def run_kds_music():
                         st.rerun()
                     except Exception as e:
                         st.error(f"Network write error occurred: {e}")
+
+def musicteamweek_lookup():
+    if "week_select" not in st.session_state:
+        st.session_state.show_select = False
+
+    week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+    week_role = ["AG", "WL", "Backup Singer"]
+
+    try:
+        df_weekm = conn.read(ttl="0d")
+    except Exception:
+        st.error("Could not fetch the sheet database.")
+        return
+
+    target_weekm = st.selectbox("Select Week to View:", options=week_list_m, key="dialog_view_music_week_select")
+
+    match_wkm = df_weekm["WK"].fillna("").astype(str).str.strip().str.lower() == target_weekm.lower()
+    match_mntm = df_weekm["Month"].fillna("").astype(
+        str).str.strip().str.lower() == current_calendar_month.lower()
+
+    weekly_dfm = df_weekm[match_wkm & match_mntm]
+
+    valid_role = weekly_dfm["Role"].isin(week_role)
+    weekly_dfm = weekly_dfm[valid_role]
+
+    if weekly_dfm.empty:
+        st.info(f"No volunteers are registered to serve on **{target_weekm}** yet.")
+
+    else:
+        weekly_dfm = weekly_dfm[["FNM", "SRV", "Role", "Month", "Agegroup"]]
+        weekly_dfm.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
+
+        weekly_dfm = weekly_dfm.sort_values(by="Service Time")
+
+        st.success(f"Found **{len(weekly_dfm)}** team member(s) serving in {target_weekm}:")
+        st.dataframe(weekly_dfm, use_container_width=True, hide_index=True)
+
 
 def run_kds_teacher():
     service_list2 = ["10AM", "12NN", "2PM", "4PM", "6PM"]
