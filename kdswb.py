@@ -349,37 +349,37 @@ def run_kds_music():
                         st.error(f"Network write error occurred: {e}")
 
 
-def run_kds_teacher():
-    service_list2 = ["10AM", "12NN", "2PM", "4PM", "6PM"]
-    week_list2 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-    role_list2 = ["Volunteer", "Preacher", "Backup Teacher"]
-    month_list2 = [
+def run_kds_music():
+    service_list = ["10AM", "12NN", "2PM", "4PM", "6PM"]
+    week_list = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+    role_list = ["WL", "AGr", "Backup Singer"]
+    month_list = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ]
-    age_list2 = ["Preschool1", "Preschool2", "Primary", "Preteens"]
+    age_list = ["Preschool1", "Preschool2", "Primary", "Preteens"]
 
-    if "search_clicked2" not in st.session_state:
-        st.session_state.search_clicked2 = False
-    if "searched_name2" not in st.session_state:
-        st.session_state.searched_name2 = ""
+    if "search_clicked" not in st.session_state:
+        st.session_state.search_clicked = False
+    if "searched_name" not in st.session_state:
+        st.session_state.searched_name = ""
 
-    search_input2 = st.text_input("Would you like to volunteer or teach kids? Please search your name:",
+    search_input = st.text_input("Would you like to sing or play the guitar? Please search your name:",
                                   value=st.session_state.searched_name2,
-                                  key="kds_teacher_search_input")
+                                  key="kds_music_search_input")
 
-    if st.button("Teacher lookup", type="secondary", key="teacher_lookup_button"):
-        if not search_input2:
+    if st.button("Music lookup", type="secondary", key="music_lookup_button"):
+        if not search_input:
             st.warning("Please enter a name to search.")
-            st.session_state.search_clicked2 = False
+            st.session_state.search_clicked = False
         else:
-            st.session_state.search_clicked2 = True
-            st.session_state.searched_name2 = search_input2
+            st.session_state.search_clicked = True
+            st.session_state.searched_name = search_input
 
             st.rerun()
 
-    if st.session_state.search_clicked2:
-        current_name2 = st.session_state.searched_name2
+    if st.session_state.search_clicked:
+        current_name = st.session_state.searched_name
         st.write("---")
 
         # 1. Fetch live production sheet data from the cloud
@@ -389,97 +389,98 @@ def run_kds_teacher():
             st.error("Failed to connect to Google Sheets. Verify your link configurations.")
             st.stop()
 
-        required_columns2 = ["FNM", "SRV", "WK", "Role", "Month", "Agegroup"]
+        required_columns = ["FNM", "SRV", "WK", "Role", "Month", "Agegroup"]
 
-        if not all(col in df.columns for col in required_columns2):
+        if not all(col in df.columns for col in required_columns):
             st.error("Google Sheet headers are missing structural column fields (FNM, SRV, WK, Role, Month, Agegroup).")
             st.stop()
 
-        match_indices2 = df["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name2.lower()
-        existing_entries2 = df[match_indices2]
+        match_indices = df["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name.lower()
+        existing_entries = df[match_indices]
 
-        has_profile2 = not existing_entries2.empty
+        has_profile = not existing_entries.empty
 
-        if has_profile2:
-            st.success(f"Welcome back, **{current_name2}**! Here are your active and previous serving commitments:")
+        if has_profile:
+            st.success(f"Welcome back, **{current_name}**! Here are your active and previous serving commitments:")
 
-            display_df2 = existing_entries2[required_columns2].copy()
-            display_df2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled",
+            display_df = existing_entries[required_columns].copy()
+            display_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled",
                                    "Age Group"]
-            st.dataframe(display_df2, use_container_width=True, hide_index=True)
+            st.dataframe(display_df, use_container_width=True, hide_index=True)
 
-            st.info("If you have more time available, you can fill out the this form again but note that If you wish to change the schedule(s) you have, please create a new entry and reach out to the admin.")
-        
+            st.info(
+                "If you have more time available, you can fill out the this form again but note that If you wish to change the schedule(s) you have, please create a new entry and reach out to the admin.")
+
         else:
             st.warning(
-                f"I cannot find any registered services for you, **{current_name2}**. You can fill out the form below:")
+                f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
 
-        with st.form("registration_form2", clear_on_submit=True):
+        with st.form("registration_form", clear_on_submit=True):
             st.markdown('<p style="color:white;">Serving Schedules</p>', unsafe_allow_html=True)
 
-            srv_term2 = st.selectbox("Select Service Time:", options=service_list2)
-            wk_term2 = st.selectbox("Select Serving Week:", options=week_list2)
-            rl_term2 = st.selectbox("Select Role:", options=role_list2)
-            mnt_term2 = st.selectbox("Select Month:", options=month_list2)
-            age_term2 = st.selectbox("Select Age Group:", options=age_list2)
+            srv_term = st.selectbox("Select Service Time:", options=service_list)
+            wk_term = st.selectbox("Select Serving Week:", options=week_list)
+            rl_term = st.selectbox("Select Role:", options=role_list)
+            mnt_term = st.selectbox("Select Month:", options=month_list)
+            age_term = st.selectbox("Select Age Group:", options=age_list)
 
-            button_label2 = "Register as a Kids Teacher" if has_profile2 else "Create New Entry"
-            submit_shift2 = st.form_submit_button(button_label2, type="primary")
+            button_label = "Register as a Kids Teacher" if has_profile else "Create New Entry"
+            submit_shift = st.form_submit_button(button_label, type="primary")
 
-            if submit_shift2:
-                df_latest2 = conn.read(ttl="0d")
+            if submit_shift:
+                df_latest = conn.read(ttl="0d")
 
-                m_name2 = df_latest2["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name2.lower()
-                m_srv2 = df_latest2["SRV"].fillna("").astype(str).str.strip().str.lower() == srv_term2.lower()
-                m_wk2 = df_latest2["WK"].fillna("").astype(str).str.strip().str.lower() == wk_term2.lower()
-                m_role2 = df_latest2["Role"].fillna("").astype(str).str.strip().str.lower() == rl_term2.lower()
-                m_mnt2 = df_latest2["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term2.lower()
-                m_age2 = df_latest2["Agegroup"].fillna("").astype(str).str.strip().str.lower() == age_term2.lower()
+                m_name = df_latest["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name.lower()
+                m_srv = df_latest["SRV"].fillna("").astype(str).str.strip().str.lower() == srv_term.lower()
+                m_wk = df_latest["WK"].fillna("").astype(str).str.strip().str.lower() == wk_term.lower()
+                m_role = df_latest["Role"].fillna("").astype(str).str.strip().str.lower() == rl_term.lower()
+                m_mnt = df_latest["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term.lower()
+                m_age = df_latest["Agegroup"].fillna("").astype(str).str.strip().str.lower() == age_term.lower()
 
-                duplicate_collision2 = (m_name2 & m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
-                matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2]
-                duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2).any()
+                duplicate_collision = (m_name & m_srv & m_wk & m_role & m_mnt & m_age).any()
+                matching_slots = df_latest[m_srv & m_wk & m_role & m_mnt]
+                duplicate_service = (m_srv & m_wk & m_role & m_mnt).any()
 
-                vol_exp2 = "Volunteer"
-                exempt_rl2 = (rl_term2 == vol_exp2)
+                vol_exp = "Backup Singer"
+                exempt_rl = (rl_term == vol_exp)
 
-                if exempt_rl2:
-                    duplicate_service2 = False
-                    matching_slots2 = df_latest2.iloc[0:0]
+                if exempt_rl:
+                    duplicate_service = False
+                    matching_slots = df_latest.iloc[0:0]
                 else:
-                    matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2]
-                    duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
-                
-                if duplicate_collision2:
-                    st.error(
-                        f"Duplicate Error: You are already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2}!")
+                    matching_slots = df_latest[m_srv & m_wk & m_role & m_mnt & m_age]
+                    duplicate_service = (m_srv & m_wk & m_role & m_mnt & m_age).any()
 
-                elif duplicate_service2:
-                    
+                if duplicate_collision:
                     st.error(
-                        f"Oops, someone is already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2} for {age_term2}!")
-                    conflicting_row2 = matching_slots2[required_columns2].copy()
-                    conflicting_row2.columns = ["Name", "Service Time", "Serving Week", "Role Assignment",
+                        f"Duplicate Error: You are already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
+
+                elif duplicate_service:
+
+                    st.error(
+                        f"Oops, someone is already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term} for {age_term}!")
+                    conflicting_row = matching_slots[required_columns].copy()
+                    conflicting_row.columns = ["Name", "Service Time", "Serving Week", "Role Assignment",
                                                 "Month Scheduled", "Agegroup"]
-                    st.dataframe(conflicting_row2, use_container_width=True, hide_index=True)
+                    st.dataframe(conflicting_row, use_container_width=True, hide_index=True)
 
                 else:
                     new_row = pd.DataFrame([{
-                        "FNM": current_name2,
-                        "SRV": srv_term2,
-                        "WK": wk_term2,
-                        "Role": rl_term2,
-                        "Month": mnt_term2,
+                        "FNM": current_name,
+                        "SRV": srv_term,
+                        "WK": wk_term,
+                        "Role": rl_term,
+                        "Month": mnt_term,
                         "YR": str(2026),
-                        "Agegroup": age_term2
+                        "Agegroup": age_term
                     }])
-                    df_updated2 = pd.concat([df_latest2, new_row], ignore_index=True)
+                    df_updated = pd.concat([df_latest, new_row], ignore_index=True)
 
                     try:
-                        conn.update(data=df_updated2)
+                        conn.update(data=df_updated)
                         st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
                         st.success(
-                            f"Success! Registered {current_name2} for {wk_term2} ({srv_term2}) as {rl_term2} in {mnt_term2} for {age_term2}.")
+                            f"Success! Registered {current_name} for {wk_term} ({srv_term}) as {rl_term} in {mnt_term} for {age_term}.")
 
                         st.rerun()
                     except Exception as e:
