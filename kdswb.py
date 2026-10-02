@@ -8,6 +8,8 @@ import ssl
 import gspread
 from PIL import Image
 
+st.set_page_config(page_title="Kids Church", layout="centered")
+
 # Initialize Session States safely at the top of the file
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False  # This remains exclusively for your Admin Tab
@@ -163,7 +165,7 @@ st.markdown(
 
 
 
-st.set_page_config(page_title="Kids Church", layout="centered")
+
 st.markdown(
     '<h1 style="color: #FFFFFF !important; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">'
     'Kids Church Registration Portal'
