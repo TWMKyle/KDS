@@ -214,128 +214,139 @@ if "show_music_lookup" not in st.session_state:
 if "show_teacher_lookup" not in st.session_state:
     st.session_state.show_teacher_lookup = False
 
-
 def run_kds_music():
-    
-    # Initialize lookup session states safely inside the function
-    if "search_clicked" not in st.session_state:
-        st.session_state.search_clicked = False
-    if "searched_name" not in st.session_state:
-        st.session_state.searched_name = ""
-    if "show_lookup_photo" not in st.session_state:
-        st.session_state.show_lookup_photo = False
+    # 1. Option Lists structured exactly like the teacher tab variations
+    service_list_m = ["10AM", "12NN", "2PM", "4PM", "6PM"]
+    week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+    role_list_m = ["Lead Vocalist", "Backing Vocals", "Acoustic Guitar", "Electric Guitar", "Keys", "Drums", "Media Tech"]
+    month_list_m = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
 
-    search_input = st.text_input(
-        "Would you like to serve as a worship leader or play the guitar? Please search your name:",
-        value=st.session_state.searched_name,
-        key="music_search_field"
-    ).strip()
+    # 2. Dedicated Isolated Session State Keys for the Music Form
+    if "search_clicked_m" not in st.session_state:
+        st.session_state.search_clicked_m = False
+    if "searched_name_m" not in st.session_state:
+        st.session_state.searched_name_m = ""
 
+    # Search Bar Interface Element
+    search_input_m = st.text_input("Would you like to volunteer for the Music Team? Please search your name:",
+                                  value=st.session_state.searched_name_m,
+                                  key="kds_music_search_input")
+
+    # Lookup Trigger Button Architecture
     if st.button("Music lookup", type="secondary", key="music_lookup_button"):
-        if not search_input:
+        if not search_input_m:
             st.warning("Please enter a name to search.")
-            st.session_state.search_clicked = False
+            st.session_state.search_clicked_m = False
         else:
-            st.session_state.search_clicked = True
-            st.session_state.searched_name = search_input
-            # Reset photo viewing state on a brand-new search execution
-            st.session_state.show_lookup_photo = False
+            st.session_state.search_clicked_m = True
+            st.session_state.searched_name_m = search_input_m
             st.rerun()
 
-    if st.session_state.search_clicked:
-        current_name = st.session_state.searched_name
+    # 3. Execution Pipeline once Search Is Initiated
+    if st.session_state.search_clicked_m:
+        current_name_m = st.session_state.searched_name_m
         st.write("---")
 
+        # Fetch cloud configuration sheet data
         try:
-            # ⚡ OPTIMIZED: Uses 10-second caching to preserve your Google Sheets read quota limits
-            df = conn.read(ttl="10s")
+            # Note: Ensure this reads from the appropriate worksheet name if your conn has multiple sheets
+            df_weekm = conn.read(ttl="0d")
         except Exception:
             st.error("Failed to connect to Google Sheets. Verify your link configurations.")
             st.stop()
 
-        required_columns = ["FNM", "SRV", "WK", "Role", "Month"]
-        if not all(col in df.columns for col in required_columns):
-            st.error("Google Sheet headers are missing structural column fields (FNM, SRV, WK, Role, Month).")
+        # Clean headers dynamically to block KeyErrors before parsing constraints
+        df_weekm.columns = df_weekm.columns.str.strip()
+        
+        # Required structural columns based on trace logs
+        required_columns_m = ["FNM", "SRV", "WK", "Role", "Month", "Song"]
+
+        if not all(col in df_weekm.columns for col in required_columns_m):
+            st.error(f"Google Sheet headers are missing structural column fields {required_columns_m}. Found headers: {list(df_weekm.columns)}")
             st.stop()
 
-        match_indices = df["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name.lower()
-        existing_entries = df[match_indices]
+        # Match row evaluations
+        match_indices_m = df_weekm["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name_m.lower()
+        existing_entries_m = df_weekm[match_indices_m]
+        has_profile_m = not existing_entries_m.empty
 
-        if not existing_entries.empty:
-            st.success(f"Welcome back, **{current_name}**! Here are your active serving commitments:")
-            
-            # 📸 1. VOLUNTEER PHOTO LOOKUP BUTTON (POSITIONED AT THE TOP)
-            if "Photo_Base64" in existing_entries.columns:
-                photo_str = existing_entries.iloc[0]["Photo_Base64"]
-                
-                if pd.notna(photo_str) and str(photo_str).strip() != "":
-                    # Toggle label string changer
-                    btn_label = "Hide Profile Picture 👤" if st.session_state.show_lookup_photo else "View Profile Picture 📸"
-                    
-                    if st.button(btn_label, key="toggle_lookup_photo_btn", type="secondary"):
-                        st.session_state.show_lookup_photo = not st.session_state.show_lookup_photo
-                        st.rerun()
-                    
-                    # Dynamically render picture if toggle state is true
-                    if st.session_state.show_lookup_photo:
-                        try:
-                            decoded_pic_bytes = base64.b64decode(str(photo_str))
-                            st.image(decoded_pic_bytes, caption=f"Profile Photo: {current_name}", width=300)
-                        except Exception:
-                            st.error("Could not decode profile image formatting records.")
-                else:
-                    st.info("💡 No profile photo linked to this account yet. A developer can upload one in Tab 5.")
-            
-            # Horizontal divider rule separating profile elements from scheduling data
-            st.write("---") 
+        # 4. Profile Evaluation Blocks
+        if has_profile_m:
+            st.success(f"Welcome back, **{current_name_m}**! Here are your active music team assignments:")
 
-            # 📋 2. RENDER THE VOLUNTEER SCHEDULE TABLE (POSITIONED BENEATH THE PHOTO)
-            display_df = existing_entries[required_columns].copy()
-            display_df.columns = ["Name", "Service Time", "Week", "Role", "Month"]
-            st.dataframe(display_df, use_container_width=True, hide_index=True)
-            
+            display_df_m = existing_entries_m[required_columns_m].copy()
+            display_df_m.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled", "Assigned Song"]
+            st.dataframe(display_df_m, use_container_width=True, hide_index=True)
+
+            st.info("To add assignments click fill out again. To modify existing items, create a new row and contact the administrator.")
         else:
-            st.info(f"No records found for '{current_name}'.")
+            st.warning(f"I cannot find any registered music services for you, **{current_name_m}**. Fill out the form details below:")
 
+        # 5. Form Element View Template Blocks
+        with st.form("music_registration_form", clear_on_submit=True):
+            st.markdown('<p style="color:white; font-weight:600;">Music Team Scheduling Details</p>', unsafe_allow_html=True)
 
+            srv_term_m = st.selectbox("Select Service Time:", options=service_list_m, key="m_srv")
+            wk_term_m = st.selectbox("Select Serving Week:", options=week_list_m, key="m_wk")
+            rl_term_m = st.selectbox("Select Role:", options=role_list_m, key="m_role")
+            mnt_term_m = st.selectbox("Select Month:", options=month_list_m, key="m_month")
+            song_term_m = st.text_input("Assigned Song Title (e.g. Lead Me Onward):", key="m_song").strip()
 
-def musicteamweek_lookup():
+            button_label_m = "Register for Music Team" if has_profile_m else "Create New Music Entry"
+            submit_shift_m = st.form_submit_button(button_label_m, type="primary")
 
-    if "week_select" not in st.session_state:
-        st.session_state.show_select = False
-        
-    
-    week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-    week_role = ["AG", "WL", "Backup Singer"]
+            # 6. Writing submissions and duplicate checks
+            if submit_shift_m:
+                if not song_term_m:
+                    st.error("Please specify a Song Title before submitting.")
+                    st.stop()
 
-    try:
-        df_weekm = conn.read(ttl="0d")
-    except Exception:
-        st.error("Could not fetch the sheet database.")
-        return
-    
-    target_weekm = st.selectbox("Select Week to View:", options=week_list_m, key="dialog_view_music_week_select")
+                df_latest_m = conn.read(ttl="0d")
+                df_latest_m.columns = df_latest_m.columns.str.strip()
 
-    match_wkm = df_weekm["WK"].fillna("").astype(str).str.strip().str.lower() == target_weekm.lower()
-    match_mntm = df_weekm["Month"].fillna("").astype(
-        str).str.strip().str.lower() == current_calendar_month.lower()
+                m_name_m = df_latest_m["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name_m.lower()
+                m_srv_m = df_latest_m["SRV"].fillna("").astype(str).str.strip().str.lower() == srv_term_m.lower()
+                m_wk_m = df_latest_m["WK"].fillna("").astype(str).str.strip().str.lower() == wk_term_m.lower()
+                m_role_m = df_latest_m["Role"].fillna("").astype(str).str.strip().str.lower() == rl_term_m.lower()
+                m_mnt_m = df_latest_m["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term_m.lower()
 
-    weekly_dfm = df_weekm[match_wkm & match_mntm]
+                # Collision Rule Configurations
+                duplicate_collision_m = (m_name_m & m_srv_m & m_wk_m & m_role_m & m_mnt_m).any()
+                
+                # Check if instrument/role slot is locked by someone else on that week/service
+                matching_slots_m = df_latest_m[m_srv_m & m_wk_m & m_role_m & m_mnt_m]
+                duplicate_service_m = not matching_slots_m.empty
 
-    valid_role = weekly_dfm["Role"].isin(week_role)
-    weekly_dfm = weekly_dfm[valid_role]
-    
-    if weekly_dfm.empty:
-        st.info(f"No volunteers are registered to serve on **{target_weekm}** yet.")
+                if duplicate_collision_m:
+                    st.error(f"Duplicate Error: You are already confirmed for the {srv_term_m} service on {wk_term_m} as {rl_term_m} for {mnt_term_m}!")
+                elif duplicate_service_m:
+                    st.error(f"Slot Conflict: Someone is already assigned as the {rl_term_m} for the {srv_term_m} service on {wk_term_m} in {mnt_term_m}!")
+                    conflicting_row_m = matching_slots_m[required_columns_m].copy()
+                    conflicting_row_m.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled", "Assigned Song"]
+                    st.dataframe(conflicting_row_m, use_container_width=True, hide_index=True)
+                else:
+                    # Clear validation pass: package rows for transit
+                    new_row_m = pd.DataFrame([{
+                        "FNM": current_name_m,
+                        "SRV": srv_term_m,
+                        "WK": wk_term_m,
+                        "Role": rl_term_m,
+                        "Month": mnt_term_m,
+                        "YR": str(2026),
+                        "Song": song_term_m
+                    }])
+                    df_updated_m = pd.concat([df_latest_m, new_row_m], ignore_index=True)
 
-    else:
-        weekly_dfm = weekly_dfm[["FNM", "SRV", "Role", "Month", "Agegroup"]]
-        weekly_dfm.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
-
-        weekly_dfm = weekly_dfm.sort_values(by="Service Time")
-
-        st.success(f"Found **{len(weekly_dfm)}** team member(s) serving in {target_weekm}:")
-        st.dataframe(weekly_dfm, use_container_width=True, hide_index=True)
+                    try:
+                        conn.update(data=df_updated_m)
+                        st.toast("Thank you for joining the set! Records updated successfully!", icon="🎵")
+                        st.success(f"Success! Confirmed {current_name_m} on {wk_term_m} ({srv_term_m}) as {rl_term_m} playing '{song_term_m}'.")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Network write error occurred: {e}")
 
 
 def run_kds_teacher():
