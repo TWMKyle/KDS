@@ -8,18 +8,12 @@ import ssl
 import gspread
 from PIL import Image
 
-st.set_page_config(page_title="Kids Church", layout="centered")
-
-# Initialize Session States safely at the top of the file
 if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False  # This remains exclusively for your Admin Tab
-if "dev_logged_in" not in st.session_state:
-    st.session_state.dev_logged_in = False  # 🆕 Dedicated login strictly for Tab 5 Uploads
+    st.session_state.logged_in = False
 if "current_user" not in st.session_state:
     st.session_state.current_user = None
-if "selected_volunteer" not in st.session_state:
-    st.session_state.selected_volunteer = None
     
+
 def get_current_week_range():
     """Calculates the start (Monday) and end (Sunday) dates of the current week."""
     today = datetime.now().date()
@@ -37,7 +31,7 @@ left_co, cent_co, right_co = st.columns([1, 2, 1])
 
 with cent_co:
     # 2. Place your logo image inside the middle column
-    st.image("https://raw.githubusercontent.com/TWMKyle/KDS/main/seriesoctober.jpg", use_container_width=True)
+    st.image("https://raw.githubusercontent.com/TWMKyle/KDS/main/Unknown-21.jpg", use_container_width=True)
 
 st.markdown(
     f"""
@@ -165,7 +159,7 @@ st.markdown(
 
 
 
-
+st.set_page_config(page_title="Kids Church", layout="centered")
 st.markdown(
     '<h1 style="color: #FFFFFF !important; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">'
     'Kids Church Registration Portal'
@@ -188,14 +182,14 @@ current_calendar_year = datetime.now().strftime("%Y")
 
 st.sidebar.write("---")
 st.sidebar.subheader("**This week's songs:**")
-st.sidebar.markdown("Slow Song - Beauty For Ashes")
-st.sidebar.video("https://www.youtube.com/watch?v=6avkSDoXPV8")
-st.sidebar.markdown("Fast Song - Lead Me Onward")
-st.sidebar.video("https://www.youtube.com/watch?v=h2DQdFNqOJg")
+st.sidebar.markdown("Slow Song - This Is Your Church")
+st.sidebar.video("https://www.youtube.com/watch?v=QZspQBJf0-Y")
+st.sidebar.markdown("Fast Song - Dance In Freedom")
+st.sidebar.video("https://www.youtube.com/watch?v=qUkzmQDehEo")
 st.sidebar.write("---")
 
 st.sidebar.subheader("This month's series grid:")
-IMAGE_FILE = "seriesgridoctober.jpg"
+IMAGE_FILE = "series.jpg"
 
 if os.path.exists(IMAGE_FILE):
     st.sidebar.image(
@@ -214,145 +208,133 @@ if "show_music_lookup" not in st.session_state:
 if "show_teacher_lookup" not in st.session_state:
     st.session_state.show_teacher_lookup = False
 
-
 def run_kds_music():
-    # 1. Option Lists structured exactly like the teacher tab variations
-    service_list_m = ["10AM", "12NN", "2PM", "4PM", "6PM"]
-    week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-    role_list_m = ["WL", "AG", "Backup Singer"]
-    month_list_m = [
+    service_list = ["10AM", "12NN", "2PM", "4PM", "6PM"]
+    week_list = ["Week1", "Week2", "Week3", "Week4", "Week5"]
+    role_list = ["AG", "WL", "Backup Singer"]
+    month_list = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ]
 
-    # 2. Dedicated Isolated Session State Keys for the Music Form
-    if "search_clicked_m" not in st.session_state:
-        st.session_state.search_clicked_m = False
-    if "searched_name_m" not in st.session_state:
-        st.session_state.searched_name_m = ""
+    if "search_clicked" not in st.session_state:
+        st.session_state.search_clicked = False
+    if "searched_name" not in st.session_state:
+        st.session_state.searched_name = ""
 
-    # Search Bar Interface Element
-    search_input_m = st.text_input("Would you like to volunteer for the Music Team? Please search your name:",
-                                  value=st.session_state.searched_name_m,
-                                  key="kds_music_search_input")
+    search_input = st.text_input(
+        "Would you like to serve as a worship leader or play the guitar? Please search your name:",
+        value=st.session_state.searched_name).strip()
 
-    # Lookup Trigger Button Architecture
     if st.button("Music lookup", type="secondary", key="music_lookup_button"):
-        if not search_input_m:
+        if not search_input:
             st.warning("Please enter a name to search.")
-            st.session_state.search_clicked_m = False
+            st.session_state.search_clicked = False
         else:
-            st.session_state.search_clicked_m = True
-            st.session_state.searched_name_m = search_input_m
+            st.session_state.search_clicked = True
+            st.session_state.searched_name = search_input
+
             st.rerun()
 
-    # 3. Execution Pipeline once Search Is Initiated
-    if st.session_state.search_clicked_m:
-        current_name_m = st.session_state.searched_name_m
+    if st.session_state.search_clicked:
+        current_name = st.session_state.searched_name
         st.write("---")
 
-        # Fetch cloud configuration sheet data
+        # 1. Fetch live production sheet data from the cloud
         try:
-            # Note: Ensure this reads from the appropriate worksheet name if your conn has multiple sheets
-            df_weekm = conn.read(ttl="0d")
+            df = conn.read(ttl="0d")
         except Exception:
             st.error("Failed to connect to Google Sheets. Verify your link configurations.")
             st.stop()
 
-        # Clean headers dynamically to block KeyErrors before parsing constraints
-        df_weekm.columns = df_weekm.columns.str.strip()
-        
-        # Required structural columns based on trace logs
-        required_columns_m = ["FNM", "SRV", "WK", "Role", "Month", "Song"]
+        required_columns = ["FNM", "SRV", "WK", "Role", "Month"]
 
-        if not all(col in df_weekm.columns for col in required_columns_m):
-            st.error(f"Google Sheet headers are missing structural column fields {required_columns_m}. Found headers: {list(df_weekm.columns)}")
+        if not all(col in df.columns for col in required_columns):
+            st.error("Google Sheet headers are missing structural column fields (FNM, SRV, WK, Role, Month).")
             st.stop()
 
-        # Match row evaluations
-        match_indices_m = df_weekm["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name_m.lower()
-        existing_entries_m = df_weekm[match_indices_m]
-        has_profile_m = not existing_entries_m.empty
+        match_indices = df["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name.lower()
+        existing_entries = df[match_indices]
 
-        # 4. Profile Evaluation Blocks
-        if has_profile_m:
-            st.success(f"Welcome back, **{current_name_m}**! Here are your active music team assignments:")
+        has_profile = not existing_entries.empty
 
-            display_df_m = existing_entries_m[required_columns_m].copy()
-            display_df_m.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled", "Assigned Song"]
-            st.dataframe(display_df_m, use_container_width=True, hide_index=True)
+        if has_profile:
+            st.success(f"Welcome back, **{current_name}**! Here are your active and previous serving commitments:")
 
-            st.info("To add assignments click fill out again. To modify existing items, create a new row and contact the administrator.")
+            display_df = existing_entries[required_columns].copy()
+            display_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled"]
+            st.dataframe(display_df, use_container_width=True, hide_index=True)
+
+            st.info("If you have more time available, you can fill out the this form again but note that If you wish to change the schedule(s) you have, please create a new entry and reach out to the admin.")
+        
         else:
-            st.warning(f"I cannot find any registered music services for you, **{current_name_m}**. Fill out the form details below:")
+            st.warning(
+                f"I cannot find any registered services for you, **{current_name}**. You can fill out the form below:")
 
-        # 5. Form Element View Template Blocks
-        with st.form("music_registration_form", clear_on_submit=True):
-            st.markdown('<p style="color:white; font-weight:600;">Music Team Scheduling Details</p>', unsafe_allow_html=True)
+        with st.form("registration_form", clear_on_submit=True):
+            st.markdown('<p style="color:white;">Serving Schedules</p>', unsafe_allow_html=True)
+            
+            srv_term = st.selectbox("Select Service Time:", options=service_list)
+            wk_term = st.selectbox("Select Serving Week:", options=week_list)
+            rl_term = st.selectbox("Select Role:", options=role_list)
+            mnt_term = st.selectbox("Select Month:", options=month_list)
+            
+            button_label = "Register for Kids Music" if has_profile else "Create New Entry"
+            submit_shift = st.form_submit_button(button_label, type="primary")
 
-            srv_term_m = st.selectbox("Select Service Time:", options=service_list_m, key="m_srv")
-            wk_term_m = st.selectbox("Select Serving Week:", options=week_list_m, key="m_wk")
-            rl_term_m = st.selectbox("Select Role:", options=role_list_m, key="m_role")
-            mnt_term_m = st.selectbox("Select Month:", options=month_list_m, key="m_month")
-            song_term_m = st.text_input("Assigned Song Title (e.g. Lead Me Onward):", key="m_song").strip()
+            if submit_shift:
+                df_latest = conn.read(ttl="0d")
 
-            button_label_m = "Register for Music Team" if has_profile_m else "Create New Music Entry"
-            submit_shift_m = st.form_submit_button(button_label_m, type="primary")
+                m_name = df_latest["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name.lower()
+                m_srv = df_latest["SRV"].fillna("").astype(str).str.strip().str.lower() == srv_term.lower()
+                m_wk = df_latest["WK"].fillna("").astype(str).str.strip().str.lower() == wk_term.lower()
+                m_role = df_latest["Role"].fillna("").astype(str).str.strip().str.lower() == rl_term.lower()
+                m_mnt = df_latest["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term.lower()
 
-            # 6. Writing submissions and duplicate checks
-            if submit_shift_m:
-                if not song_term_m:
-                    st.error("Please specify a Song Title before submitting.")
-                    st.stop()
+                duplicate_collision = (m_name & m_srv & m_wk & m_role & m_mnt).any()
+                matching_slots = df_latest[m_srv & m_wk & m_role & m_mnt]
+                duplicate_service = (m_srv & m_wk & m_role & m_mnt).any()
 
-                df_latest_m = conn.read(ttl="0d")
-                df_latest_m.columns = df_latest_m.columns.str.strip()
+                if duplicate_collision:
+                    st.error(
+                        f"Duplicate Error: You are already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
 
-                m_name_m = df_latest_m["FNM"].fillna("").astype(str).str.strip().str.lower() == current_name_m.lower()
-                m_srv_m = df_latest_m["SRV"].fillna("").astype(str).str.strip().str.lower() == srv_term_m.lower()
-                m_wk_m = df_latest_m["WK"].fillna("").astype(str).str.strip().str.lower() == wk_term_m.lower()
-                m_role_m = df_latest_m["Role"].fillna("").astype(str).str.strip().str.lower() == rl_term_m.lower()
-                m_mnt_m = df_latest_m["Month"].fillna("").astype(str).str.strip().str.lower() == mnt_term_m.lower()
+                elif duplicate_service:
+                    st.error(
+                        f"Oops, someone is already serving for the {srv_term} on {wk_term} as a/an {rl_term} in {mnt_term}!")
+                    conflicting_row = matching_slots[required_columns].copy()
+                    conflicting_row.columns = ["Name", "Service Time", "Serving Week", "Role Assignment",
+                                               "Month Scheduled"]
+                    st.dataframe(conflicting_row, use_container_width=True, hide_index=True)
 
-                # Collision Rule Configurations
-                duplicate_collision_m = (m_name_m & m_srv_m & m_wk_m & m_role_m & m_mnt_m).any()
-                
-                # Check if instrument/role slot is locked by someone else on that week/service
-                matching_slots_m = df_latest_m[m_srv_m & m_wk_m & m_role_m & m_mnt_m]
-                duplicate_service_m = not matching_slots_m.empty
-
-                if duplicate_collision_m:
-                    st.error(f"Duplicate Error: You are already confirmed for the {srv_term_m} service on {wk_term_m} as {rl_term_m} for {mnt_term_m}!")
-                elif duplicate_service_m:
-                    st.error(f"Slot Conflict: Someone is already assigned as the {rl_term_m} for the {srv_term_m} service on {wk_term_m} in {mnt_term_m}!")
-                    conflicting_row_m = matching_slots_m[required_columns_m].copy()
-                    conflicting_row_m.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled", "Assigned Song"]
-                    st.dataframe(conflicting_row_m, use_container_width=True, hide_index=True)
                 else:
-                    # Clear validation pass: package rows for transit
-                    new_row_m = pd.DataFrame([{
-                        "FNM": current_name_m,
-                        "SRV": srv_term_m,
-                        "WK": wk_term_m,
-                        "Role": rl_term_m,
-                        "Month": mnt_term_m,
+                    new_row = pd.DataFrame([{
+                        "FNM": current_name,
+                        "SRV": srv_term,
+                        "WK": wk_term,
+                        "Role": rl_term,
+                        "Month": mnt_term,
                         "YR": str(2026),
-                        "Song": song_term_m
+                        "Agegroup": "Primary"
                     }])
-                    df_updated_m = pd.concat([df_latest_m, new_row_m], ignore_index=True)
+                    df_updated = pd.concat([df_latest, new_row], ignore_index=True)
 
                     try:
-                        conn.update(data=df_updated_m)
-                        st.toast("Thank you for joining the set! Records updated successfully!", icon="🎵")
-                        st.success(f"Success! Confirmed {current_name_m} on {wk_term_m} ({srv_term_m}) as {rl_term_m} playing '{song_term_m}'.")
+                        conn.update(data=df_updated)
+                        st.toast("Thank you for serving with us! Our records have been updated!", icon="🚀")
+                        st.success(
+                            f"Success! Registered {current_name} for {wk_term} ({srv_term}) as {rl_term} for {mnt_term}.")
+
                         st.rerun()
                     except Exception as e:
                         st.error(f"Network write error occurred: {e}")
 
 def musicteamweek_lookup():
+
     if "week_select" not in st.session_state:
         st.session_state.show_select = False
-
+        
+    
     week_list_m = ["Week1", "Week2", "Week3", "Week4", "Week5"]
     week_role = ["AG", "WL", "Backup Singer"]
 
@@ -361,7 +343,7 @@ def musicteamweek_lookup():
     except Exception:
         st.error("Could not fetch the sheet database.")
         return
-
+    
     target_weekm = st.selectbox("Select Week to View:", options=week_list_m, key="dialog_view_music_week_select")
 
     match_wkm = df_weekm["WK"].fillna("").astype(str).str.strip().str.lower() == target_weekm.lower()
@@ -372,7 +354,7 @@ def musicteamweek_lookup():
 
     valid_role = weekly_dfm["Role"].isin(week_role)
     weekly_dfm = weekly_dfm[valid_role]
-
+    
     if weekly_dfm.empty:
         st.info(f"No volunteers are registered to serve on **{target_weekm}** yet.")
 
@@ -445,9 +427,8 @@ def run_kds_teacher():
                                    "Age Group"]
             st.dataframe(display_df2, use_container_width=True, hide_index=True)
 
-            st.info(
-                "If you have more time available, you can fill out the this form again but note that If you wish to change the schedule(s) you have, please create a new entry and reach out to the admin.")
-
+            st.info("If you have more time available, you can fill out the this form again but note that If you wish to change the schedule(s) you have, please create a new entry and reach out to the admin.")
+        
         else:
             st.warning(
                 f"I cannot find any registered services for you, **{current_name2}**. You can fill out the form below:")
@@ -487,13 +468,13 @@ def run_kds_teacher():
                 else:
                     matching_slots2 = df_latest2[m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2]
                     duplicate_service2 = (m_srv2 & m_wk2 & m_role2 & m_mnt2 & m_age2).any()
-
+                
                 if duplicate_collision2:
                     st.error(
                         f"Duplicate Error: You are already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2}!")
 
                 elif duplicate_service2:
-
+                    
                     st.error(
                         f"Oops, someone is already serving for the {srv_term2} on {wk_term2} as a/an {rl_term2} in {mnt_term2} for {age_term2}!")
                     conflicting_row2 = matching_slots2[required_columns2].copy()
@@ -522,7 +503,8 @@ def run_kds_teacher():
                         st.rerun()
                     except Exception as e:
                         st.error(f"Network write error occurred: {e}")
-                        
+
+
 def teacherteamweek_lookup():
 
     if "week_select" not in st.session_state:
@@ -562,127 +544,6 @@ def teacherteamweek_lookup():
         st.dataframe(weekly_dft, use_container_width=True, hide_index=True)
 
 
-# ==========================================
-# MOVE THIS BLOC HIGHER UP (E.G., NEAR THE TOP OF YOUR FILE)
-# ==========================================
-def run_tab5_dev_sandbox():
-    st.markdown('<h2 style="color: #FFFFFF; margin-bottom:10px;">📸 Photo Directory</h2>', unsafe_allow_html=True)
-    
-    # --- WORKFLOW 1: IMAGE UPLOADER ACCORDION ---
-    with st.expander("➕ Upload Volunteer Profile Photo"):
-        uploader_name = st.text_input("Enter exact Full Name (must match 'FNM' column exactly):", key="dev_upload_name").strip()
-        uploaded_file = st.file_uploader("Select profile picture...", type=["jpg", "jpeg", "png"], key="dev_file_uploader")
-        
-        if uploaded_file is not None and uploader_name:
-            image = Image.open(uploaded_file)
-            st.image(image, caption="Preview Image", width=120)
-            
-            if st.button("Save Photo to Database", type="primary", key="save_photo_btn"):
-                try:
-                    from io import BytesIO
-                    buffered = BytesIO()
-                    
-                    if image.mode in ("RGBA", "P"):
-                        image = image.convert("RGB")
-                    
-                    # 1. Bump the canvas dimensions to a generous profile card size
-                    max_thumbnail_dimensions = (400, 400)
-                    image.thumbnail(max_thumbnail_dimensions, Image.Resampling.LANCZOS)
-
-                    # 2. UPGRADE: Crank the quality compression from 50 up to 85, keeping optimization ON
-                    image.save(buffered, format="JPEG", quality=85, optimize=True)
-                    img_str = base64.b64encode(buffered.getvalue()).decode()
-                    
-                    df_master = conn.read(ttl="10s")
-                    
-                    if df_master.empty or "FNM" not in df_master.columns:
-                        st.error("❌ Safety Abort: System detected an empty sheet structure or missing 'FNM' column.")
-                        st.stop()
-                    
-                    if "Photo_Base64" not in df_master.columns:
-                        df_master["Photo_Base64"] = ""
-                    else:
-                        df_master["Photo_Base64"] = df_master["Photo_Base64"].fillna("").astype(str)
-                    
-                    match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == uploader_name.lower()
-                    
-                    if match_mask.any():
-                        df_master.loc[match_mask, "Photo_Base64"] = img_str
-                        conn.update(data=df_master)
-                        st.success(f"🎉 Profile picture successfully saved for {uploader_name}!")
-                        
-                        if "dev_file_uploader" in st.session_state:
-                            del st.session_state["dev_file_uploader"]
-                            
-                        st.rerun()
-                    else:
-                        st.error(f"Could not find '{uploader_name}' in the spreadsheet FNM records. Please make sure the name exists first.")
-                except Exception as e:
-                    st.error(f"Error handling file stream upload securely: {e}")
-
-    st.write("---")
-
-    # --- WORKFLOW 2: ROSTER CARDS INTERACTIVE GRID ---
-    try:
-        df_master = conn.read(ttl="10s")
-    except Exception:
-        st.error("Failed to connect to Google Sheets.")
-        st.stop()
-
-    if "Photo_Base64" in df_master.columns:
-        df_master["Photo_Base64"] = df_master["Photo_Base64"].fillna("").astype(str)
-        photo_df = df_master[df_master['Photo_Base64'].notna() & (df_master['Photo_Base64'] != "")].drop_duplicates(subset=['FNM'])
-        
-        if not photo_df.empty:
-            st.markdown('<p style="color: #FFFFFF; font-size:1.1rem; font-weight:600;">✨ Click a team member profile below to inspect their schedules:</p>', unsafe_allow_html=True)
-            
-            columns_per_row = 3
-            cols = st.columns(columns_per_row)
-            
-            for index, row in photo_df.reset_index().iterrows():
-                name = row['FNM']
-                base64_string = row['Photo_Base64']
-                current_col = cols[index % columns_per_row]
-                
-                with current_col:
-                    try:
-                        decoded_bytes = base64.b64decode(base64_string)
-                        st.image(decoded_bytes, width=120)
-                        
-                        if st.button(f"👤 {name}", key=f"tab5_card_{name}_{index}", type="secondary"):
-                            st.session_state.selected_volunteer = name
-                            st.rerun()
-                    except Exception:
-                        st.error(f"Corrupt profile data trace for {name}")
-        else:
-            st.info("No active photo records found. Open the uploader drawer above to connect your first thumbnail image!")
-    else:
-        st.info("The data column 'Photo_Base64' does not exist yet. Run an upload above to initialize database tracking matrices automatically.")
-
-    # --- WORKFLOW 3: DYNAMIC SCHEDULE DISPLAY WINDOW ---
-    if st.session_state.get("selected_volunteer"):
-        clicked_name = st.session_state.selected_volunteer
-        st.write("---")
-        
-        st.markdown(f"<h3 style='color: #FFDB58;'>📋 Active Schedule Profile: {clicked_name}</h3>", unsafe_allow_html=True)
-        
-        commitments = df_master[df_master['FNM'].fillna("").astype(str).str.strip().str.lower() == clicked_name.lower()]
-        
-        if not commitments.empty:
-            available_cols = [col for col in ["SRV", "WK", "Role", "Month"] if col in commitments.columns]
-            display_schedule = commitments[available_cols].copy()
-            
-            rename_map = {"SRV": "Service Time", "WK": "Week Assignment", "Role": "Role Assigned", "Month": "Month"}
-            display_schedule.rename(columns={k: v for k, v in rename_map.items() if k in available_cols}, inplace=True)
-            
-            st.dataframe(display_schedule, use_container_width=True, hide_index=True)
-        else:
-            st.warning(f"No schedule tracking matrices found logged for {clicked_name}.")
-            
-        if st.button("Close Profile Panel ✖️", key="tab5_close_profile_window"):
-            st.session_state.selected_volunteer = None
-            st.rerun()
-            
 
 ## Sidebar
 ## Weekly list
@@ -793,7 +654,7 @@ if st.sidebar.button("Musicians and Teachers -  Yearly Roster 🔍", use_contain
 
 ## TABS
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators", "📋 Admin(s) Page", "📸 Photo Directory"])
+tab1, tab2, tab3, tab4 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators", "📋 Admin(s) Page"])
 
 with tab1:
     run_kds_music()
@@ -825,7 +686,6 @@ with tab3:
     image_chris = "images-6.jpeg"
     image_syd = "images-3.jpeg"
     image_talaine = "658858024_10243496849142518_9061089755130801581_n.jpg"
-    image_oliver = "images-7.jpeg"
 
     try:
         # 2. Read the local file and convert it into a string
@@ -872,10 +732,6 @@ with tab3:
             encoded9 = base64.b64encode(file9.read()).decode("utf-8")
             img_src9 = f"data:image/jpeg;base64,{encoded9}"
 
-        with open(image_oliver, "rb") as file10:
-            encoded10 = base64.b64encode(file10.read()).decode("utf-8")
-            img_src10 = f"data:image/jpeg;base64,{encoded10}"
-
 
     
     except FileNotFoundError as e:
@@ -889,7 +745,6 @@ with tab3:
         img_src7 = "https://unsplash.com"
         img_src8 = "https://unsplash.com"
         img_src9 = "https://unsplash.com"
-        img_src10 = "https://unsplash.com"
         st.error(f"Missing local file: {e.filename}")
 
     # 3. Inject the data string directly into the HTML source
@@ -923,33 +778,10 @@ with tab3:
         </div>
         """
         
-    
-         f"""
-         
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src10}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
-
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Oliver
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                Worship Service Leader
-                10AM
-            </p>
-        </div>
-        """
-
         f"""
-         
+
+       
+        
         <div style="
             border: 2px solid #4A90E2;
             border-radius: 10px;
@@ -1134,10 +966,15 @@ with tab3:
             </p>
         </div>
         """
-
-        
         
     )
+
+
+with tab4:
+
+    import streamlit as st
+from streamlit_gsheets import GSheetsConnection
+import pandas as pd
 
 with tab4:
     
@@ -1308,29 +1145,3 @@ with tab4:
         except Exception as data_pipeline_error:
             st.error(f"Pipeline Interruption: {data_pipeline_error}")
 
-
-with tab5:
-    # 🛡️ CHECK ISOLATED DEV LOGIN INSTANCE
-    if not st.session_state.dev_logged_in:
-        st.markdown("<h3 style='color: #FFFFFF;'>🔒 Upload Portal Login</h3>", unsafe_allow_html=True)
-        
-        dev_password = st.text_input("Enter Dev Sandbox Password:", type="password", key="dev_portal_pwd_input")
-        
-        if st.button("Login as a Dev", type="primary", key="dev_login_submit_btn"):
-            # Set your preferred password string here (e.g., "KdsDev2026")
-            if dev_password == "KdsDev2026": 
-                st.session_state.dev_logged_in = True
-                st.success("🔓 Access granted!")
-                st.rerun()
-            else:
-                st.error("Invalid Dev Password. Please try again.")
-    else:
-        col_space, col_btn = st.columns([5, 1])
-        with col_btn:
-            if st.button("Log Out", key="dev_portal_logout_btn", type="secondary"):
-                st.session_state.dev_logged_in = False
-                st.session_state.selected_volunteer = None
-                st.rerun()
-    
-        run_tab5_dev_sandbox()
-    
