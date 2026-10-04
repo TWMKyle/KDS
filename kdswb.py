@@ -1098,7 +1098,7 @@ with tab4:
 
         with admin_sub_tab2:
             st.markdown("### 🏆 Volunteer Engagement & Frequency Analytics")
-            st.write("This is a report of all the most frequent weserve members for both music and teaching:")
+            st.write("Reviewing master commitment logs and top service frequency counts across our divisions:")
 
             # Clean local copy slices safely for calculation consistency
             analytics_df = master_df.copy()
@@ -1129,16 +1129,30 @@ with tab4:
                             return "Not Specified"
                         return valid_slots.mode().iloc[0]
 
+                    # C. Calculate the most frequent served role/instrument (Mode) for each volunteer
+                    def get_top_role_slot(group):
+                        # Checks your spreadsheet 'Role' or alternative column trackers for data matches
+                        valid_roles = group["Role"][group["Role"] != ""]
+                        if valid_roles.empty:
+                            return "Not Specified"
+                        return valid_roles.mode().iloc[0]
+
                     # Map group distributions to extract favorite service hours strings
                     favorite_slots = year_filtered_df.groupby("FNM").apply(get_top_time_slot, include_groups=False).reset_index()
                     favorite_slots.columns = ["Name", "Most Registered Time Slot"]
 
-                    # C. Merge data components together into a single analytics report table
+                    # Map group distributions to extract favorite role assignments
+                    favorite_roles = year_filtered_df.groupby("FNM").apply(get_top_role_slot, include_groups=False).reset_index()
+                    favorite_roles.columns = ["Name", "Most Served Role"]
+
+                    # D. Merge data components together into a single analytics report table
                     analytics_matrix = pd.merge(frequency_counts, favorite_slots, on="Name")
+                    analytics_matrix = pd.merge(analytics_matrix, favorite_roles, on="Name")
+                    
                     top_10_volunteers = analytics_matrix.head(10)
 
-                # Render only the clean streamlined scorecard table inside the tab container
-                st.success(f"Frequent Volunteers Leaderboard ({selected_year})")
+                # Render the expanded analytics scorecard table inside the tab container
+                st.success(f"Top 10 Volunteers Leaderboard ({selected_year})")
                 st.dataframe(
                     top_10_volunteers,
                     use_container_width=True,
