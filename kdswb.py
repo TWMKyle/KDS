@@ -1016,13 +1016,6 @@ with tab3:
 
 with tab4:
 
-    import streamlit as st
-from streamlit_gsheets import GSheetsConnection
-import pandas as pd
-
-with tab4:
-    
-
     # 1. LOAD USER REGISTRY SYSTEM FROM GOOGLE SHEETS
     try:
         conn = st.connection("gsheets", type=GSheetsConnection)
@@ -1111,13 +1104,13 @@ with tab4:
 
         st.divider()
 
-        # 4. PRIMARY SCHEDULING SHEET PIPELINE FILTERING
+        # PRIMARY SCHEDULING SHEET PIPELINE FILTERING
         try:
             # Read primary production scheduling spreadsheet
             master_df = conn.read(ttl=0)
             
             # Column Integrity Assertions
-            required_cols = ["WK", "Role", "SRV"]
+            required_cols = ["WK", "Role", "SRV", "FNM", "Month", "YR"]
             missing_data_cols = [col for col in required_cols if col not in master_df.columns]
             if missing_data_cols:
                 st.error(f"❌ Primary data matrix layout broken. Missing expected sheet columns: {missing_data_cols}. Detected: {list(master_df.columns)}")
@@ -1126,8 +1119,18 @@ with tab4:
             # Strip trailing/leading spaces from production schedule elements to avoid string matching gaps
             for col in required_cols:
                 master_df[col] = master_df[col].astype(str).str.strip()
-            
-            # --- EVALUATE MULTI-COLUMN FILTER MASKS ---
+                
+        except Exception as data_load_error:
+            st.error(f"❌ Failed to load main schedule sheet: {data_load_error}")
+            st.stop()
+
+        # ==========================================
+        # NESTED SUB-TAB ROUTER SUITE
+        # ==========================================
+        admin_sub_tab1, admin_sub_tab2 = st.tabs(["🛠️ Live Schedule Editor", "📊 Frequency Leaderboard"])
+
+        with admin_sub_tab1:
+            # --- EVALUATE MULTI-COLUMN FILTER MASKS FOR EDITOR ---
             # 1. Week Matching
             if allowed_weeks == "ALL":
                 week_mask = pd.Series(True, index=master_df.index)
@@ -1138,7 +1141,6 @@ with tab4:
             if allowed_roles == "ALL":
                 role_mask = pd.Series(True, index=master_df.index)
             else:
-                # Mute case mismatches seamlessly by forcing lower comparisons
                 allowed_roles_lower = [r.lower() for r in allowed_roles]
                 role_mask = master_df["Role"].str.lower().isin(allowed_roles_lower)
                 
@@ -1159,13 +1161,13 @@ with tab4:
             edited_filtered_df = st.data_editor(
                 filtered_df, 
                 num_rows="dynamic", 
-                use_container_width=True
+                use_container_width=True,
+                key="tab4_live_editor_grid"
             )
             
-            # 5. SURGICAL UPSTREAM RE-COMPILATION AND SAVE
-            if st.button("Commit Changes", type="primary"):
+            # SURGICAL UPSTREAM RE-COMPILATION AND SAVE
+            if st.button("Commit Changes", type="primary", key="tab4_commit_btn"):
                 with st.spinner("Compiling and syncing changes securely with Google Cloud..."):
-                    
                     # Target only the data that the current user WAS NOT allowed to alter
                     unaltered_system_records = master_df[~combined_filter_mask]
                     
@@ -1178,14 +1180,66 @@ with tab4:
                         if allowed_srv != "ALL" and len(allowed_srv) > 0:
                             edited_filtered_df["SRV"] = edited_filtered_df["SRV"].fillna(allowed_srv[0]).replace("", allowed_srv[0])
                     
-                    # Concat unaltered records back together with the modified slice
-                    final_compiled_df = pd.concat([unaltered_system_records, edited_filtered_df], ignore_index=True)
+                    # Merge static logs with modifications
+                    df_final_sync = pd.concat([unaltered_system_records, edited_filtered_df], ignore_index=True)
                     
-                    # Overwrite master Google Sheet upstream
-                    conn.update(data=final_compiled_df)
-                    st.success("🎉 Data pipeline synchronized! Live spreadsheet overwritten successfully.")
-                    st.rerun()
-                    
-        except Exception as data_pipeline_error:
-            st.error(f"Pipeline Interruption: {data_pipeline_error}")
+                    try:
+                        conn.update(data=df_final_sync)
+                        st.toast("Database transaction finalized across Google Sheets!", icon="✅")
+                        st.success("Changes updated successfully!")
+                        st.rerun()
+                    except Exception as sync_err:
+                        st.error(f"Cloud update network failure: {sync_err}")
+
+         with admin_sub_tab2:
+            st.markdown("### 🏆 Volunteer Engagement & Frequency Analytics")
+            st.write("Reviewing master commitment logs and top service frequency counts across our divisions:")
+
+            # Clean local copy slices safely for calculation consistency
+            analytics_df = master_df.copy()
+            analytics_df = analytics_df[analytics_df["FNM"] != ""]
+
+            # Extract unique calendar years present in primary spreadsheet records
+            unique_years = sorted(list(analytics_df["YR"].dropna().unique()), reverse=True)
+            if not unique_years:
+                unique_years = [str(datetime.now().year)]
+
+            selected_year = st.selectbox("📆 Target Analysis Year:", options=unique_years, index=0, key="admin_leaderboard_yr")
+
+            # Apply target year isolation mask slice
+            year_filtered_df = analytics_df[analytics_df["YR"] == selected_year]
+
+            if year_filtered_df.empty:
+                st.warning(f"No volunteer schedule records found for the year {selected_year}.")
+            else:
+                with st.spinner("Compiling leaderboard ranking matrix..."):
+                    # A. Compute individual submission frequency sizes
+                    frequency_counts = year_filtered_df["FNM"].value_counts().reset_index()
+                    frequency_counts.columns = ["Name", "Number of Times Registered"]
+
+                    # B. Calculate the most frequent service time slot (Mode) for each volunteer
+                    def get_top_time_slot(group):
+                        valid_slots = group["SRV"][group["SRV"] != ""]
+                        if valid_slots.empty:
+                            return "Not Specified"
+                        return valid_slots.mode().iloc[0]
+
+                    # Map group distributions to extract favorite service hours strings
+                    favorite_slots = year_filtered_df.groupby("FNM").apply(get_top_time_slot, include_groups=False).reset_index()
+                    favorite_slots.columns = ["Name", "Most Registered Time Slot"]
+
+                    # C. Merge data components together into a single analytics report table
+                    analytics_matrix = pd.merge(frequency_counts, favorite_slots, on="Name")
+                    top_10_volunteers = analytics_matrix.head(10)
+
+                # Render only the clean streamlined scorecard table inside the tab container
+                st.success(f"Top 10 Volunteers Leaderboard ({selected_year})")
+                st.dataframe(
+                    top_10_volunteers,
+                    use_container_width=True,
+                    hide_index=True
+                )
+
+
+
 
