@@ -1096,7 +1096,7 @@ with tab4:
                     except Exception as sync_err:
                         st.error(f"Cloud update network failure: {sync_err}")
 
-          with admin_sub_tab2:
+        with admin_sub_tab2:
             # FIXED: Wrapped text elements in CSS styles to force white text color rendering
             st.markdown('<h3 style="color: #FFFFFF; font-weight: 600; margin-bottom: 5px;">🏆 Volunteer Engagement & Frequency Analytics</h3>', unsafe_allow_html=True)
             st.markdown('<p style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 20px;">Reviewing master commitment logs and top service frequency counts across our divisions:</p>', unsafe_allow_html=True)
