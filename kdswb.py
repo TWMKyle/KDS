@@ -698,38 +698,30 @@ with tab3:
     image_talaine = "658858024_10243496849142518_9061089755130801581_n.jpg"
 
     try:
-        # 2. Read the local file and convert it into a string
-    
         with open(image_jv, "rb") as file1:
             encoded1 = base64.b64encode(file1.read()).decode("utf-8")
             img_src1 = f"data:image/jpeg;base64,{encoded1}"
     
-        # 3. Encode the second image (Kyle)
         with open(image_kyle, "rb") as file2:
             encoded2 = base64.b64encode(file2.read()).decode("utf-8")
             img_src2 = f"data:image/jpeg;base64,{encoded2}"
 
-        # 3. Encode the third image (Fitz)
         with open(image_fitz, "rb") as file3:
             encoded3 = base64.b64encode(file3.read()).decode("utf-8")
             img_src3 = f"data:image/jpeg;base64,{encoded3}"
 
-        # 4. Encode the third image (Pat)
         with open(image_pat, "rb") as file4:
             encoded4 = base64.b64encode(file4.read()).decode("utf-8")
             img_src4 = f"data:image/jpeg;base64,{encoded4}"
 
-        # 5. Encode the third image (Hydee)
         with open(image_hydee, "rb") as file5:
             encoded5 = base64.b64encode(file5.read()).decode("utf-8")
             img_src5 = f"data:image/jpeg;base64,{encoded5}"
 
-        # 6. Encode the third image (Jinky)
         with open(image_jinky, "rb") as file6:
             encoded6 = base64.b64encode(file6.read()).decode("utf-8")
             img_src6 = f"data:image/jpeg;base64,{encoded6}"
 
-        # 7. Encode the third image (Chris)
         with open(image_chris, "rb") as file7:
             encoded7 = base64.b64encode(file7.read()).decode("utf-8")
             img_src7 = f"data:image/jpeg;base64,{encoded7}"
@@ -742,242 +734,151 @@ with tab3:
             encoded9 = base64.b64encode(file9.read()).decode("utf-8")
             img_src9 = f"data:image/jpeg;base64,{encoded9}"
 
-
-    
     except FileNotFoundError as e:
-    # Fallbacks to stop the app from crashing if a file is missing
-        img_src1 = "https://unsplash.com"
-        img_src2 = "https://unsplash.com"
-        img_src3 = "https://unsplash.com"
-        img_src4 = "https://unsplash.com"
-        img_src5 = "https://unsplash.com"
-        img_src6 = "https://unsplash.com"
-        img_src7 = "https://unsplash.com"
-        img_src8 = "https://unsplash.com"
-        img_src9 = "https://unsplash.com"
+        img_src1 = img_src2 = img_src3 = img_src4 = img_src5 = img_src6 = img_src7 = img_src8 = img_src9 = "https://unsplash.com"
         st.error(f"Missing local file: {e.filename}")
 
-    # 3. Inject the data string directly into the HTML source
-    st.html(
+    # ==========================================
+    # DATA DEFINITIONS FOR LINK HANDLING 
+    # ==========================================
+    if "coord_search_clicked" not in st.session_state:
+        st.session_state.coord_search_clicked = False
+    if "coord_target_name" not in st.session_state:
+        st.session_state.coord_target_name = ""
 
-         
-    
-        f"""
+    # Setup 3-wide responsive column grid parameters
+    c_col1, c_col2, c_col3 = st.columns(3)
 
-        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src6}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+    # CARD 1: Jinky
+    with c_col1:
+        st.html(f"""
+            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src6}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            </div>
+        """)
+        if st.button("Jinky", key="c_btn_jinky", type="link", help="Click to see schedule"):
+            st.session_state.coord_target_name = "Jinky"
+            st.session_state.coord_search_clicked = True
+            st.rerun()
+        st.caption("Staff | Worship Service Leader | Worship Service Team Leader <br> 6PM | Week 2 | Week 4", unsafe_allow_html=True)
 
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Jinky 
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Staff | Worship Service Leader | Worship Service Team Leader
-                 6PM | Week 2 | Week 4
-            </p>
-        </div>
-        """
-        
-        f"""
+    # CARD 2: John Venn
+    with c_col2:
+        st.html(f"""
+            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src1}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            </div>
+        """)
+        if st.button("John Venn", key="c_btn_jv", type="link", help="Click to see schedule"):
+            st.session_state.coord_target_name = "John Venn"
+            st.session_state.coord_search_clicked = True
+            st.rerun()
+        st.caption("Worship Service Leader <br> 12NN", unsafe_allow_html=True)
 
-       
-        
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src1}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+    # CARD 3: Chris
+    with c_col3:
+        st.html(f"""
+            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src7}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            </div>
+        """)
+        if st.button("Chris", key="c_btn_chris", type="link", help="Click to see schedule"):
+            st.session_state.coord_target_name = "Chris"
+            st.session_state.coord_search_clicked = True
+            st.rerun()
+        st.caption("Worship Service Leader <br> 2PM", unsafe_allow_html=True)
 
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                John Venn
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                Worship Service Leader
-                12NN
-            </p>
-        </div>
-        """
+    # Extra spacing to split grid rows smoothly
+    st.write("")
+    c_col4, c_col5, c_col6 = st.columns(3)
 
-        f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src7}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+    # CARD 4: Fitz
+    with c_col4:
+        st.html(f"""
+            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src3}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            </div>
+        """)
+        if st.button("Fitz", key="c_btn_fitz", type="link", help="Click to see schedule"):
+            st.session_state.coord_target_name = "Fitz"
+            st.session_state.coord_search_clicked = True
+            st.rerun()
+        st.caption("Worship Service Leader <br> 4PM", unsafe_allow_html=True)
 
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Chris
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                Worship Service Leader
-                2PM
-            </p>
-        </div>
-        """
+    # CARD 5: Pat
+    with c_col5:
+        st.html(f"""
+            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src4}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            </div>
+        """)
+        if st.button("Pat", key="c_btn_pat", type="link", help="Click to see schedule"):
+            st.session_state.coord_target_name = "Pat"
+            st.session_state.coord_search_clicked = True
+            st.rerun()
+        st.caption("Worship Service Team Leader <br> 4PM | Week 4", unsafe_allow_html=True)
 
-      
+    # CARD 6: Hydee
+    with c_col6:
+        st.html(f"""
+            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src5}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            </div>
+        """)
+        if st.button("Hydee", key="c_btn_hydee", type="link", help="Click to see schedule"):
+            st.session_state.coord_target_name = "Hydee"
+            st.session_state.coord_search_clicked = True
+            st.rerun()
+        st.caption("Worship Service Team Leader <br> 4PM | Week 2", unsafe_allow_html=True)
 
-         f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src3}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+    # Extra spacing row 3
+    st.write("")
+    c_col7, c_col8, c_col9 = st.columns(3)
 
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Fitz 
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Worship Service Leader
-                 4PM
-            </p>
-        </div>
-        """
+    # CARD 7: Talaine
+    with c_col7:
+        st.html(f"""
+            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src9}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            </div>
+        """)
+        if st.button("Talaine", key="c_btn_talaine", type="link", help="Click to see schedule"):
+            st.session_state.coord_target_name = "Talaine"
+            st.session_state.coord_search_clicked = True
+            st.rerun()
+        st.caption("Kids Coordinator", unsafe_allow_html=True)
 
-        
-        f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src4}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+    # ==========================================
+    # LIVE WORKWHEEL SCHEDULE RETRIEVAL ENGINE
+    # ==========================================
+    if st.session_state.coord_search_clicked:
+        target_leader = st.session_state.coord_target_name
+        st.write("---")
+        st.markdown(f"### 🗓️ Active Commitments for: **{target_leader}**")
 
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Pat 
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Worship Service Team Leader
-                 4PM | Week 4
-            </p>
-        </div>
-        """
+        try:
+            # Read directly from sheet connection
+            df_master = conn.read(ttl="0d")
+            df_master.columns = df_master.columns.str.strip()
 
-        
-        f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src5}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+            # Dynamic name matching check across rows
+            match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == target_leader.lower()
+            leader_rows = df_master[match_mask]
 
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Hydee 
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Worship Service Team Leader
-                 4PM | Week 2
-            </p>
-        </div>
-        """
-        f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src9}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
-
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Talaine 
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Worship Service Team Leader
-                 6PM | Week 1 | Week 3
-            </p>
-        </div>
-        """
-
-         f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src8}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
-
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Sydney 
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Music Worship Team Leader
-            </p>
-        </div>
-        """
-        
-
-          f"""
-        <div style="
-            border: 2px solid #4A90E2;
-            border-radius: 10px;
-            padding: 15px;
-            width: 180px;
-            text-align: center;
-            background-color: #f9f9f9;
-            font-family: sans-serif;
-        ">
-            <img src="{img_src2}" 
-                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
-
-            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
-                Kyle 
-            </h2>
-            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                 Music Worship Team Leader | Web Support
-            </p>
-        </div>
-        """
-        
-    )
+            if not leader_rows.empty:
+                # Filter columns to show only relevant details
+                display_leader_df = leader_rows[["FNM", "SRV", "WK", "Role", "Month", "Agegroup"]].copy()
+                display_leader_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled", "Class / Instrument Slot"]
+                st.dataframe(display_leader_df, use_container_width=True, hide_index=True)
+                
+                if st.button("Hide Schedule Log", key="close_coord_table"):
+                    st.session_state.coord_search_clicked = False
+                    st.session_state.coord_target_name = ""
+                    st.rerun()
+            else:
+                st.warning(f"No current schedule assignments found on the tracking sheet for **{target_leader}**.")
+        except Exception as e:
+            st.error(f"Failed to query spreadsheet entries: {e}")
 
 
 with tab4:
