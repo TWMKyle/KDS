@@ -37,7 +37,23 @@ st.markdown(
     f"""
     <style>
 
-   
+   div[data-testid="stColumn"] .stButton > button {{
+    background-color: transparent !important;
+    color: #4A90E2 !important; /* Matches your profile card border color */
+    border: none !important;
+    padding: 0px !important;
+    margin: 5px 0px 0px 0px !important;
+    font-weight: bold !important;
+    font-size: 18px !important;
+    text-decoration: underline !important;
+    box-shadow: none !important;
+    display: inline-block !important;
+}}
+
+div[data-testid="stColumn"] .stButton > button:hover {{
+    color: #000000 !important;
+    background-color: transparent !important;
+}}
 
 div.stButton > button.clickable-roster-link:hover {{
     color: #FFFFFF !important; /* Highlights white on hover actions */
@@ -684,189 +700,161 @@ with tab2:
     if st.session_state.show_teacher_lookup:
         teacherteamweek_lookup()
 
-with tab3:
-    st.markdown('<p style="color:white;">If you have any questions or concerns, you may also reach out to the following coordinators 👨‍🏫 👩‍🏫.</p>', unsafe_allow_html=True)
-
-    image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
-    image_kyle = "images-2.jpeg"
-    image_fitz = "marvels-spider-man-remastered_az82.jpg"
-    image_pat = "images-5.jpeg"
-    image_hydee = "723137472_27496272786651457_8882887501516959174_n.jpg"
-    image_jinky = "images-4.jpeg"
-    image_chris = "images-6.jpeg"
-    image_syd = "images-3.jpeg"
-    image_talaine = "658858024_10243496849142518_9061089755130801581_n.jpg"
-
-    try:
-        with open(image_jv, "rb") as file1:
-            encoded1 = base64.b64encode(file1.read()).decode("utf-8")
-            img_src1 = f"data:image/jpeg;base64,{encoded1}"
-    
-        with open(image_kyle, "rb") as file2:
-            encoded2 = base64.b64encode(file2.read()).decode("utf-8")
-            img_src2 = f"data:image/jpeg;base64,{encoded2}"
-
-        with open(image_fitz, "rb") as file3:
-            encoded3 = base64.b64encode(file3.read()).decode("utf-8")
-            img_src3 = f"data:image/jpeg;base64,{encoded3}"
-
-        with open(image_pat, "rb") as file4:
-            encoded4 = base64.b64encode(file4.read()).decode("utf-8")
-            img_src4 = f"data:image/jpeg;base64,{encoded4}"
-
-        with open(image_hydee, "rb") as file5:
-            encoded5 = base64.b64encode(file5.read()).decode("utf-8")
-            img_src5 = f"data:image/jpeg;base64,{encoded5}"
-
-        with open(image_jinky, "rb") as file6:
-            encoded6 = base64.b64encode(file6.read()).decode("utf-8")
-            img_src6 = f"data:image/jpeg;base64,{encoded6}"
-
-        with open(image_chris, "rb") as file7:
-            encoded7 = base64.b64encode(file7.read()).decode("utf-8")
-            img_src7 = f"data:image/jpeg;base64,{encoded7}"
-
-        with open(image_syd, "rb") as file8:
-            encoded8 = base64.b64encode(file8.read()).decode("utf-8")
-            img_src8 = f"data:image/jpeg;base64,{encoded8}"
-
-        with open(image_talaine, "rb") as file9:
-            encoded9 = base64.b64encode(file9.read()).decode("utf-8")
-            img_src9 = f"data:image/jpeg;base64,{encoded9}"
-
-    except FileNotFoundError as e:
-        img_src1 = img_src2 = img_src3 = img_src4 = img_src5 = img_src6 = img_src7 = img_src8 = img_src9 = "https://unsplash.com"
-        st.error(f"Missing local file: {e.filename}")
-
-    # ==========================================
-    # DATA DEFINITIONS FOR LINK HANDLING 
-    # ==========================================
+    # Initialize State Variables safely if not declared yet
     if "coord_search_clicked" not in st.session_state:
         st.session_state.coord_search_clicked = False
     if "coord_target_name" not in st.session_state:
         st.session_state.coord_target_name = ""
 
-    # Setup 3-wide responsive column grid parameters
+    # Setup Row 1 Grid Layout Structure (Cards 1-3)
     c_col1, c_col2, c_col3 = st.columns(3)
 
     # CARD 1: Jinky
     with c_col1:
         st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src6}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src6}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
             </div>
         """)
-        if st.button("Jinky", key="c_btn_jinky", type="link", help="Click to see schedule"):
+        if st.button("Jinky", key="c_btn_jinky", help="Click to see schedule"):
             st.session_state.coord_target_name = "Jinky"
             st.session_state.coord_search_clicked = True
             st.rerun()
-        st.caption("Staff | Worship Service Leader | Worship Service Team Leader <br> 6PM | Week 2 | Week 4", unsafe_allow_html=True)
+        st.html("""
+            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 80px;">
+                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Staff | Worship Service Leader | Worship Service Team Leader <br> 6PM | Week 2 | Week 4</p>
+            </div>
+        """)
 
     # CARD 2: John Venn
     with c_col2:
         st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src1}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src1}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
             </div>
         """)
-        if st.button("John Venn", key="c_btn_jv", type="link", help="Click to see schedule"):
+        if st.button("John Venn", key="c_btn_jv", help="Click to see schedule"):
             st.session_state.coord_target_name = "John Venn"
             st.session_state.coord_search_clicked = True
             st.rerun()
-        st.caption("Worship Service Leader <br> 12NN", unsafe_allow_html=True)
+        st.html("""
+            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 80px;">
+                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Leader <br> 12NN</p>
+            </div>
+        """)
 
     # CARD 3: Chris
     with c_col3:
         st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src7}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src7}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
             </div>
         """)
-        if st.button("Chris", key="c_btn_chris", type="link", help="Click to see schedule"):
+        if st.button("Chris", key="c_btn_chris", help="Click to see schedule"):
             st.session_state.coord_target_name = "Chris"
             st.session_state.coord_search_clicked = True
             st.rerun()
-        st.caption("Worship Service Leader <br> 2PM", unsafe_allow_html=True)
+        st.html("""
+            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 80px;">
+                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Leader <br> 2PM</p>
+            </div>
+        """)
 
-    # Extra spacing to split grid rows smoothly
-    st.write("")
+    st.write("") # Clear Row Break
+    
+    # Setup Row 2 Grid Layout Structure (Cards 4-6)
     c_col4, c_col5, c_col6 = st.columns(3)
 
     # CARD 4: Fitz
     with c_col4:
         st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src3}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src3}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
             </div>
         """)
-        if st.button("Fitz", key="c_btn_fitz", type="link", help="Click to see schedule"):
+        if st.button("Fitz", key="c_btn_fitz", help="Click to see schedule"):
             st.session_state.coord_target_name = "Fitz"
             st.session_state.coord_search_clicked = True
             st.rerun()
-        st.caption("Worship Service Leader <br> 4PM", unsafe_allow_html=True)
+        st.html("""
+            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 80px;">
+                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Leader <br> 4PM</p>
+            </div>
+        """)
 
     # CARD 5: Pat
     with c_col5:
         st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src4}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src4}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
             </div>
         """)
-        if st.button("Pat", key="c_btn_pat", type="link", help="Click to see schedule"):
+        if st.button("Pat", key="c_btn_pat", help="Click to see schedule"):
             st.session_state.coord_target_name = "Pat"
             st.session_state.coord_search_clicked = True
             st.rerun()
-        st.caption("Worship Service Team Leader <br> 4PM | Week 4", unsafe_allow_html=True)
+        st.html("""
+            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 80px;">
+                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Team Leader <br> 4PM | Week 4</p>
+            </div>
+        """)
 
     # CARD 6: Hydee
     with c_col6:
         st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src5}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src5}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
             </div>
         """)
-        if st.button("Hydee", key="c_btn_hydee", type="link", help="Click to see schedule"):
+        if st.button("Hydee", key="c_btn_hydee", help="Click to see schedule"):
             st.session_state.coord_target_name = "Hydee"
             st.session_state.coord_search_clicked = True
             st.rerun()
-        st.caption("Worship Service Team Leader <br> 4PM | Week 2", unsafe_allow_html=True)
+        st.html("""
+            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 80px;">
+                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Team Leader <br> 4PM | Week 2</p>
+            </div>
+        """)
 
-    # Extra spacing row 3
-    st.write("")
+    st.write("") # Clear Row Break
+    
+    # Setup Row 3 Grid Layout Structure (Card 7)
     c_col7, c_col8, c_col9 = st.columns(3)
 
     # CARD 7: Talaine
     with c_col7:
         st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px; padding: 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src9}" style="width: 100%; border-radius: 5%; object-fit: cover;">
+            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
+                <img src="{img_src9}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
             </div>
         """)
-        if st.button("Talaine", key="c_btn_talaine", type="link", help="Click to see schedule"):
+        if st.button("Talaine", key="c_btn_talaine", help="Click to see schedule"):
             st.session_state.coord_target_name = "Talaine"
             st.session_state.coord_search_clicked = True
             st.rerun()
-        st.caption("Kids Coordinator", unsafe_allow_html=True)
+        st.html("""
+            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 80px;">
+                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Kids Coordinator</p>
+            </div>
+        """)
 
     # ==========================================
-    # LIVE WORKWHEEL SCHEDULE RETRIEVAL ENGINE
+    # DATA RETRIEVAL LOGIC ENGINE BLOCK
     # ==========================================
     if st.session_state.coord_search_clicked:
         target_leader = st.session_state.coord_target_name
         st.write("---")
-        st.markdown(f"### 🗓️ Active Commitments for: **{target_leader}**")
+        st.markdown(f"### 🗓️ Active Serving Commitments for: **{target_leader}**")
 
         try:
-            # Read directly from sheet connection
             df_master = conn.read(ttl="0d")
             df_master.columns = df_master.columns.str.strip()
 
-            # Dynamic name matching check across rows
+            # Cross-reference FNM string values inside spreadsheet rows cleanly
             match_mask = df_master["FNM"].fillna("").astype(str).str.strip().str.lower() == target_leader.lower()
             leader_rows = df_master[match_mask]
 
             if not leader_rows.empty:
-                # Filter columns to show only relevant details
                 display_leader_df = leader_rows[["FNM", "SRV", "WK", "Role", "Month", "Agegroup"]].copy()
                 display_leader_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month Scheduled", "Class / Instrument Slot"]
                 st.dataframe(display_leader_df, use_container_width=True, hide_index=True)
@@ -876,9 +864,10 @@ with tab3:
                     st.session_state.coord_target_name = ""
                     st.rerun()
             else:
-                st.warning(f"No current schedule assignments found on the tracking sheet for **{target_leader}**.")
+                st.warning(f"No current assignments registered on the master sheet for **{target_leader}**.")
         except Exception as e:
-            st.error(f"Failed to query spreadsheet entries: {e}")
+            st.error(f"Failed to query spreadsheet database fields: {e}")
+
 
 
 with tab4:
