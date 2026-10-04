@@ -1191,7 +1191,7 @@ with tab4:
                     except Exception as sync_err:
                         st.error(f"Cloud update network failure: {sync_err}")
 
-         with admin_sub_tab2:
+        with admin_sub_tab2:
             st.markdown("### 🏆 Volunteer Engagement & Frequency Analytics")
             st.write("Reviewing master commitment logs and top service frequency counts across our divisions:")
 
