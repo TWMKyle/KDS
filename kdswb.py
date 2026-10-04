@@ -654,8 +654,10 @@ st.sidebar.subheader("📋 Yearly Roster Finder")
 
 
 @st.dialog("This Year's Volunteers")
+
 def show_yearly_volunteers():
-    st.write(f"We thank the Lord for your hearts to serve!")
+    st.markdown('<h2 style="color: #FFFFFF;">📊 Volunteer Engagement & Frequency Analytics</h2>', unsafe_allow_html=True)
+    st.write("Reviewing master commitment logs and top service frequency counts across our divisions:")
 
     try:
         yearly_df = conn.read(ttl="0d")
@@ -665,15 +667,83 @@ def show_yearly_volunteers():
 
     if yearly_df.empty:
         st.info("No volunteers are registered in the database yet.")
-    else:
-        yearly_df = yearly_df[["FNM", "SRV", "WK", "Role", "Month", "YR"]]
+        return
 
-        yearly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month", "Year"]
-        yearly_df = yearly_df.sort_values(by=["Serving Week", "Service Time", "Month", "Year"])
+    # 1. Standardize column headers to shield against invisible padding spaces
+    yearly_df.columns = yearly_df.columns.str.strip()
+    
+    required = ["FNM", "SRV", "WK", "Role", "Month", "YR"]
+    if not all(col in yearly_df.columns for col in required):
+        st.error("Spreadsheet structural field mismatch. Cannot extract matrix calculations.")
+        return
 
-        st.success(f"Here is a report of all who have served and will serve throughout the year:")
-        st.dataframe(yearly_df, use_container_width=True, hide_index=True)
+    # Clean data spaces and casing parameters safely
+    yearly_df["FNM"] = yearly_df["FNM"].fillna("").astype(str).str.strip()
+    yearly_df["SRV"] = yearly_df["SRV"].fillna("").astype(str).str.strip()
+    yearly_df["YR"] = yearly_df["YR"].fillna("").astype(str).str.strip()
 
+    # Drop blank entry rows to ensure accurate math counts
+    yearly_df = yearly_df[yearly_df["FNM"] != ""]
+
+    # 2. EXTRACT UNIQUE CALENDAR YEARS FOR DRIVER DROPDOWN
+    unique_years = sorted(list(yearly_df["YR"].unique()), reverse=True)
+    if not unique_years:
+        unique_years = [str(datetime.now().year)]
+        
+    selected_year = st.selectbox("📆 Select Target Analytics Year:", options=unique_years, index=0)
+
+    # Filter our core dataframe slice by the selected year parameter
+    year_filtered_df = yearly_df[yearly_df["YR"] == selected_year]
+
+    if year_filtered_df.empty:
+        st.warning(f"No volunteer schedule profiles discovered for the year {selected_year}.")
+        return
+
+    # ==========================================
+    # PANDAS AGGREGATION & ANALYTICS PIPELINE
+    # ==========================================
+    with st.spinner("Processing registration metrics matrix..."):
+        # A. Compute individual submission frequency sizes
+        frequency_counts = year_filtered_df["FNM"].value_counts().reset_index()
+        frequency_counts.columns = ["Name", "Number of Registrations"]
+
+        # B. Calculate the most frequent service time slot (Mode) for each volunteer
+        def get_top_time_slot(group):
+            # Drops empty slot configurations, returns the top most frequent time category label string
+            valid_slots = group["SRV"][group["SRV"] != ""]
+            if valid_slots.empty:
+                return "Not Specified"
+            return valid_slots.mode()[0]
+
+        # Map group distributions to extract favorite service hours strings
+        favorite_slots = year_filtered_df.groupby("FNM").apply(get_top_time_slot).reset_index()
+        favorite_slots.columns = ["Name", "Most Registered Time Slot"]
+
+        # C. Merge data components together into a single analytics report table
+        analytics_matrix = pd.merge(frequency_counts, favorite_slots, on="Name")
+
+        # D. Isolate the top 10 most frequent individuals
+        top_10_volunteers = analytics_matrix.head(10)
+
+    # ==========================================
+    # METRICS DISPLAY INTERFACE WORKSPACE
+    # ==========================================
+    st.success(f"🏆 **Top 10 Volunteers Leaderboard ({selected_year})**")
+    
+    # Render our top 10 scorecard cleanly
+    st.dataframe(
+        top_10_volunteers, 
+        use_container_width=True, 
+        hide_index=True
+    )
+
+    # Expandable view block to review the comprehensive leaderboard list
+    with st.expander("📄 View All Registered Personnel Frequency Metrics"):
+        st.dataframe(
+            analytics_matrix.sort_values(by="Number of Registrations", ascending=False),
+            use_container_width=True,
+            hide_index=True
+        )
 
 if st.sidebar.button("Musicians and Teachers -  Yearly Roster 🔍", use_container_width=True):
     show_yearly_volunteers()
