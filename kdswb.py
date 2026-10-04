@@ -737,14 +737,6 @@ def show_yearly_volunteers():
         hide_index=True
     )
 
-    # Expandable view block to review the comprehensive leaderboard list
-    with st.expander("📄 View All Registered Personnel Frequency Metrics"):
-        st.dataframe(
-            analytics_matrix.sort_values(by="Number of Registrations", ascending=False),
-            use_container_width=True,
-            hide_index=True
-        )
-
 if st.sidebar.button("Musicians and Teachers -  Yearly Roster 🔍", use_container_width=True):
     show_yearly_volunteers()
 
