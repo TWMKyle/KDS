@@ -37,23 +37,7 @@ st.markdown(
     f"""
     <style>
 
-    /* CONVERT MARGIN BUTTONS INTO PLAIN CLICKABLE HYPERLINKS VIA ENCLOSING SCOPES */
-[data-testid="stVerticalBlockBorderWrapper"] .stButton > button {{
-    background-color: transparent !important;
-    color: #FFDB58 !important; /* Matches your accent golden yellow */
-    border: none !important;
-    padding: 0px !important;
-    margin: 0px !important;
-    font-weight: 600 !important;
-    text-decoration: underline !important;
-    text-align: left !important;
-    box-shadow: none !important;
-}}
-
-[data-testid="stVerticalBlockBorderWrapper"] .stButton > button:hover {{
-    color: #FFFFFF !important; /* Highlights white on hover */
-    background-color: transparent !important;
-}}
+   
 
 div.stButton > button.clickable-roster-link:hover {{
     color: #FFFFFF !important; /* Highlights white on hover actions */
@@ -248,34 +232,7 @@ def run_kds_music():
         "Would you like to serve as a worship leader or play the guitar? Please search your name:",
         value=st.session_state.searched_name).strip()
 
-   # === CLICKABLE ROSTER ADDITION FOR MUSIC ===
-    st.markdown("🎵 **Quick View Musician Commitments:**")
-    
-    # Enclose within a container block to apply our custom link look safely
-    with st.container(border=True):
-        m_col1, m_col2, m_col3 = st.columns(3)
-        
-        musicians_roster = ["David Miller", "Emma Wilson", "James Taylor"]
-        
-        with m_col1:
-            # FIXED: Removed the invalid 'cls' parameter to clear the TypeError
-            if st.button(musicians_roster, key="btn_music_0", help=f"View schedule for {musicians_roster}"):
-                st.session_state.search_clicked = True
-                st.session_state.searched_name = musicians_roster
-                st.rerun()
-                
-        with m_col2:
-            if st.button(musicians_roster, key="btn_music_1", help=f"View schedule for {musicians_roster}"):
-                st.session_state.search_clicked = True
-                st.session_state.searched_name = musicians_roster
-                st.rerun()
-                
-        with m_col3:
-            if st.button(musicians_roster, key="btn_music_2", help=f"View schedule for {musicians_roster}"):
-                st.session_state.search_clicked = True
-                st.session_state.searched_name = musicians_roster
-                st.rerun()
-                
+   
             
     if st.button("Music lookup", type="secondary", key="music_lookup_button"):
         if not search_input:
@@ -438,30 +395,7 @@ def run_kds_teacher():
                                   value=st.session_state.searched_name2,
                                   key="kds_teacher_search_input")
 
-    st.markdown("🗣️ **Quick View Coordinator/Teacher Commitments:**")
     
-    with st.container(border=True):
-        t_col1, t_col2, t_col3 = st.columns(3)
-        
-        teachers_roster = ["Alice Smith", "Bob Jones", "Charlie Brown"]
-        
-        with t_col1:
-            if st.button(teachers_roster, key="btn_teach_0", help=f"View schedule for {teachers_roster}"):
-                st.session_state.search_clicked2 = True
-                st.session_state.searched_name2 = teachers_roster
-                st.rerun()
-                
-        with t_col2:
-            if st.button(teachers_roster, key="btn_teach_1", help=f"View schedule for {teachers_roster}"):
-                st.session_state.search_clicked2 = True
-                st.session_state.searched_name2 = teachers_roster
-                st.rerun()
-                
-        with t_col3:
-            if st.button(teachers_roster, key="btn_teach_2", help=f"View schedule for {teachers_roster}"):
-                st.session_state.search_clicked2 = True
-                st.session_state.searched_name2 = teachers_roster
-                st.rerun()
             
     if st.button("Teacher lookup", type="secondary", key="teacher_lookup_button"):
         if not search_input2:
