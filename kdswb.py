@@ -1096,9 +1096,10 @@ with tab4:
                     except Exception as sync_err:
                         st.error(f"Cloud update network failure: {sync_err}")
 
-        with admin_sub_tab2:
-            st.markdown("### 🏆 Volunteer Engagement & Frequency Analytics")
-            st.write("Reviewing master commitment logs and top service frequency counts across our divisions:")
+          with admin_sub_tab2:
+            # FIXED: Wrapped text elements in CSS styles to force white text color rendering
+            st.markdown('<h3 style="color: #FFFFFF; font-weight: 600; margin-bottom: 5px;">🏆 Volunteer Engagement & Frequency Analytics</h3>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 20px;">Reviewing master commitment logs and top service frequency counts across our divisions:</p>', unsafe_allow_html=True)
 
             # Clean local copy slices safely for calculation consistency
             analytics_df = master_df.copy()
@@ -1131,19 +1132,19 @@ with tab4:
 
                     # C. Calculate the most frequent served role/instrument (Mode) for each volunteer
                     def get_top_role_slot(group):
-                        # Checks your spreadsheet 'Role' or alternative column trackers for data matches
                         valid_roles = group["Role"][group["Role"] != ""]
                         if valid_roles.empty:
                             return "Not Specified"
                         return valid_roles.mode().iloc[0]
 
                     # Map group distributions to extract favorite service hours strings
-                    favorite_slots = year_filtered_df.groupby("FNM").apply(get_top_time_slot, include_groups=False).reset_index()
-                    favorite_slots.columns = ["Name", "Most Registered Time Slot"]
+                    with st.silent_categorical_groups if hasattr(st, "silent_categorical_groups") else st.container():
+                        favorite_slots = year_filtered_df.groupby("FNM").apply(get_top_time_slot, include_groups=False).reset_index()
+                        favorite_slots.columns = ["Name", "Most Registered Time Slot"]
 
-                    # Map group distributions to extract favorite role assignments
-                    favorite_roles = year_filtered_df.groupby("FNM").apply(get_top_role_slot, include_groups=False).reset_index()
-                    favorite_roles.columns = ["Name", "Most Served Role"]
+                        # Map group distributions to extract favorite role assignments
+                        favorite_roles = year_filtered_df.groupby("FNM").apply(get_top_role_slot, include_groups=False).reset_index()
+                        favorite_roles.columns = ["Name", "Most Served Role"]
 
                     # D. Merge data components together into a single analytics report table
                     analytics_matrix = pd.merge(frequency_counts, favorite_slots, on="Name")
@@ -1158,7 +1159,6 @@ with tab4:
                     use_container_width=True,
                     hide_index=True
                 )
-
 
 
 
