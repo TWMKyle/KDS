@@ -574,83 +574,9 @@ def teacherteamweek_lookup():
 ## Sidebar
 ## Weekly list
 
-st.sidebar.write("---")
-st.sidebar.subheader("📋 Weekly Roster Finder")
-
-
-@st.dialog("This Week's Volunteers")
-def show_weekly_volunteers():
-
-    st.write("We thank the Lord for your hearts to serve!")
-
-    week_list3 = ["Week1", "Week2", "Week3", "Week4", "Week5"]
-
-    try:
-        df_week = conn.read(ttl="0d")
-    except Exception:
-        st.error("Could not fetch the sheet database.")
-        return
-    target_week = st.selectbox("Select Week to View:", options=week_list3, key="dialog_view_week_select")
-
-    match_wk = df_week["WK"].fillna("").astype(str).str.strip().str.lower() == target_week.lower()
-    match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
-
-    weekly_df = df_week[match_wk & match_mnt]
-
-    if weekly_df.empty:
-        st.info(f"No volunteers are registered to serve on **{target_week}** yet.")
-    else:
-        weekly_df = weekly_df[["FNM", "SRV", "Role", "Month", "Agegroup"]]
-        weekly_df.columns = ["Name", "Service Time", "Role Assignment", "Month", "Age Group"]
-
-        weekly_df = weekly_df.sort_values(by="Service Time")
-
-        st.success(f"Found **{len(weekly_df)}** team member(s) serving in {target_week}:")
-        st.dataframe(weekly_df, use_container_width=True, hide_index=True)
-
-
-if st.sidebar.button("Musicians and Teachers -  Weekly Roster 🔍", use_container_width=True):
-    show_weekly_volunteers()
-
-
-## Monthly list
 
 st.sidebar.write("---")
-st.sidebar.subheader("📋 Monthly Roster Finder")
-
-
-@st.dialog("This Month's Volunteers")
-def show_monthly_volunteers():
-    st.write(f"We thank the Lord for your hearts to serve!")
-
-    try:
-        # FIX: Ensure you are reading the data into a variable named df_week
-        # (or change df_week below to match whatever variable you use here)
-        df_week = conn.read(ttl="0d")
-    except Exception:
-        st.error("Could not fetch the sheet database.")
-        return
-
-    match_mnt = df_week["Month"].fillna("").astype(str).str.strip().str.lower() == current_calendar_month.lower()
-
-    monthly_df = df_week[match_mnt]
-
-    if monthly_df.empty:
-        st.info(f"No volunteers are registered for **{current_calendar_month}** yet.")
-    else:
-        monthly_df = monthly_df[["FNM", "SRV", "WK", "Role", "Month", "Agegroup"]]
-        monthly_df.columns = ["Name", "Service Time", "Serving Week", "Role Assignment", "Month", "Agegroup"]
-        monthly_df = monthly_df.sort_values(by=["Serving Week", "Service Time", "Month", "Agegroup"])
-
-        st.success(f"Found **{len(monthly_df)}** total team member(s) serving this month:")
-        st.dataframe(monthly_df, use_container_width=True, hide_index=True)
-
-
-if st.sidebar.button("Musicians and Teachers -  Monthly Roster 🔍", use_container_width=True):
-    show_monthly_volunteers()
-
-st.sidebar.write("---")
-st.sidebar.subheader("📋 Yearly Roster Finder")
+st.sidebar.subheader("📋 Yearly Roster Report")
 
 
 @st.dialog("This Year's Volunteers")
