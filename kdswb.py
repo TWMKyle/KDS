@@ -571,101 +571,6 @@ def teacherteamweek_lookup():
 
 
 
-## Sidebar
-## Weekly list
-
-
-st.sidebar.write("---")
-st.sidebar.subheader("📋 Yearly Roster Report")
-
-
-@st.dialog("This Year's Volunteers")
-
-def show_yearly_volunteers():
-    st.markdown('<h2 style="color: #FFFFFF;">📊 Volunteer Engagement & Frequency Analytics</h2>', unsafe_allow_html=True)
-    st.write("Reviewing master commitment logs and top service frequency counts across our divisions:")
-
-    try:
-        yearly_df = conn.read(ttl="0d")
-    except Exception:
-        st.error("Could not fetch the sheet database.")
-        return
-
-    if yearly_df.empty:
-        st.info("No volunteers are registered in the database yet.")
-        return
-
-    # 1. Standardize column headers to shield against invisible padding spaces
-    yearly_df.columns = yearly_df.columns.str.strip()
-    
-    required = ["FNM", "SRV", "WK", "Role", "Month", "YR"]
-    if not all(col in yearly_df.columns for col in required):
-        st.error("Spreadsheet structural field mismatch. Cannot extract matrix calculations.")
-        return
-
-    # Clean data spaces and casing parameters safely
-    yearly_df["FNM"] = yearly_df["FNM"].fillna("").astype(str).str.strip()
-    yearly_df["SRV"] = yearly_df["SRV"].fillna("").astype(str).str.strip()
-    yearly_df["YR"] = yearly_df["YR"].fillna("").astype(str).str.strip()
-
-    # Drop blank entry rows to ensure accurate math counts
-    yearly_df = yearly_df[yearly_df["FNM"] != ""]
-
-    # 2. EXTRACT UNIQUE CALENDAR YEARS FOR DRIVER DROPDOWN
-    unique_years = sorted(list(yearly_df["YR"].unique()), reverse=True)
-    if not unique_years:
-        unique_years = [str(datetime.now().year)]
-        
-    selected_year = st.selectbox("📆 Select Target Analytics Year:", options=unique_years, index=0)
-
-    # Filter our core dataframe slice by the selected year parameter
-    year_filtered_df = yearly_df[yearly_df["YR"] == selected_year]
-
-    if year_filtered_df.empty:
-        st.warning(f"No volunteer schedule profiles discovered for the year {selected_year}.")
-        return
-
-    # ==========================================
-    # PANDAS AGGREGATION & ANALYTICS PIPELINE
-    # ==========================================
-    with st.spinner("Processing registration metrics matrix..."):
-        # A. Compute individual submission frequency sizes
-        frequency_counts = year_filtered_df["FNM"].value_counts().reset_index()
-        frequency_counts.columns = ["Name", "Number of Registrations"]
-
-        # B. Calculate the most frequent service time slot (Mode) for each volunteer
-        def get_top_time_slot(group):
-            # Drops empty slot configurations, returns the top most frequent time category label string
-            valid_slots = group["SRV"][group["SRV"] != ""]
-            if valid_slots.empty:
-                return "Not Specified"
-            return valid_slots.mode()[0]
-
-        # Map group distributions to extract favorite service hours strings
-        favorite_slots = year_filtered_df.groupby("FNM").apply(get_top_time_slot).reset_index()
-        favorite_slots.columns = ["Name", "Most Registered Time Slot"]
-
-        # C. Merge data components together into a single analytics report table
-        analytics_matrix = pd.merge(frequency_counts, favorite_slots, on="Name")
-
-        # D. Isolate the top 10 most frequent individuals
-        top_10_volunteers = analytics_matrix.head(10)
-
-    # ==========================================
-    # METRICS DISPLAY INTERFACE WORKSPACE
-    # ==========================================
-    st.success(f"🏆 **Top 10 Volunteers Leaderboard ({selected_year})**")
-    
-    # Render our top 10 scorecard cleanly
-    st.dataframe(
-        top_10_volunteers, 
-        use_container_width=True, 
-        hide_index=True
-    )
-
-if st.sidebar.button("Musicians and Teachers -  Yearly Roster 🔍", use_container_width=True):
-    show_yearly_volunteers()
-
 ## TABS
 
 tab1, tab2, tab3, tab4 = st.tabs(["🎵 Kids Music", "📖 Kids Teachers", "👤 Kids Coodinators", "📋 Admin(s) Page"])
@@ -1193,7 +1098,7 @@ with tab4:
 
         with admin_sub_tab2:
             st.markdown("### 🏆 Volunteer Engagement & Frequency Analytics")
-            st.write("Reviewing master commitment logs and top service frequency counts across our divisions:")
+            st.write("This is a report of all the most frequent weserve members for both music and teaching:")
 
             # Clean local copy slices safely for calculation consistency
             analytics_df = master_df.copy()
@@ -1233,7 +1138,7 @@ with tab4:
                     top_10_volunteers = analytics_matrix.head(10)
 
                 # Render only the clean streamlined scorecard table inside the tab container
-                st.success(f"Top 10 Volunteers Leaderboard ({selected_year})")
+                st.success(f"Frequent Volunteers Leaderboard ({selected_year})")
                 st.dataframe(
                     top_10_volunteers,
                     use_container_width=True,
