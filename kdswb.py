@@ -1099,7 +1099,7 @@ with tab4:
         with admin_sub_tab2:
             # FIXED: Wrapped text elements in CSS styles to force white text color rendering
             st.markdown('<p style="color: #FFFFFF; font-weight: 600; margin-bottom: 5px;"> Volunteer Engagement & Frequency Masterlist</p>', unsafe_allow_html=True)
-            st.markdown('<p style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 20px;">This is a report of the most frequent WeServe Team Members for Kids Music and Teaching:</p>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 20px;">You can generate a report for the most frequent WeServe Team Members for Kids Music and Teaching:</p>', unsafe_allow_html=True)
 
             # Clean local copy slices safely for calculation consistency
             analytics_df = master_df.copy()
