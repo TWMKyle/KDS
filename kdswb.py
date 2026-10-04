@@ -702,7 +702,9 @@ with tab2:
 
 
 with tab3:
-    st.markdown('<p style="color:white;">If you have any questions or concerns, you may also reach out to the following coordinators 👨‍🏫 👩‍🏫.</p>', unsafe_allow_html=True)
+    st.markdown(
+        '<p style="color:white;">If you have any questions or concerns, you may also reach out to the following coordinators 👨‍🏫 👩‍🏫.</p>',
+        unsafe_allow_html=True)
 
     image_jv = "428153935_7645976362101063_1868470333701431125_n.jpg"
     image_kyle = "images-2.jpeg"
@@ -713,241 +715,316 @@ with tab3:
     image_chris = "images-6.jpeg"
     image_syd = "images-3.jpeg"
     image_talaine = "658858024_10243496849142518_9061089755130801581_n.jpg"
-
-    # 1. DEFENSIVE BACKING: Pre-define all variables to entirely block NameError compilation faults
-    fallback_url = "https://unsplash.com"
-    img_src1 = img_src2 = img_src3 = img_src4 = img_src5 = img_src6 = img_src7 = img_src8 = img_src9 = fallback_url
+    image_oliver = "images-7.jpeg"
 
     try:
-        if os.path.exists(image_jinky):
-            with open(image_jinky, "rb") as file6:
-                img_src6 = f"data:image/jpeg;base64,{base64.b64encode(file6.read()).decode('utf-8')}"
-                
-        if os.path.exists(image_jv):
-            with open(image_jv, "rb") as file1:
-                img_src1 = f"data:image/jpeg;base64,{base64.b64encode(file1.read()).decode('utf-8')}"
-                
-        if os.path.exists(image_chris):
-            with open(image_chris, "rb") as file7:
-                img_src7 = f"data:image/jpeg;base64,{base64.b64encode(file7.read()).decode('utf-8')}"
-                
-        if os.path.exists(image_fitz):
-            with open(image_fitz, "rb") as file3:
-                img_src3 = f"data:image/jpeg;base64,{base64.b64encode(file3.read()).decode('utf-8')}"
-                
-        if os.path.exists(image_pat):
-            with open(image_pat, "rb") as file4:
-                img_src4 = f"data:image/jpeg;base64,{base64.b64encode(file4.read()).decode('utf-8')}"
-                
-        if os.path.exists(image_hydee):
-            with open(image_hydee, "rb") as file5:
-                img_src5 = f"data:image/jpeg;base64,{base64.b64encode(file5.read()).decode('utf-8')}"
-                
-        if os.path.exists(image_talaine):
-            with open(image_talaine, "rb") as file9:
-                img_src9 = f"data:image/jpeg;base64,{base64.b64encode(file9.read()).decode('utf-8')}"
-                
-        if os.path.exists(image_kyle):
-            with open(image_kyle, "rb") as file2:
-                img_src2 = f"data:image/jpeg;base64,{base64.b64encode(file2.read()).decode('utf-8')}"
-                
-        if os.path.exists(image_syd):
-            with open(image_syd, "rb") as file8:
-                img_src8 = f"data:image/jpeg;base64,{base64.b64encode(file8.read()).decode('utf-8')}"
+        # 2. Read the local file and convert it into a string
 
-    except Exception as e:
-        st.warning(f"Notice: Using backup web layout parameters for some profiles. {e}")
+        with open(image_jv, "rb") as file1:
+            encoded1 = base64.b64encode(file1.read()).decode("utf-8")
+            img_src1 = f"data:image/jpeg;base64,{encoded1}"
 
-    # Initialize State Variables safely if not declared yet
-    if "coord_search_clicked" not in st.session_state:
-        st.session_state.coord_search_clicked = False
-    if "coord_target_name" not in st.session_state:
-        st.session_state.coord_target_name = ""
+        # 3. Encode the second image (Kyle)
+        with open(image_kyle, "rb") as file2:
+            encoded2 = base64.b64encode(file2.read()).decode("utf-8")
+            img_src2 = f"data:image/jpeg;base64,{encoded2}"
 
-    # ==========================================
-    # GRID ROW 1: CARDS 1 - 3
-    # ==========================================
-    c_col1, c_col2, c_col3 = st.columns(3)
+        # 3. Encode the third image (Fitz)
+        with open(image_fitz, "rb") as file3:
+            encoded3 = base64.b64encode(file3.read()).decode("utf-8")
+            img_src3 = f"data:image/jpeg;base64,{encoded3}"
 
-    # CARD 1: Jinky
-    with c_col1:
-        st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src6}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
-            </div>
-        """)
-        if st.button("Jinky", key="c_btn_jinky", help="Click to see schedule"):
-            st.session_state.coord_target_name = "Jinky"
-            st.session_state.coord_search_clicked = True
-            st.rerun()
-        st.html("""
-            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 90px;">
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Staff | Worship Service Leader | Worship Service Team Leader <br> 6PM | Week 2 | Week 4</p>
-            </div>
-        """)
+        # 4. Encode the third image (Pat)
+        with open(image_pat, "rb") as file4:
+            encoded4 = base64.b64encode(file4.read()).decode("utf-8")
+            img_src4 = f"data:image/jpeg;base64,{encoded4}"
 
-    # CARD 2: John Venn
-    with c_col2:
-        st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src1}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
-            </div>
-        """)
-        if st.button("John Venn", key="c_btn_jv", help="Click to see schedule"):
-            st.session_state.coord_target_name = "John Venn"
-            st.session_state.coord_search_clicked = True
-            st.rerun()
-        st.html("""
-            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 90px;">
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Leader <br> 12NN</p>
-            </div>
-        """)
+        # 5. Encode the third image (Hydee)
+        with open(image_hydee, "rb") as file5:
+            encoded5 = base64.b64encode(file5.read()).decode("utf-8")
+            img_src5 = f"data:image/jpeg;base64,{encoded5}"
 
-    # CARD 3: Chris
-    with c_col3:
-        st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src7}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
-            </div>
-        """)
-        if st.button("Chris", key="c_btn_chris", help="Click to see schedule"):
-            st.session_state.coord_target_name = "Chris"
-            st.session_state.coord_search_clicked = True
-            st.rerun()
-        st.html("""
-            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 90px;">
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Leader <br> 2PM</p>
-            </div>
-        """)
+        # 6. Encode the third image (Jinky)
+        with open(image_jinky, "rb") as file6:
+            encoded6 = base64.b64encode(file6.read()).decode("utf-8")
+            img_src6 = f"data:image/jpeg;base64,{encoded6}"
 
-    st.write("") # Clear Row Break
-    
-    # ==========================================
-    # GRID ROW 2: CARDS 4 - 6
-    # ==========================================
-    c_col4, c_col5, c_col6 = st.columns(3)
+        # 7. Encode the third image (Chris)
+        with open(image_chris, "rb") as file7:
+            encoded7 = base64.b64encode(file7.read()).decode("utf-8")
+            img_src7 = f"data:image/jpeg;base64,{encoded7}"
 
-    # CARD 4: Fitz
-    with c_col4:
-        st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src3}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
-            </div>
-        """)
-        if st.button("Fitz", key="c_btn_fitz", help="Click to see schedule"):
-            st.session_state.coord_target_name = "Fitz"
-            st.session_state.coord_search_clicked = True
-            st.rerun()
-        st.html("""
-            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 90px;">
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Leader <br> 4PM</p>
-            </div>
-        """)
+        with open(image_syd, "rb") as file8:
+            encoded8 = base64.b64encode(file8.read()).decode("utf-8")
+            img_src8 = f"data:image/jpeg;base64,{encoded8}"
 
-    # CARD 5: Pat
-    with c_col5:
-        st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src4}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
-            </div>
-        """)
-        if st.button("Pat", key="c_btn_pat", help="Click to see schedule"):
-            st.session_state.coord_target_name = "Pat"
-            st.session_state.coord_search_clicked = True
-            st.rerun()
-        st.html("""
-            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 90px;">
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Team Leader <br> 4PM | Week 4</p>
-            </div>
-        """)
+        with open(image_talaine, "rb") as file9:
+            encoded9 = base64.b64encode(file9.read()).decode("utf-8")
+            img_src9 = f"data:image/jpeg;base64,{encoded9}"
 
-    # CARD 6: Hydee
-    with c_col6:
-        st.html(f"""
-            <div style="border: 2px solid #4A90E2; border-radius: 10px 10px 0px 0px; padding: 15px 15px 0px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif;">
-                <img src="{img_src5}" style="width: 100%; border-radius: 5%; object-fit: cover; max-height: 180px;">
-            </div>
-        """)
-        if st.button("Hydee", key="c_btn_hydee", help="Click to see schedule"):
-            st.session_state.coord_target_name = "Hydee"
-            st.session_state.coord_search_clicked = True
-            st.rerun()
-        st.html("""
-            <div style="border: 2px solid #4A90E2; border-top: none; border-radius: 0px 0px 10px 10px; padding: 0px 15px 15px 15px; background-color: #f9f9f9; text-align: center; font-family: sans-serif; min-height: 90px;">
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">Worship Service Team Leader <br> 4PM | Week 2</p>
-            </div>
-        """)
+        with open(image_oliver, "rb") as file10:
+            encoded10 = base64.b64encode(file10.read()).decode("utf-8")
+            img_src10 = f"data:image/jpeg;base64,{encoded10}"
 
-        # ==========================================
-    # GRID ROW 3: CARDS 7 - 9
-    # ==========================================
-    c_col7, c_col8, c_col9 = st.columns(3)
 
-    # CARD 7: Talaine
-    with c_col7:
-        st.html(f"""
-            <div style="
-                border: 2px solid #4A90E2;
-                border-radius: 10px;
-                padding: 15px;
-                background-color: #f9f9f9;
-                text-align: center;
-                font-family: sans-serif;
-            ">
-                <img src="{img_src9}" 
-                     style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover; height: 180px;">
-                <h2 style="margin: 0 0 5px 0; font-size: 18px; font-weight: bold;">
-                    <a href="?search=Talaine" target="_self" style="color: #4A90E2; text-decoration: underline;">Talaine</a>
-                </h2>
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                     Kids Coordinator
-                </p>
-            </div>
-        """)
 
-    # CARD 8: Kyle
-    with c_col8:
-        st.html(f"""
-            <div style="
-                border: 2px solid #4A90E2;
-                border-radius: 10px;
-                padding: 15px;
-                background-color: #f9f9f9;
-                text-align: center;
-                font-family: sans-serif;
-            ">
-                <img src="{img_src2}" 
-                     style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover; height: 180px;">
-                <h2 style="margin: 0 0 5px 0; font-size: 18px; font-weight: bold;">
-                    <a href="?search=Kyle" target="_self" style="color: #4A90E2; text-decoration: underline;">Kyle</a>
-                </h2>
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                     Administrator | Support Tech
-                </p>
-            </div>
-        """)
+    except FileNotFoundError as e:
+        # Fallbacks to stop the app from crashing if a file is missing
+        img_src1 = "https://unsplash.com"
+        img_src2 = "https://unsplash.com"
+        img_src3 = "https://unsplash.com"
+        img_src4 = "https://unsplash.com"
+        img_src5 = "https://unsplash.com"
+        img_src6 = "https://unsplash.com"
+        img_src7 = "https://unsplash.com"
+        img_src8 = "https://unsplash.com"
+        img_src9 = "https://unsplash.com"
+        img_src10 = "https://unsplash.com"
+        st.error(f"Missing local file: {e.filename}")
 
-    # CARD 9: Syd
-    with c_col9:
-        st.html(f"""
-            <div style="
-                border: 2px solid #4A90E2;
-                border-radius: 10px;
-                padding: 15px;
-                background-color: #f9f9f9;
-                text-align: center;
-                font-family: sans-serif;
-            ">
-                <img src="{img_src8}" 
-                     style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover; height: 180px;">
-                <h2 style="margin: 0 0 5px 0; font-size: 18px; font-weight: bold;">
-                    <a href="?search=Syd" target="_self" style="color: #4A90E2; text-decoration: underline;">Syd</a>
-                </h2>
-                <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
-                     Coordinators Support Assistant
-                </p>
-            </div>
-        """)
+    # 3. Inject the data string directly into the HTML source
+    st.html(
+
+        f"""
+
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src6}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Jinky 
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Staff | Worship Service Leader | Worship Service Team Leader
+                 6PM | Week 2 | Week 4
+            </p>
+        </div>
+        """
+
+
+        f"""
+
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src10}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Oliver
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                Worship Service Leader
+                10AM
+            </p>
+        </div>
+        """
+
+        f"""
+
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src1}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                John Venn
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                Worship Service Leader
+                12NN
+            </p>
+        </div>
+        """
+
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src7}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Chris
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                Worship Service Leader
+                2PM
+            </p>
+        </div>
+        """
+
+
+
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src3}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Fitz 
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Worship Service Leader
+                 4PM
+            </p>
+        </div>
+        """
+
+
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src4}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Pat 
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Worship Service Team Leader
+                 4PM | Week 4
+            </p>
+        </div>
+        """
+
+
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src5}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Hydee 
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Worship Service Team Leader
+                 4PM | Week 2
+            </p>
+        </div>
+        """
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src9}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Talaine 
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Worship Service Team Leader
+                 6PM | Week 1 | Week 3
+            </p>
+        </div>
+        """
+
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src8}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Sydney 
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Music Worship Team Leader
+            </p>
+        </div>
+        """
+
+
+        f"""
+        <div style="
+            border: 2px solid #4A90E2;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            background-color: #f9f9f9;
+            font-family: sans-serif;
+        ">
+            <img src="{img_src2}" 
+                 style="width: 100%; border-radius: 5%; margin-bottom: 10px; object-fit: cover;">
+
+            <h2 style="margin: 0 0 5px 0; color: #666; font-size: 18px; font-weight: bold;">
+                Kyle 
+            </h2>
+            <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.3;">
+                 Music Worship Team Leader | Web Support
+            </p>
+        </div>
+        """
+
+    )
+
 
 with tab4:
 
