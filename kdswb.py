@@ -1098,8 +1098,8 @@ with tab4:
 
         with admin_sub_tab2:
             # FIXED: Wrapped text elements in CSS styles to force white text color rendering
-            st.markdown('<h3 style="color: #FFFFFF; font-weight: 600; margin-bottom: 5px;">🏆 Volunteer Engagement & Frequency Analytics</h3>', unsafe_allow_html=True)
-            st.markdown('<p style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 20px;">Reviewing master commitment logs and top service frequency counts across our divisions:</p>', unsafe_allow_html=True)
+            st.markdown('<h2 style="color: #FFFFFF; font-weight: 600; margin-bottom: 5px;"> Volunteer Engagement & Frequency Masterlist</h2>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 20px;">This is a report of the most frequent WeServe Team Members for Kids Music and Teaching:</p>', unsafe_allow_html=True)
 
             # Clean local copy slices safely for calculation consistency
             analytics_df = master_df.copy()
@@ -1110,7 +1110,7 @@ with tab4:
             if not unique_years:
                 unique_years = [str(datetime.now().year)]
 
-            selected_year = st.selectbox("📆 Target Analysis Year:", options=unique_years, index=0, key="admin_leaderboard_yr")
+            selected_year = st.selectbox("📆 Year of the Lord", options=unique_years, index=0, key="admin_leaderboard_yr")
 
             # Apply target year isolation mask slice
             year_filtered_df = analytics_df[analytics_df["YR"] == selected_year]
@@ -1153,7 +1153,7 @@ with tab4:
                     top_10_volunteers = analytics_matrix.head(10)
 
                 # Render the expanded analytics scorecard table inside the tab container
-                st.success(f"Top 10 Volunteers Leaderboard ({selected_year})")
+                st.success(f"Most Frequent WeServer Members ({selected_year})")
                 st.dataframe(
                     top_10_volunteers,
                     use_container_width=True,
